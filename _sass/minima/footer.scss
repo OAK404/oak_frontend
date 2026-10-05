@@ -1,0 +1,104 @@
+// ============================================================
+// ACS FOOTER STYLES
+// _sass/minima/footer.scss
+// ============================================================
+
+.site-footer {
+  background: #3d2c24 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 48px 0 !important;
+
+  .wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+
+    @media (max-width: 768px) {
+      padding: 0 20px;
+    }
+  }
+
+  // Footer navigation links layout
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+  }
+
+  .footer-previous {
+    justify-self: start;
+    margin-left: 10vw;
+  }
+
+  .footer-home {
+    justify-self: center;
+  }
+
+  .footer-next {
+    justify-self: end;
+    margin-right: 10vw;
+  }
+
+  // Footer column layout
+  .footer-col-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .footer-col {
+    flex: 1 1 160px;
+
+    h2.footer-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: rgba(255, 255, 255, 0.85) !important;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0; padding: 0;
+
+      li {
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.45) !important;
+      }
+    }
+
+    a {
+      color: rgba(255, 255, 255, 0.45) !important;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+    }
+
+    p, span {
+      color: rgba(255, 255, 255, 0.45) !important;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  }
+
+  // Bottom bar
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35) !important;
+  }
+}

@@ -1,0 +1,759 @@
+// ============================================================
+// ACS CANCER AWARENESS — MAIN THEME
+// _sass/minima/acs/theme.scss
+//
+// Warm & Hopeful aesthetic
+// Fonts: Cormorant Garamond (display serif) + Nunito (body)
+// Colors: Cream, rose, sage, terracotta
+// ============================================================
+
+@import "../../root-color-map.scss";
+
+// ============================================================
+// CSS CUSTOM PROPERTIES (runtime theme vars)
+// ============================================================
+:root {
+  --cream:          #fdf6ee;
+  --warm-white:     #fff9f3;
+  --rose:           #e07a6a;
+  --rose-light:     #f2b5ab;
+  --rose-pale:      #fce9e6;
+  --terracotta:     #c45e4a;
+  --sage:           #8aaa8c;
+  --sage-light:     #b8ceb9;
+  --sage-pale:      #eaf1ea;
+  --tan:            #c4a882;
+  --tan-light:      #e8d9c4;
+  --brown:          #6b4c3b;
+  --text-main:      #3d2c24;
+  --text-muted:     #937468;
+  --border:         rgba(196, 168, 130, 0.25);
+  --border-bright:  rgba(196, 168, 130, 0.5);
+  --serif:          'Cormorant Garamond', Georgia, serif;
+  --sans:           'Nunito', system-ui, sans-serif;
+
+  // Override pref vars used by existing components
+  --pref-bg-color:      #fdf6ee;
+  --pref-text-color:    #3d2c24;
+  --pref-font-family:   'Nunito', system-ui, sans-serif;
+  --pref-font-size:     15px;
+  --pref-accent-color:  #e07a6a;
+  --pref-selection-color: #c45e4a;
+
+  --panel:       #fff9f3;
+  --panel-mid:   #f5ede3;
+  --ui-bg:       rgba(196, 168, 130, 0.08);
+  --ui-border:   rgba(196, 168, 130, 0.25);
+  --background:  #fdf6ee;
+
+  --bg-0: #fdf6ee;
+  --bg-1: #fff9f3;
+  --bg-2: #f5ede3;
+  --bg-3: #ecddd0;
+  --accent: #e07a6a;
+  --accent-700: #c45e4a;
+  --text: #3d2c24;
+  --text-muted: #937468;
+  --green-bg: #eaf1ea;
+  --white: #3d2c24;
+}
+
+// ============================================================
+// GOOGLE FONTS — load in your Jekyll _includes/head.html:
+// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+// ============================================================
+
+// ============================================================
+// GLOBAL RESET & BASE
+// ============================================================
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream) !important;
+  color: var(--text-main) !important;
+  font-family: var(--sans) !important;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+
+  // Subtle warm paper texture
+  &::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+}
+
+// ============================================================
+// TYPOGRAPHY OVERRIDES
+// ============================================================
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif) !important;
+  color: var(--text-main) !important;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+
+h1 { font-size: clamp(36px, 4vw, 56px); }
+h2 { font-size: clamp(28px, 3vw, 42px); }
+h3 { font-size: clamp(22px, 2.5vw, 32px); }
+h4 { font-size: 20px; }
+
+p {
+  color: var(--text-muted) !important;
+  line-height: 1.75;
+}
+
+a {
+  color: var(--warm-white);
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--terracotta) !important;
+  }
+}
+
+li, ul, ol {
+  color: var(--text-muted) !important;
+}
+
+strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+em {
+  font-style: italic;
+  color: var(--rose);
+}
+
+// Override body font set in elements/typography
+body {
+  font-family: var(--sans) !important;
+}
+
+// ============================================================
+// PAGE WRAPPER
+// ============================================================
+.page-content {
+  background-color: var(--cream) !important;
+  padding-top: 64px; // offset for fixed header
+
+  .wrapper {
+    max-width: 1200px;
+    padding: 0 0px !important;
+
+    @media (max-width: 768px) {
+      padding: 0 0px;
+    }
+  }
+}
+
+// ============================================================
+// SITE HEADER (override navbar.scss)
+// ============================================================
+.site-header {
+  background: rgba(253, 246, 238, 0.92) !important;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border) !important;
+  border-top: none !important;
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  z-index: 9000;
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    max-width: 100%;
+    padding: 0 48px;
+
+    @media (max-width: 768px) {
+      padding: 0 20px;
+    }
+  }
+}
+
+.site-title {
+  font-family: var(--serif) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: var(--text-main) !important;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: 'ACS';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; height: 36px;
+    background: var(--rose);
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+  }
+
+  &:hover { color: var(--rose) !important; }
+}
+
+.site-nav {
+  background-color: transparent !important;
+  margin-left: auto;
+
+  .page-link {
+    font-family: var(--sans) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--text-muted) !important;
+    letter-spacing: 0.02em;
+    padding: 6px 14px !important;
+    border-radius: 20px;
+    transition: color 0.2s, background 0.2s;
+    margin-left: 4px !important;
+
+    &:hover {
+      color: var(--text-main) !important;
+      background: var(--tan-light);
+    }
+  }
+}
+
+#loginArea.page-link {
+  background: var(--rose) !important;
+  color: white !important;
+  border-radius: 20px;
+  font-weight: 600 !important;
+  padding: 7px 20px !important;
+  transition: background 0.2s, transform 0.15s !important;
+
+  &:hover {
+    background: var(--terracotta) !important;
+    color: white !important;
+    transform: translateY(-1px);
+  }
+}
+
+// Mobile nav trigger
+.site-nav .menu-icon {
+  svg path {
+    fill: var(--text-main) !important;
+  }
+}
+
+// ============================================================
+// SITE FOOTER
+// ============================================================
+.site-footer {
+  background: var(--brown) !important;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5) !important;
+  padding: 40px 0 !important;
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  p, span, div, li, a {
+    color: rgba(255,255,255,0.5) !important;
+    font-size: 13px;
+  }
+
+  a:hover {
+    color: rgba(255,255,255,0.85) !important;
+  }
+
+  .footer-col-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .footer-col {
+    h2.footer-heading {
+      font-family: var(--serif) !important;
+      font-size: 16px !important;
+      color: rgba(255,255,255,0.85) !important;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    li, a {
+      color: rgba(255,255,255,0.5) !important;
+      &:hover { color: rgba(255,255,255,0.85) !important; }
+    }
+  }
+}
+
+// ============================================================
+// POSTS / BLOG LIST (repurposed for articles/resources)
+// ============================================================
+.post-list {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+
+  li {
+    background-color: var(--warm-white) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    padding: 24px !important;
+    color: var(--text-muted) !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(61, 44, 36, 0.08);
+    }
+
+    h3 a {
+      font-family: var(--serif);
+      color: var(--text-main) !important;
+      font-size: 22px;
+    }
+  }
+}
+
+.post-meta {
+  color: var(--text-muted) !important;
+  font-size: 13px;
+}
+
+// ============================================================
+// INDIVIDUAL POST / PAGE CONTENT
+// ============================================================
+.post-content,
+.post-header,
+article.post {
+  background-color: var(--warm-white) !important;
+  border-radius: 16px;
+  padding: 40px;
+  border: 1px solid var(--border);
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+.post-title {
+  font-family: var(--serif) !important;
+  color: var(--text-main) !important;
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+button,
+.btn,
+input[type="submit"] {
+  font-family: var(--sans) !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+// Primary button style
+.btn-primary,
+.primary,
+button.primary {
+  background: var(--rose) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+
+  &:hover {
+    background: var(--terracotta) !important;
+    transform: translateY(-1px);
+  }
+}
+
+// Ghost / secondary
+.btn-ghost,
+.secondary,
+button.secondary {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-bright) !important;
+  border-radius: 10px;
+  padding: 12px 24px;
+
+  &:hover {
+    border-color: var(--tan) !important;
+    background: var(--tan-light) !important;
+  }
+}
+
+// ============================================================
+// FORMS & INPUTS
+// ============================================================
+input,
+textarea,
+select {
+  background-color: var(--cream) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--tan-light) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px;
+  font-family: var(--sans) !important;
+  font-size: 14px;
+  filter: none !important;
+
+  &:focus {
+    outline: none;
+    border-color: var(--rose) !important;
+    box-shadow: 0 0 0 3px rgba(224, 122, 106, 0.15);
+  }
+
+  // Override dark autofill
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-main) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--cream) inset !important;
+    background-color: var(--cream) !important;
+  }
+}
+
+// ============================================================
+// CARDS & PANELS
+// ============================================================
+.card,
+.panel,
+.box,
+.login-card,
+.signup-card {
+  background-color: var(--warm-white) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 4px 20px rgba(61, 44, 36, 0.06) !important;
+}
+
+// ============================================================
+// CODE BLOCKS (keep readable on light bg)
+// ============================================================
+pre, code {
+  background-color: var(--bg-2) !important;
+  color: var(--brown) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  font-family: 'Menlo', 'Courier New', monospace !important;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+
+  code {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0;
+  }
+}
+
+// ============================================================
+// TABLES
+// ============================================================
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th {
+  background: var(--rose-pale) !important;
+  color: var(--terracotta) !important;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 16px;
+}
+
+td {
+  color: var(--text-muted) !important;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+tr:hover td {
+  background: rgba(224, 122, 106, 0.04);
+}
+
+// ============================================================
+// SEARCH RESULTS
+// ============================================================
+.search-result-preview {
+  background-color: var(--warm-white) !important;
+  color: var(--text-muted) !important;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.search-result-highlight {
+  color: var(--rose) !important;
+  font-weight: 600 !important;
+}
+
+.search-results-list-item .search-result-title {
+  background-color: var(--warm-white) !important;
+  color: var(--text-main) !important;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 10px;
+}
+
+// ============================================================
+// LOADING SPINNER (keep functional, restyle colors)
+// ============================================================
+.loading-container {
+  background-color: rgba(253, 246, 238, 0.9) !important;
+}
+
+.spinner {
+  border: 8px solid var(--tan-light) !important;
+  border-top: 8px solid var(--rose) !important;
+}
+
+// ============================================================
+// BADGES
+// ============================================================
+.badge {
+  background: var(--rose-pale) !important;
+  color: var(--terracotta) !important;
+  border: 1px solid var(--rose-light) !important;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+// ============================================================
+// BACKEND STATUS INDICATORS
+// ============================================================
+.backend-status {
+  background: var(--tan-light) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.status-item {
+  background: var(--warm-white) !important;
+
+  &.success {
+    background: var(--sage-pale) !important;
+    border-color: var(--sage-light) !important;
+  }
+
+  &.error {
+    background: var(--rose-pale) !important;
+    border-color: var(--rose-light) !important;
+  }
+}
+
+// ============================================================
+// TOGGLES
+// ============================================================
+.slider {
+  background: var(--tan-light) !important;
+}
+
+input[type="checkbox"]:checked + .slider {
+  background: var(--rose) !important;
+}
+
+// ============================================================
+// MODAL OVERLAYS (for login modal)
+// ============================================================
+.modal,
+.modal-overlay {
+  background-color: rgba(61, 44, 36, 0.7) !important;
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  background-color: var(--warm-white) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 24px !important;
+  color: var(--text-main) !important;
+}
+
+// ============================================================
+// GLASS EFFECT (override dark glass)
+// ============================================================
+.glass {
+  backdrop-filter: blur(16px);
+}
+
+.tintedGlass {
+  @extend .glass;
+  background: rgba(253, 246, 238, 0.75) !important;
+}
+
+// ============================================================
+// GLOW EFFECTS (override neon glow with warm glow)
+// ============================================================
+.glow,
+.glowOnHover {
+  background: var(--warm-white) !important;
+  color: var(--text-main) !important;
+
+  &:before {
+    background: linear-gradient(
+      45deg,
+      #e07a6a, #c4a882, #8aaa8c, #f2b5ab,
+      #e8d9c4, #e07a6a
+    ) !important;
+  }
+
+  &:after {
+    background: var(--warm-white) !important;
+  }
+}
+
+// ============================================================
+// SCROLLBAR
+// ============================================================
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tan-light);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--tan);
+  }
+}
+
+// ============================================================
+// RESPONSIVE HELPERS
+// ============================================================
+@media (max-width: 768px) {
+  .page-content .wrapper {
+    padding: 0 20px;
+  }
+
+  h1 { font-size: 32px; }
+  h2 { font-size: 26px; }
+  h3 { font-size: 20px; }
+}
+
+// ============================================================
+// ACS-SPECIFIC UTILITY CLASSES
+// ============================================================
+
+// Section badge / eyebrow label
+.acs-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  color: var(--terracotta);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
+// Serif display heading style
+.acs-heading {
+  font-family: var(--serif);
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+
+  em {
+    font-style: italic;
+    color: var(--rose);
+  }
+}
+
+// Info cards
+.acs-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(61, 44, 36, 0.08);
+  }
+
+  .acs-card-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+
+  .acs-card-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .acs-card-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+}
+
+// Stat display
+.acs-stat {
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--rose);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+}

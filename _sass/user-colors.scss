@@ -1,0 +1,119 @@
+// ============================================================
+// ACS CANCER AWARENESS — USER COLOR DEFINITIONS
+// Warm & Hopeful palette
+// Edit colors here — controls the entire site color scheme
+// ============================================================
+
+// =============================================================
+// PRIMARY PALETTE
+// =============================================================
+
+$background:       #fdf6ee;       // warm cream page bg
+$cream-warm:       #fff9f3;       // slightly warmer white
+$rose:             #e07a6a;       // primary rose/coral accent
+$rose-light:       #f2b5ab;       // lighter rose for borders
+$rose-pale:        #fce9e6;       // very pale rose for bg tints
+$terracotta:       #c45e4a;       // darker rose for hover/emphasis
+$sage:             #8aaa8c;       // sage green — hope color
+$sage-light:       #b8ceb9;       // lighter sage
+$sage-pale:        #eaf1ea;       // pale sage for bg tints
+$tan:              #c4a882;       // warm tan for borders/muted
+$tan-light:        #e8d9c4;       // light tan
+$brown:            #6b4c3b;       // deep warm brown for text
+$text-main:        #3d2c24;       // primary text
+$text-muted:       #937468;       // muted/secondary text
+
+// =============================================================
+// LEGACY VARIABLE MAPPINGS
+// (keeps existing SCSS that references these from breaking)
+// =============================================================
+
+// Background levels
+$black1:           rgba(61, 44, 36, 1);
+$bg-0:             #fdf6ee;
+$bg-1:             #fff9f3;
+$bg-2:             #f5ede3;
+$bg-3:             #ecddd0;
+
+// Surface / panel
+$panel:            #fff9f3;
+$surface:          #f5ede3;
+$popup-bg:         #fff9f3;
+
+// Text
+$white1:           rgba(61, 44, 36, 1);      // "white" → now dark text
+$white2:           rgba(61, 44, 36, 0.85);
+$white3:           rgba(61, 44, 36, 0.7);
+$text:             #3d2c24;
+$text-muted:       #937468;
+
+// Grays (remapped to warm neutrals)
+$gray1:            rgba(147, 116, 104, 1);
+$gray2:            rgba(120, 90, 76, 1);
+$gray3:            rgba(100, 72, 58, 1);
+$gray4:            rgba(80, 55, 42, 1);
+$gray5:            rgba(65, 42, 30, 1);
+$gray6:            rgba(50, 30, 20, 1);
+
+// Accent (rose as primary accent, replacing blue)
+$accent:           #e07a6a;
+$accent-700:       #c45e4a;
+$accent-700-hover: #a84838;
+
+// Blues → warm rose tones
+$blue:             #e07a6a;
+$blue1:            #e07a6a;
+$blueShadow1:      rgba(224, 122, 106, 0.35);
+$lightBlue1:       rgba(196, 94, 74, 1);
+
+// Greens → sage
+$green:            #8aaa8c;
+$green1:           #8aaa8c;
+$green-bg:         #eaf1ea;
+
+// Alerts / status
+$red:              #c45e4a;
+$orange:           #d4845a;
+$teal:             #8aaa8c;
+$warn:             #d4845a;
+$warn-bg:          #fce9e6;
+$success-green:    #8aaa8c;
+
+// Gradient
+$gradient1:        linear-gradient(120deg, #fff9f3 45%, #fce9e6);
+
+// Misc
+$my-custom-cat:    #e07a6a;
+$my-custom-dog:    #eaf1ea;
+
+// Login form
+$login-container-bg: #fff9f3;
+
+// Chatbot (kept for compat)
+$left-msg-bg:           #f5ede3;
+$msger-send-btn-bg:     #e07a6a;
+$msger-send-btn-hover-bg: #c45e4a;
+$right-msg-bg:          #e07a6a;
+$toggle-btn-bg:         #8aaa8c;
+$toggle-btn-hover-bg:   #6a8a6c;
+
+// Status indicators
+$status-indicator-base-bg:        rgba(196, 168, 130, 0.1);
+$status-indicator-base-border:    rgba(196, 168, 130, 0.2);
+$status-indicator-error-bg:       rgba(196, 94, 74, 0.15);
+$status-indicator-error-border:   rgba(196, 94, 74, 0.3);
+$status-indicator-error-color:    #c45e4a;
+$status-indicator-pending-bg:     rgba(212, 132, 90, 0.15);
+$status-indicator-pending-border: rgba(212, 132, 90, 0.3);
+$status-indicator-pending-color:  #d4845a;
+$status-indicator-success-bg:     rgba(138, 170, 140, 0.15);
+$status-indicator-success-border: rgba(138, 170, 140, 0.3);
+$status-indicator-success-color:  #8aaa8c;
+
+// Validation
+$validation-error-color:   #c45e4a;
+$validation-focus-color:   #e07a6a;
+$validation-success-color: #8aaa8c;
+
+// Border sizing (keep same)
+$border-size: 12px;

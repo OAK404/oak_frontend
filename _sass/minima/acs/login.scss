@@ -1,0 +1,307 @@
+// ============================================================
+// ACS LOGIN & AUTH STYLES
+// _sass/minima/acs/login.scss
+//
+// Preserves all auth system functionality.
+// Reskins the login/signup cards to match warm ACS palette.
+// ============================================================
+
+@import "../../root-color-map.scss";
+
+// ============================================================
+// LOGIN CONTAINER LAYOUT (from forms/containers.scss pattern)
+// ============================================================
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: nowrap;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+// ============================================================
+// LOGIN & SIGNUP CARDS
+// ============================================================
+.login-card,
+.signup-card {
+  background-color: var(--warm-white) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 20px !important;
+  padding: 36px 32px;
+  color: var(--text-main) !important;
+  flex: 1 1 calc(50% - 16px);
+  max-width: 48%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(61, 44, 36, 0.08);
+
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 24px 20px;
+  }
+
+  h1 {
+    font-family: var(--serif) !important;
+    font-size: 32px !important;
+    font-weight: 600 !important;
+    color: var(--text-main) !important;
+    margin-bottom: 8px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  // Subtext under heading
+  p {
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+}
+
+// ============================================================
+// FORM GROUPS
+// ============================================================
+.form-group {
+  position: relative;
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted) !important;
+    margin-bottom: 6px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--cream) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--tan-light) !important;
+    border-radius: 10px !important;
+    padding: 12px 14px;
+    font-family: var(--sans) !important;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--rose) !important;
+      box-shadow: 0 0 0 3px rgba(224, 122, 106, 0.15);
+    }
+  }
+
+  // Validation states
+  input.password-match {
+    border-color: var(--sage) !important;
+    box-shadow: 0 0 0 2px rgba(138, 170, 140, 0.2) !important;
+  }
+
+  input.password-mismatch {
+    border-color: var(--rose) !important;
+    box-shadow: 0 0 0 2px rgba(224, 122, 106, 0.2) !important;
+  }
+}
+
+.validation-message {
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 1.2rem;
+
+  &.success { color: var(--sage); }
+  &.error   { color: var(--terracotta); }
+}
+
+// ============================================================
+// FORM SELECT
+// ============================================================
+.form-group select {
+  color: var(--text-main) !important;
+  background-color: var(--cream) !important;
+  border: 1px solid var(--tan-light) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px;
+  cursor: pointer;
+
+  option {
+    color: var(--text-main);
+    background: var(--cream);
+  }
+
+  option[disabled],
+  &:invalid {
+    color: var(--text-muted);
+  }
+}
+
+// ============================================================
+// SUBMIT / AUTH BUTTONS
+// ============================================================
+.login-card button,
+.signup-card button,
+.login-card input[type="submit"],
+.signup-card input[type="submit"] {
+  width: 100%;
+  background: var(--rose) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 14px;
+  font-family: var(--sans) !important;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 4px;
+
+  &:hover {
+    background: var(--terracotta) !important;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: var(--tan-light) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// ============================================================
+// OAUTH / GOOGLE SIGN-IN AREA
+// ============================================================
+.oauth-error {
+  background: var(--rose-pale);
+  color: var(--terracotta);
+  border: 1px solid var(--rose-light);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.oauth-success {
+  background: var(--sage-pale);
+  color: var(--sage);
+  border: 1px solid var(--sage-light);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+// Secondary button (e.g. "Back to Form")
+.secondary {
+  background: var(--tan-light) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px;
+
+  &:hover {
+    background: var(--tan) !important;
+  }
+}
+
+// ============================================================
+// SIGNUP SPECIFIC — disabled state
+// ============================================================
+.signup-card button:disabled {
+  background: var(--tan-light) !important;
+  color: var(--text-muted) !important;
+  cursor: not-allowed;
+  border: 1px solid var(--border) !important;
+  transition: none;
+}
+
+// ============================================================
+// PROGRESS / LOADING IN AUTH
+// ============================================================
+.loading-container {
+  background-color: rgba(253, 246, 238, 0.92) !important;
+  backdrop-filter: blur(12px);
+}
+
+.spinner {
+  border-color: var(--tan-light) !important;
+  border-top-color: var(--rose) !important;
+}
+
+// ============================================================
+// MODAL LOGIN (used via JS loginBoth hook)
+// ============================================================
+#loginModal,
+.modal {
+  background: rgba(61, 44, 36, 0.7) !important;
+  backdrop-filter: blur(8px);
+
+  .modal-content,
+  .modal-box {
+    background: var(--warm-white) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 24px !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 32px 80px rgba(61, 44, 36, 0.2);
+  }
+
+  .close,
+  .modal-close {
+    color: var(--text-muted) !important;
+    background: var(--tan-light) !important;
+    border: none !important;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: var(--rose-pale) !important;
+      color: var(--rose) !important;
+    }
+  }
+
+  h1, h2, h3 {
+    font-family: var(--serif) !important;
+    color: var(--text-main) !important;
+  }
+
+  input {
+    background: var(--cream) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--tan-light) !important;
+    border-radius: 10px !important;
+
+    &:focus {
+      border-color: var(--rose) !important;
+    }
+  }
+
+  button {
+    background: var(--rose) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+
+    &:hover {
+      background: var(--terracotta) !important;
+    }
+  }
+}

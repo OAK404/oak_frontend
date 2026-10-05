@@ -1,0 +1,1547 @@
+---
+title: Dashboard
+layout: aesthetihawk
+active_tab: dashboard
+---
+
+<!-- Fonts loaded globally via head-custom.html -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts/dist/apexcharts.css" />
+<link rel="stylesheet" href="https://preline.co/assets/css/main.min.css" />
+<div class="w-full">
+    <div class="space-y-4 sm:space-y-6">
+        <div class="text-sm font-medium text-center border-b text-neutral-400 border-neutral-700 relative">
+            <ul class="flex flex-wrap -mb-px relative" id="tab-bar">
+                <li class="me-2">
+                    <a href="#" id="tab-admin-evaluation"
+                        class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300 active text-blue-500 border-blue-500" aria-current="page">
+                        Preferences
+                    </a>
+                </li>
+            </ul>
+            <!-- sliding underline indicator -->
+            <div id="tab-underline"
+                style="position:absolute;bottom:0;left:0;height:2px;width:0;background:#2563eb;transition:all 0.3s cubic-bezier(.4,0,.2,1);border-radius:2px;">
+            </div>
+        </div>
+
+        <!-- tab content container -->
+        <div id="tab-content-container" class="relative min-h-[400px]">
+            <!-- Admin Evaluation UI (hidden by default, shown only for admins) -->
+            <div id="admin-only" style="display:none;">
+                <div id="tab-content-admin-evaluation" class="tab-content block px-6 py-4 text-neutral-200 max-w-5xl mx-auto">
+                    <h2 class="text-xl font-semibold mb-4">Admin: Search & Evaluate Users</h2>
+                <div id="admin-people-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    <p class="col-span-full text-neutral-400" id="admin-people-loading">Loading users...</p>
+                </div>
+                <!-- Modal for evaluation -->
+                <div id="admin-eval-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+                    <div class="bg-neutral-900 border border-neutral-700 rounded-xl p-6 w-full max-w-lg relative">
+                        <button id="admin-eval-modal-close" class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl">&times;</button>
+                        <h3 id="admin-eval-modal-title" class="text-lg font-semibold mb-4"></h3>
+                        <form id="admin-eval-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- Sliders will be injected here -->
+                        </form>
+                        <button id="admin-eval-update-btn" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold">Update</button>
+                        <p id="admin-eval-status" class="text-sm mt-3"></p>
+                    </div>
+                </div>
+                <script type="module">
+                import { javaURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
+                // --- UI Elements ---
+                const peopleList = document.getElementById('admin-people-list');
+                const loadingEl = document.getElementById('admin-people-loading');
+                const modal = document.getElementById('admin-eval-modal');
+                const modalTitle = document.getElementById('admin-eval-modal-title');
+                const modalClose = document.getElementById('admin-eval-modal-close');
+                const evalForm = document.getElementById('admin-eval-form');
+                const updateBtn = document.getElementById('admin-eval-update-btn');
+                const statusEl = document.getElementById('admin-eval-status');
+                let people = [];     
+                // --- Slider fields and labels ---
+                const sliderFields = [
+                    { key: "attendance", label: "Attendance" },
+                    { key: "work_habits", label: "Work Habits" },
+                    { key: "behavior", label: "Behavior" },
+                    { key: "timeliness", label: "Timeliness" },
+                    { key: "tech_sense", label: "Tech Sense" },
+                    { key: "tech_talk", label: "Tech Talk" },
+                    { key: "tech_growth", label: "Tech Growth" },
+                    { key: "advocacy", label: "Advocacy" },
+                    { key: "communication", label: "Communication" },
+                    { key: "integrity", label: "Integrity" },
+                    { key: "organization", label: "Organization" }
+                ];
+
+                let currentPerson = null;
+                let hasExistingEval = false; // Track if evaluation exists
+
+                // --- Fetch and render people ---
+                async function fetchPeople() {
+                    loadingEl.textContent = "Loading users...";
+                    try {
+                        const response = await fetch(`${javaURI}/api/people`, fetchOptions);
+                        if (!response.ok) throw new Error("Failed to fetch people");
+                        const data = await response.json();
+                        people = data.map(person => ({
+                            id: person.id,
+                            name: person.name,
+                            email: person.email,
+                            uid: person.uid,
+                            sid: person.sid
+                        }));
+                        peopleList.innerHTML = '';
+                        people.forEach(person => {
+                            const card = document.createElement('div');
+                            card.className = 'cursor-pointer border border-neutral-700 bg-neutral-800 rounded-xl p-5 shadow hover:border-blue-500 transition';
+                            card.innerHTML = `
+                                <div class="font-semibold text-lg mb-1">${person.name || 'No Name'}</div>
+                                <div class="text-sm text-neutral-400 mb-1">UID: <span class="font-mono">${person.uid}</span></div>
+                                <div class="text-xs text-neutral-500">ID: ${person.id}</div>
+                            `;
+                            card.addEventListener('click', () => openEvalModal(person));
+                            peopleList.appendChild(card);
+                        });
+                    } catch (e) {
+                        console.error(e);
+                        peopleList.innerHTML = '<p class="col-span-full text-red-500">Error loading users.</p>';
+                    }
+                }
+
+                // --- Modal logic ---
+                async function openEvalModal(person) {
+                    currentPerson = person;
+                    hasExistingEval = false;
+                    modalTitle.innerHTML = `Evaluate: ${person.name} <span class="text-sm text-neutral-400 font-normal">(UID: ${person.uid})</span>`;
+
+                    // Try to fetch existing admin evaluation
+                    let evalData = null;
+                    try {
+                        const res = await fetch(`${javaURI}/api/admin-evaluation/get/${person.id}`, fetchOptions);
+                        if (res.ok) {
+                            const json = await res.json();
+                            if (json && typeof json === 'object' && json.evaluation) {
+                                evalData = json.evaluation;
+                                hasExistingEval = true;
+                            }
+                        }
+                    } catch (e) {
+                        evalData = null;
+                    }
+
+                    // Try to fetch student self-evaluation
+                    let studentEvalData = null;
+                    try {
+                        const res = await fetch(`${javaURI}/api/student-evaluation/get/${person.id}`, fetchOptions);
+                        if (res.ok) {
+                            const json = await res.json();
+                            studentEvalData = json.evaluation || json;
+                        }
+                    } catch (e) {
+                        console.error("Error fetching student eval", e);
+                    }
+
+                    if (!studentEvalData) {
+                        modalTitle.innerHTML += `<br><span class="text-xs text-yellow-500 font-normal">Student has not self-evaluated yet.</span>`;
+                    } else {
+                        modalTitle.innerHTML += `<br><span class="text-xs text-green-400 font-normal">Student self-evaluation loaded.</span>`;
+                    }
+
+                    // Map API keys to slider keys
+                    const apiToSliderKey = {
+                        attendance: "attendance",
+                        workHabits: "work_habits",
+                        behavior: "behavior",
+                        timeliness: "timeliness",
+                        techSense: "tech_sense",
+                        techTalk: "tech_talk",
+                        techGrowth: "tech_growth",
+                        advocacy: "advocacy",
+                        communication: "communication",
+                        integrity: "integrity",
+                        organization: "organization"
+                    };
+
+                    evalForm.innerHTML = sliderFields.map(f => {
+                        // Admin Value
+                        let val = 4;
+                        if (evalData) {
+                            // Use camelCase for API, snake_case for slider
+                            const apiKey = Object.keys(apiToSliderKey).find(
+                                k => apiToSliderKey[k] === f.key
+                            );
+                            if (apiKey && typeof evalData[apiKey] !== "undefined" && evalData[apiKey] !== null) {
+                                val = evalData[apiKey];
+                            }
+                        }
+
+                        // Student Value
+                        let studentVal = "N/A";
+                        if (studentEvalData) {
+                            const apiKey = Object.keys(apiToSliderKey).find(
+                                k => apiToSliderKey[k] === f.key
+                            );
+                            // Check camelCase then snake_case
+                            if (apiKey && typeof studentEvalData[apiKey] !== "undefined" && studentEvalData[apiKey] !== null) {
+                                studentVal = studentEvalData[apiKey];
+                            } else if (typeof studentEvalData[f.key] !== "undefined" && studentEvalData[f.key] !== null) {
+                                studentVal = studentEvalData[f.key];
+                            }
+                        }
+
+                        return `
+                            <div class="bg-neutral-800/50 p-3 rounded border border-neutral-700">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="admin-slider-${f.key}" class="text-sm text-neutral-300 font-medium">${f.label}</label>
+                                    <span class="text-xs text-neutral-400">Student: <span class="${studentVal !== 'N/A' ? 'text-blue-300 font-bold' : 'text-neutral-500'}">${studentVal}</span></span>
+                                </div>
+                                <input type="range" id="admin-slider-${f.key}" name="${f.key}" min="1" max="5" value="${val}" class="w-full accent-blue-600" />
+                                <div class="text-right mt-1">
+                                    <span class="text-xs text-neutral-400">Admin: <span id="admin-val-${f.key}" class="font-bold text-white">${val}</span></span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Live update slider values
+                    sliderFields.forEach(f => {
+                        const slider = document.getElementById(`admin-slider-${f.key}`);
+                        const label = document.getElementById(`admin-val-${f.key}`);
+                        slider.addEventListener('input', () => { label.textContent = slider.value; });
+                    });
+                    statusEl.textContent = '';
+                    modal.classList.remove('hidden');
+                }
+
+                function closeEvalModal() {
+                    modal.classList.add('hidden');
+                    currentPerson = null;
+                }
+
+                modalClose.onclick = closeEvalModal;
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeEvalModal();
+                });
+
+                // --- Update handler ---
+                updateBtn.onclick = async () => {
+                    if (!currentPerson) return;
+                    updateBtn.disabled = true;
+                    statusEl.textContent = 'Updating...';
+                    // Collect slider values
+                    const body = { "user_id": currentPerson.id };
+                    sliderFields.forEach(f => {
+                        body[f.key] = Number(document.getElementById(`admin-slider-${f.key}`).value);
+                    });
+                    try {
+                        let res;
+                        if (hasExistingEval) {
+                            // Use PUT to update
+                            res = await fetch(`${javaURI}/api/admin-evaluation/update/${currentPerson.id}`, {
+                                ...fetchOptions,
+                                method: 'PUT',
+                                body: JSON.stringify(body)
+                            });
+                        } else {
+                            // Use POST to create
+                            res = await fetch(`${javaURI}/api/admin-evaluation/post`, {
+                                ...fetchOptions,
+                                method: 'POST',
+                                body: JSON.stringify(body)
+                            });
+                        }
+                        if (!res.ok) throw new Error('Failed to update');
+                        statusEl.textContent = ' Updated successfully!';
+                        hasExistingEval = true; // Now we have data
+                    } catch (e) {
+                        statusEl.textContent = ' Error updating.';
+                    }
+                    updateBtn.disabled = false;
+                };
+
+                // --- Initial load ---
+                // Expose fetchPeople globally so it can be called after admin check
+                window.adminFetchPeople = fetchPeople;
+                </script>
+                </div>
+            </div>
+
+            <!-- Preferences tab content -->
+            <div id="tab-content-preferences" class="tab-content block px-6 py-4 text-neutral-200 max-w-5xl mx-auto">
+                <h2 class="text-xl font-semibold mb-2">Preferences</h2>
+                <p class="text-neutral-400 mb-6">Customize how the site looks. Changes apply across the site and are saved locally.</p>
+
+                <!-- Language/Translation Section (moved to top) -->
+                <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium"> Language Translation</h3>
+                    </div>
+                    <p class="text-sm text-neutral-400 mb-4">Translate the entire site into your preferred language. Use "Save All" below to apply, or "Reset" to return to English.</p>
+                    <div class="flex flex-col gap-4">
+                        <div>
+                            <label class="text-sm text-neutral-400">Site Language</label>
+                            <select id="pref-language" class="w-full bg-neutral-700 text-white rounded px-2 py-2 mt-1">
+                                <option value="">Default (English - No Translation)</option>
+                                <option value="es"> Spanish (Español)</option>
+                                <option value="fr"> French (Français)</option>
+                                <option value="de"> German (Deutsch)</option>
+                                <option value="it"> Italian (Italiano)</option>
+                                <option value="pt"> Portuguese (Português)</option>
+                                <option value="ru"> Russian (Русский)</option>
+                                <option value="zh-CN"> Chinese Simplified (简体中文)</option>
+                                <option value="zh-TW"> Chinese Traditional (繁體中文)</option>
+                                <option value="ja"> Japanese (日本語)</option>
+                                <option value="ko"> Korean (한국어)</option>
+                                <option value="ar"> Arabic (العربية)</option>
+                                <option value="hi"> Hindi (हिन्दी)</option>
+                                <option value="vi"> Vietnamese (Tiếng Việt)</option>
+                                <option value="th"> Thai (ไทย)</option>
+                                <option value="nl"> Dutch (Nederlands)</option>
+                                <option value="pl"> Polish (Polski)</option>
+                                <option value="tr"> Turkish (Türkçe)</option>
+                                <option value="uk"> Ukrainian (Українська)</option>
+                                <option value="he"> Hebrew (עברית)</option>
+                                <option value="fa"> Persian (فارسی)</option>
+                            </select>
+                        </div>
+                        <p class="text-xs text-neutral-500">Translation powered by Google Translate.</p>
+                    </div>
+                </div>
+
+                <!-- Text-to-Speech Section (moved to second) -->
+                <div class="mt-6 p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium">Text-to-Speech</h3>
+                        <div class="flex gap-2">
+                            <button type="button" id="tts-test-btn" class="px-3 py-1 text-sm rounded bg-purple-600 hover:bg-purple-700 text-white">Test Voice</button>
+                            <button type="button" class="save-section-btn px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-700 text-white" data-section="tts">Save</button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-neutral-400 mb-4">Configure text-to-speech settings. Select text on any page and use the TTS button in the sidebar to hear it read aloud.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm text-neutral-400">Voice</label>
+                            <select id="pref-tts-voice" class="w-full bg-neutral-700 text-white rounded px-2 py-2 mt-1">
+                                <option value="">Loading voices...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm text-neutral-400">Speed: <span id="tts-rate-label">1.0</span>x</label>
+                            <input type="range" id="pref-tts-rate" min="0.5" max="2" step="0.1" value="1" class="w-full mt-1" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-neutral-400">Pitch: <span id="tts-pitch-label">1.0</span></label>
+                            <input type="range" id="pref-tts-pitch" min="0.5" max="2" step="0.1" value="1" class="w-full mt-1" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-neutral-400">Volume: <span id="tts-volume-label">100</span>%</label>
+                            <input type="range" id="pref-tts-volume" min="0" max="1" step="0.1" value="1" class="w-full mt-1" />
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-sm text-neutral-400">Test Text</label>
+                        <input type="text" id="tts-test-text" class="w-full bg-neutral-700 text-white rounded px-3 py-2 mt-1" value="Hello! This is a test of the text-to-speech feature." placeholder="Enter text to test..." />
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-3">Uses your browser's built-in speech synthesis. Available voices depend on your operating system.</p>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1: Text (font size, font family only) -->
+                    <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-medium">Text</h3>
+                            <button type="button" class="save-section-btn px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-700 text-white" data-section="text">Save</button>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div>
+                                <label class="text-sm text-neutral-400">Font size: <span id="font-size-label">14</span>px</label>
+                                <input type="range" id="pref-font-size" min="12" max="22" value="14" class="w-full mt-1" />
+                            </div>
+
+                            <div>
+                                <label class="text-sm text-neutral-400">Font family</label>
+                                <select id="pref-font-family" class="w-full bg-neutral-700 text-white rounded px-2 py-1 mt-1">
+                                    <option value="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial">Inter / System</option>
+                                    <option value="Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial">Roboto</option>
+                                    <option value="'Open Sans', Arial, sans-serif">Open Sans</option>
+                                    <option value="Lato, Arial, sans-serif">Lato</option>
+                                    <option value="Montserrat, Arial, sans-serif">Montserrat</option>
+                                    <option value="Georgia, 'Times New Roman', Times, serif">Georgia (Serif)</option>
+                                    <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="text-sm text-neutral-400">Text color</label>
+                                <input type="color" id="pref-text-color" value="#F0F0F0" class="w-full h-8 mt-1 rounded" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Colors (background, accent, selection, button style) -->
+                    <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-medium">Colors</h3>
+                            <button type="button" class="save-section-btn px-3 py-1 text-sm rounded bg-blue-600 hover:bg-blue-700 text-white" data-section="colors">Save</button>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div>
+                                <label class="text-sm text-neutral-400">Background color</label>
+                                <input type="color" id="pref-bg-color" value="#121212" class="w-full h-8 mt-1 rounded" />
+                            </div>
+                            
+                            <div>
+                                <label class="text-sm text-neutral-400">Accent color</label>
+                                <input type="color" id="pref-accent-color" value="#4CAFEF" class="w-full h-8 mt-1 rounded" />
+                            </div>
+                            
+                            <div>
+                                <label class="text-sm text-neutral-400">Selection highlight color</label>
+                                <input type="color" id="pref-selection-color" value="#4CAFEF" class="w-full h-8 mt-1 rounded" />
+                            </div>
+                            
+                            <div>
+                                <label class="text-sm text-neutral-400">Button style</label>
+                                <select id="pref-button-style" class="w-full bg-neutral-700 text-white rounded px-2 py-2 mt-1">
+                                    <option value="rounded">Rounded (Default)</option>
+                                    <option value="square">Square</option>
+                                    <option value="pill">Pill</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions Row -->
+                <div class="mt-6 p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex gap-3">
+                            <button id="save-preferences" type="button" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-medium">Save All</button>
+                            <button id="restore-styles" type="button" class="px-4 py-2 rounded bg-red-700 hover:bg-red-800 text-white font-medium">Reset</button>
+                        </div>
+                        <p id="preferences-status" class="text-sm text-neutral-400"></p>
+                    </div>
+                </div>
+
+                <!-- Themes Section -->
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Preset Themes -->
+                    <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                        <h3 class="font-medium mb-3">Preset Themes</h3>
+                        <div class="grid grid-cols-2 gap-2" id="preset-themes"></div>
+                    </div>
+
+                    <!-- Custom Themes -->
+                    <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
+                        <h3 class="font-medium mb-3">Custom Themes</h3>
+                        <div class="flex gap-2 mb-3">
+                            <input id="new-theme-name" class="flex-1 bg-neutral-700 text-white rounded px-2 py-1" placeholder="Theme name" />
+                            <button id="save-theme-btn" class="px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white">Save</button>
+                        </div>
+                        <div id="custom-themes" class="grid grid-cols-1 gap-2"></div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 rounded-lg bg-neutral-800 border border-neutral-700" id="ask-ai-panel">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium">Ask AI: Generate a Theme</h3>
+                        <div class="flex gap-2">
+                        <button id="ask-ai-toggle" type="button" class="px-3 py-1 text-sm rounded bg-indigo-600 hover:bg-indigo-700 text-white">Ask AI</button>
+                        </div>
+                    </div>
+
+                    <div id="ask-ai-dropdown" class="hidden mt-3">
+                        <label class="text-sm text-neutral-400 block">Describe the style you want (e.g. "modern, playful, cool blues")</label>
+                        <textarea id="ask-ai-prompt" class="w-full mt-2 bg-neutral-700 text-white rounded px-3 py-2" rows="4"
+                        placeholder="Describe colors, tones, fonts, mood, and any words like 'modern', 'playful', 'professional', etc."></textarea>
+
+                        <div class="flex gap-2 mt-3">
+                        <button id="ask-ai-send" class="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 text-white">Get Suggestions</button>
+                        <button id="ask-ai-clear" class="px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 text-white">Clear</button>
+                        </div>
+
+                        <div id="ask-ai-status" class="text-sm text-neutral-400 mt-2"></div>
+
+                        <div id="ask-ai-response" class="mt-4 p-3 bg-neutral-900 border border-neutral-700 rounded text-sm text-neutral-200 whitespace-pre-wrap"></div>
+
+                        <div class="mt-3 flex gap-2 items-center">
+                        <button id="ask-ai-apply" class="px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white">Apply to Form</button>
+                        <a id="ask-ai-open" href="#" target="_blank" class="text-sm text-blue-400 underline hidden ml-2">Open full response</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences UI: Now fetches/saves preferences from Spring backend API.
+                     Falls back to localStorage for guests (not logged in).
+                     Uses config.js for API endpoints. -->
+
+                <script type="module">
+                import { javaURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
+                (function () {
+                    // Site Default uses the website's native CSS colors (from user-colors.scss)
+                    const SITE_DEFAULT = {
+                        bg: '#121212',      // From user-colors.scss $background
+                        text: '#F0F0F0',    // From root-color-map.scss $text
+                        font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+                        size: 14,
+                        accent: '#4CAFEF'   // From root-color-map.scss $accent
+                    };
+                    
+                    const PRESETS = window.SitePreferences?.PRESETS || {
+                        'Site Default': SITE_DEFAULT,
+                        'Midnight': { bg: '#0b1220', text: '#e6eef8', font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial", size: 14, accent: '#3b82f6' },
+                        'Light': { bg: '#ffffff', text: '#0f172a', font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial", size: 14, accent: '#2563eb' },
+                        'Green': { bg: '#154734', text: '#e6f6ef', font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial", size: 14, accent: '#10b981' },
+                        'Sepia': { bg: '#f4ecd8', text: '#3b2f2f', font: "Georgia, 'Times New Roman', Times, serif", size: 14, accent: '#b45309' },
+                        'Cyberpunk': { bg: '#0a0a0f', text: '#f0f0f0', font: "'Source Code Pro', monospace", size: 14, accent: '#f72585' },
+                        'Ocean': { bg: '#0c1929', text: '#e0f2fe', font: "'Open Sans', Arial, sans-serif", size: 15, accent: '#06b6d4' }
+                    };
+
+                    const MAX_CUSTOM = 10;
+                    const localStorageKey = 'sitePreferences'; // Fallback for guests
+                    const localThemesKey = 'siteThemes'; // Fallback for guests
+                    
+                    // Track if user is logged in and if preferences exist in backend
+                    let isLoggedIn = false;
+                    let backendPrefsExist = false;
+                    let cachedPrefs = null;
+
+                    // Convert frontend prefs format to backend format
+                    function toBackendFormat(prefs) {
+                        return {
+                            backgroundColor: prefs.bg,
+                            textColor: prefs.text,
+                            fontFamily: prefs.font,
+                            fontSize: prefs.size,
+                            accentColor: prefs.accent,
+                            selectionColor: prefs.selectionColor || '#3b82f6',
+                            buttonStyle: prefs.buttonStyle || 'rounded',
+                            language: prefs.language || '',
+                            ttsVoice: prefs.ttsVoice || '',
+                            ttsRate: prefs.ttsRate || 1.0,
+                            ttsPitch: prefs.ttsPitch || 1.0,
+                            ttsVolume: prefs.ttsVolume || 1.0,
+                            customThemes: JSON.stringify(prefs.customThemes || {})
+                        };
+                    }
+
+                    // Convert backend format to frontend prefs format
+                    function toFrontendFormat(backendPrefs) {
+                        // If backend prefs are empty/null, return null
+                        if (!backendPrefs) return null;
+                        
+                        // Check if this has actual values (not just default/empty object)
+                        const hasBg = backendPrefs.backgroundColor && backendPrefs.backgroundColor !== '';
+                        const hasText = backendPrefs.textColor && backendPrefs.textColor !== '';
+                        
+                        // If no actual colors are set, return null to fall back to defaults
+                        if (!hasBg && !hasText) return null;
+                        
+                        let customThemes = {};
+                        try {
+                            customThemes = backendPrefs.customThemes ? JSON.parse(backendPrefs.customThemes) : {};
+                        } catch (e) { customThemes = {}; }
+                        
+                        // Use Site Default for any missing values
+                        const defaults = SITE_DEFAULT;
+                        
+                        return {
+                            bg: backendPrefs.backgroundColor || defaults.bg,
+                            text: backendPrefs.textColor || defaults.text,
+                            font: backendPrefs.fontFamily || defaults.font,
+                            size: backendPrefs.fontSize || defaults.size,
+                            accent: backendPrefs.accentColor || defaults.accent,
+                            selectionColor: backendPrefs.selectionColor || defaults.accent,
+                            buttonStyle: backendPrefs.buttonStyle || 'rounded',
+                            language: backendPrefs.language || '',
+                            ttsVoice: backendPrefs.ttsVoice || '',
+                            ttsRate: backendPrefs.ttsRate || 1.0,
+                            ttsPitch: backendPrefs.ttsPitch || 1.0,
+                            ttsVolume: backendPrefs.ttsVolume || 1.0,
+                            customThemes: customThemes
+                        };
+                    }
+
+                    function applyPreferences(prefs) {
+                        if (window.SitePreferences && typeof window.SitePreferences.applyPreferences === 'function') {
+                            window.SitePreferences.applyPreferences(prefs);
+                        }
+                    }
+
+                    // Fetch preferences from backend API
+                    async function fetchPreferencesFromBackend() {
+                        try {
+                            const res = await fetch(`${javaURI}/api/user/preferences`, fetchOptions ); 
+                            
+                            if (res.status === 401) {
+                                // Not logged in
+                                isLoggedIn = false;
+                                return null;
+                            }
+                            
+                            if (res.ok) {
+                                isLoggedIn = true;
+                                const data = await res.json();
+                                if (data && data.id) {
+                                    // User has saved preferences in backend
+                                    backendPrefsExist = true;
+                                    return toFrontendFormat(data);
+                                } else {
+                                    // No saved preferences in backend - return null to use defaults
+                                    backendPrefsExist = false;
+                                    return null;
+                                }
+                            }
+                            return null;
+                        } catch (e) {
+                            console.error('fetchPreferencesFromBackend error', e);
+                            isLoggedIn = false;
+                            return null;
+                        }
+                    }
+
+                    // Save preferences to backend API
+                    async function savePreferencesToBackend(prefs) {
+                        try {
+                            const backendData = toBackendFormat(prefs);
+                            const method = backendPrefsExist ? 'PUT' : 'POST';
+                            
+                            const res = await fetch(`${javaURI}/api/user/preferences`, {
+                                ...fetchOptions,
+                                method: method,
+                                body: JSON.stringify(backendData)
+                            });
+                            
+                            if (res.ok) {
+                                backendPrefsExist = true;
+                                return true;
+                            }
+                            return false;
+                        } catch (e) {
+                            console.error('savePreferencesToBackend error', e);
+                            return false;
+                        }
+                    }
+
+                    // Delete preferences from backend
+                    async function deletePreferencesFromBackend() {
+                        try {
+                            const res = await fetch(`${javaURI}/api/user/preferences`, {
+                                ...fetchOptions,
+                                method: 'DELETE'
+                            });
+                            if (res.ok) {
+                                backendPrefsExist = false;
+                                return true;
+                            }
+                            return false;
+                        } catch (e) {
+                            console.error('deletePreferencesFromBackend error', e);
+                            return false;
+                        }
+                    }
+
+                    // Check if user is logged in by calling an auth endpoint
+                    async function checkLoginStatus() {
+                        try {
+                            // Try to get user info - if this succeeds, user is logged in
+                            const res = await fetch(`${javaURI}/api/person/get`, fetchOptions);
+                            
+                            if (res.ok) {
+                                isLoggedIn = true;
+                                return true;
+                            } else {
+                                isLoggedIn = false;
+                                return false;
+                            }
+                        } catch (e) {
+                            console.log('Login check failed, assuming guest user');
+                            isLoggedIn = false;
+                            return false;
+                        }
+                    }
+
+                    // Load preferences - checks login first, then tries backend, falls back to localStorage
+                    async function loadPreferences() {
+                        try {
+                            // Check if user explicitly reset preferences - if so, don't load anything
+                            const wasReset = localStorage.getItem('preferencesReset');
+                            if (wasReset === 'true') {
+                                // Clear the flag - it's only for one page load cycle
+                                localStorage.removeItem('preferencesReset');
+                                // Return null to use site defaults
+                                return null;
+                            }
+                            
+                            // First check if user is logged in
+                            const loggedIn = await checkLoginStatus();
+                            
+                            // Only try backend if logged in
+                            if (loggedIn) {
+                                const backendPrefs = await fetchPreferencesFromBackend();
+                                if (backendPrefs) {
+                                    cachedPrefs = backendPrefs;
+                                    applyPreferences(backendPrefs);
+                                    // Sync backend prefs to localStorage so other pages use the same settings
+                                    localStorage.setItem(localStorageKey, JSON.stringify(backendPrefs));
+                                    return backendPrefs;
+                                }
+                            }
+                            
+                            // Fallback to localStorage for guests or if backend fails
+                            const raw = localStorage.getItem(localStorageKey);
+                            if (raw) {
+                                const prefs = JSON.parse(raw);
+                                cachedPrefs = prefs;
+                                applyPreferences(prefs);
+                                return prefs;
+                            }
+                            
+                            return null;
+                        } catch (e) { 
+                            console.error('loadPreferences error', e); 
+                            return null; 
+                        }
+                    }
+
+                    // Save preferences - saves to backend if logged in, otherwise localStorage
+                    async function savePreferences(prefs) {
+                        try {
+                            cachedPrefs = prefs;
+                            applyPreferences(prefs);
+                            populateForm(prefs);
+                            
+                            // Clear the reset flag since user is now saving new preferences
+                            localStorage.removeItem('preferencesReset');
+                            
+                            // Always save to localStorage so other pages can use the updated preferences
+                            localStorage.setItem(localStorageKey, JSON.stringify(prefs));
+                            
+                            if (isLoggedIn) {
+                                const success = await savePreferencesToBackend(prefs);
+                                if (!success) {
+                                    showStatus('Saved locally (backend unavailable)');
+                                    return;
+                                }
+                            }
+                        } catch (e) { 
+                            console.error('savePreferences error', e); 
+                            // Fallback to localStorage on any error
+                            localStorage.setItem(localStorageKey, JSON.stringify(prefs));
+                        }
+                    }
+
+                    // Load custom themes
+                    function loadThemes() {
+                        if (cachedPrefs && cachedPrefs.customThemes) {
+                            return cachedPrefs.customThemes;
+                        }
+                        try {
+                            const raw = localStorage.getItem(localThemesKey);
+                            return raw ? JSON.parse(raw) : {};
+                        } catch (e) { 
+                            console.error('loadThemes error', e); 
+                            return {}; 
+                        }
+                    }
+
+                    // Save custom themes - embedded in preferences
+                    async function saveThemes(themesObj) {
+                        try {
+                            const current = cachedPrefs || await loadPreferences() || { ...SITE_DEFAULT };
+                            current.customThemes = themesObj;
+                            await savePreferences(current);
+                            
+                            // Also save to localStorage as backup
+                            localStorage.setItem(localThemesKey, JSON.stringify(themesObj));
+                        } catch(e) {
+                            console.error('saveThemes error', e);
+                            // Fallback to localStorage
+                            localStorage.setItem(localThemesKey, JSON.stringify(themesObj));
+                        }    
+                    }
+
+                    function renderPresets(){
+                        const container = document.getElementById('preset-themes');
+                        if (!container) return;
+                        container.innerHTML = '';
+                        Object.keys(PRESETS).forEach(name => {
+                            const p = PRESETS[name];
+                            const btn = document.createElement('button');
+                            btn.className = 'px-3 py-2 rounded bg-neutral-700 hover:bg-neutral-600 text-white text-sm flex items-center gap-2';
+                            btn.innerHTML = `<span class="w-3 h-3 rounded-full" style="background:${p.accent}"></span> ${name}`;
+                            btn.addEventListener('click', async () => {
+                                // Get current language from form (most up-to-date) or cached prefs
+                                const currentLang = document.getElementById('pref-language')?.value || cachedPrefs?.language || '';
+                                const currentTTS = {
+                                    ttsVoice: cachedPrefs?.ttsVoice || '',
+                                    ttsRate: cachedPrefs?.ttsRate || 1.0,
+                                    ttsPitch: cachedPrefs?.ttsPitch || 1.0,
+                                    ttsVolume: cachedPrefs?.ttsVolume || 1.0
+                                };
+                                await savePreferences({ 
+                                    ...p, 
+                                    language: currentLang,
+                                    ...currentTTS,
+                                    customThemes: loadThemes() 
+                                });
+                                showStatus('Applied: ' + name + ' - Reloading...');
+                                
+                                // Clean reload to ensure theme and translation apply correctly
+                                setTimeout(() => cleanReload(), 200);
+                            });
+                            container.appendChild(btn);
+                        });
+                    }
+
+                    function renderCustomThemes(){
+                        const container = document.getElementById('custom-themes');
+                        if (!container) return;
+                        container.innerHTML = '';
+                        const themes = loadThemes();
+                        const keys = Object.keys(themes);
+                        if (!keys.length) {
+                            container.innerHTML = '<p class="text-neutral-500 text-sm">No custom themes yet</p>';
+                            return;
+                        }
+                        keys.forEach(name => {
+                            const theme = themes[name];
+                            const wrap = document.createElement('div');
+                            wrap.className = 'flex gap-2';
+                            const btn = document.createElement('button');
+                            btn.className = 'flex-1 px-3 py-2 rounded bg-neutral-700 hover:bg-neutral-600 text-white text-sm text-left flex items-center gap-2';
+                            btn.innerHTML = `<span class="w-3 h-3 rounded-full" style="background:${theme.accent || '#3b82f6'}"></span> ${name}`;
+                            btn.addEventListener('click', async () => { 
+                                // Get current language from form (most up-to-date) or cached prefs
+                                const currentLang = document.getElementById('pref-language')?.value || cachedPrefs?.language || '';
+                                const currentTTS = {
+                                    ttsVoice: cachedPrefs?.ttsVoice || '',
+                                    ttsRate: cachedPrefs?.ttsRate || 1.0,
+                                    ttsPitch: cachedPrefs?.ttsPitch || 1.0,
+                                    ttsVolume: cachedPrefs?.ttsVolume || 1.0
+                                };
+                                await savePreferences({ 
+                                    ...theme, 
+                                    language: currentLang,
+                                    ...currentTTS,
+                                    customThemes: loadThemes() 
+                                }); 
+                                showStatus('Applied: ' + name + ' - Reloading...');
+                                
+                                // Clean reload to ensure theme and translation apply correctly
+                                setTimeout(() => cleanReload(), 200);
+                            });
+                            const del = document.createElement('button');
+                            del.className = 'px-2 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs';
+                            del.textContent = 'X';
+                            del.title = 'Delete';
+                            del.addEventListener('click', async () => { await deleteTheme(name); });
+                            wrap.appendChild(btn);
+                            wrap.appendChild(del);
+                            container.appendChild(wrap);
+                        });
+                    }
+
+                    async function saveThemeAs(name){
+                        if (!name) { showStatus('Enter a theme name'); return; }
+                        const themes = loadThemes();
+                        if (Object.keys(themes).length >= MAX_CUSTOM && !themes[name]) { showStatus('Max themes reached'); return; }
+                        themes[name] = currentFormValues();
+                        await saveThemes(themes);
+                        renderCustomThemes();
+                        showStatus('Saved: ' + name);
+                        document.getElementById('new-theme-name').value = '';
+                    }
+
+                    async function deleteTheme(name){
+                        const themes = loadThemes();
+                        if (themes[name]) delete themes[name];
+                        await saveThemes(themes);
+                        renderCustomThemes();
+                        showStatus('Deleted: ' + name);
+                    }
+
+                    function currentFormValues(){
+                        return {
+                            bg: document.getElementById('pref-bg-color').value,
+                            text: document.getElementById('pref-text-color').value,
+                            font: document.getElementById('pref-font-family').value,
+                            size: Number(document.getElementById('pref-font-size').value),
+                            accent: document.getElementById('pref-accent-color').value,
+                            language: document.getElementById('pref-language').value,
+                            ttsVoice: document.getElementById('pref-tts-voice').value,
+                            ttsRate: Number(document.getElementById('pref-tts-rate').value),
+                            ttsPitch: Number(document.getElementById('pref-tts-pitch').value),
+                            ttsVolume: Number(document.getElementById('pref-tts-volume').value),
+                            selectionColor: document.getElementById('pref-selection-color').value,
+                            buttonStyle: document.getElementById('pref-button-style').value,
+                            customThemes: loadThemes()
+                        };
+                    }
+
+                    function populateForm(prefs){
+                        if (!prefs) return;
+                        const d = SITE_DEFAULT;
+                        document.getElementById('pref-bg-color').value = prefs.bg || d.bg;
+                        document.getElementById('pref-text-color').value = prefs.text || d.text;
+                        document.getElementById('pref-font-family').value = prefs.font || d.font;
+                        document.getElementById('pref-font-size').value = prefs.size || d.size;
+                        document.getElementById('font-size-label').textContent = prefs.size || d.size;
+                        document.getElementById('pref-accent-color').value = prefs.accent || d.accent;
+                        document.getElementById('pref-language').value = prefs.language || '';
+                        
+                        // TTS settings
+                        if (prefs.ttsVoice) document.getElementById('pref-tts-voice').value = prefs.ttsVoice;
+                        document.getElementById('pref-tts-rate').value = prefs.ttsRate || 1;
+                        document.getElementById('tts-rate-label').textContent = prefs.ttsRate || 1.0;
+                        document.getElementById('pref-tts-pitch').value = prefs.ttsPitch || 1;
+                        document.getElementById('tts-pitch-label').textContent = prefs.ttsPitch || 1.0;
+                        document.getElementById('pref-tts-volume').value = prefs.ttsVolume || 1;
+                        document.getElementById('tts-volume-label').textContent = Math.round((prefs.ttsVolume || 1) * 100);
+                        
+                        // Styling settings
+                        document.getElementById('pref-selection-color').value = prefs.selectionColor || '#3b82f6';
+                        document.getElementById('pref-button-style').value = prefs.buttonStyle || 'rounded';
+                    }
+
+                    function showStatus(msg){
+                        const el = document.getElementById('preferences-status');
+                        if (!el) return;
+                        el.textContent = msg;
+                        setTimeout(()=> el.textContent = '', 2500);
+                    }
+
+                    async function saveSectionPrefs(section){
+                        const current = cachedPrefs || await loadPreferences() || { ...SITE_DEFAULT };
+                        const form = currentFormValues();
+                        
+                        if (section === 'text') {
+                            current.font = form.font;
+                            current.size = form.size;
+                            current.text = form.text;
+                        } else if (section === 'colors') {
+                            current.bg = form.bg;
+                            current.accent = form.accent;
+                            current.selectionColor = form.selectionColor;
+                            current.buttonStyle = form.buttonStyle;
+                        } else if (section === 'tts') {
+                            current.ttsVoice = form.ttsVoice;
+                            current.ttsRate = form.ttsRate;
+                            current.ttsPitch = form.ttsPitch;
+                            current.ttsVolume = form.ttsVolume;
+                        }
+                        
+                        current.customThemes = loadThemes();
+                        await savePreferences(current);
+                        showStatus('Saved ' + section);
+                    }
+
+                    // Initialize TTS voices dropdown
+                    async function populateTTSVoices() {
+                        const select = document.getElementById('pref-tts-voice');
+                        if (!select) return;
+                        
+                        const voices = speechSynthesis.getVoices();
+                        select.innerHTML = '';
+                        
+                        if (voices.length === 0) {
+                            select.innerHTML = '<option value="">No voices available</option>';
+                            return;
+                        }
+                        
+                        // Add default option
+                        const defaultOpt = document.createElement('option');
+                        defaultOpt.value = '';
+                        defaultOpt.textContent = 'Default Voice';
+                        select.appendChild(defaultOpt);
+                        
+                        // Group voices by language
+                        const voicesByLang = {};
+                        voices.forEach(voice => {
+                            const lang = voice.lang.split('-')[0];
+                            if (!voicesByLang[lang]) voicesByLang[lang] = [];
+                            voicesByLang[lang].push(voice);
+                        });
+                        
+                        // Add English voices first, then others
+                        const langs = Object.keys(voicesByLang).sort((a, b) => {
+                            if (a === 'en') return -1;
+                            if (b === 'en') return 1;
+                            return a.localeCompare(b);
+                        });
+                        
+                        langs.forEach(lang => {
+                            const group = document.createElement('optgroup');
+                            group.label = lang.toUpperCase();
+                            voicesByLang[lang].forEach(voice => {
+                                const opt = document.createElement('option');
+                                opt.value = voice.name;
+                                opt.textContent = `${voice.name} (${voice.lang})`;
+                                group.appendChild(opt);
+                            });
+                            select.appendChild(group);
+                        });
+                        
+                        // Restore saved voice
+                        if (cachedPrefs && cachedPrefs.ttsVoice) {
+                            select.value = cachedPrefs.ttsVoice;
+                        }
+                    }
+                    
+                    // Test TTS function
+                    function testTTS() {
+                        if (!('speechSynthesis' in window)) {
+                            showStatus('Text-to-speech not supported');
+                            return;
+                        }
+                        
+                        // Cancel any ongoing speech
+                        speechSynthesis.cancel();
+                        
+                        const text = document.getElementById('tts-test-text').value || 'Hello, this is a test.';
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        
+                        const voiceName = document.getElementById('pref-tts-voice').value;
+                        if (voiceName) {
+                            const voices = speechSynthesis.getVoices();
+                            const voice = voices.find(v => v.name === voiceName);
+                            if (voice) utterance.voice = voice;
+                        }
+                        
+                        utterance.rate = Number(document.getElementById('pref-tts-rate').value) || 1;
+                        utterance.pitch = Number(document.getElementById('pref-tts-pitch').value) || 1;
+                        utterance.volume = Number(document.getElementById('pref-tts-volume').value) || 1;
+                        
+                        speechSynthesis.speak(utterance);
+                    }
+
+                    // Helper function to clear Google Translate cookies
+                    function clearAllTranslationCookies() {
+                        const domain = window.location.hostname;
+                        // Clear all possible googtrans cookie variations
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
+                        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}`;
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost';
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                        // Also try to set empty value
+                        document.cookie = 'googtrans=/en/en; path=/;';
+                        document.cookie = `googtrans=/en/en; path=/; domain=${domain}`;
+                        document.cookie = `googtrans=/en/en; path=/; domain=.${domain}`;
+                        
+                        // Remove Google Translate elements if present
+                        const gtFrame = document.querySelector('.goog-te-banner-frame');
+                        if (gtFrame) gtFrame.remove();
+                        const gtMenu = document.querySelector('.goog-te-menu-frame');
+                        if (gtMenu) gtMenu.remove();
+                        
+                        // Reset body to remove Google Translate modifications
+                        document.body.style.top = '';
+                        document.body.classList.remove('translated-ltr', 'translated-rtl');
+                    }
+
+                    // Clean reload that clears translation state first
+                    function cleanReload() {
+                        // Clear translation cookies before reload for faster language switching
+                        clearAllTranslationCookies();
+                        // Use location.href assignment for a cleaner reload that respects new cookies
+                        window.location.href = window.location.href.split('#')[0];
+                    }
+
+                    // Initialize on DOM ready
+                    document.addEventListener('DOMContentLoaded', async function (){
+                        // Load preferences from backend (or localStorage fallback)
+                        const saved = await loadPreferences();
+                        
+                        renderPresets();
+                        renderCustomThemes();
+                        
+                        // Initialize TTS voices
+                        if ('speechSynthesis' in window) {
+                            populateTTSVoices();
+                            speechSynthesis.onvoiceschanged = populateTTSVoices;
+                        }
+
+                        if (saved) {
+                            populateForm(saved);
+                        } else {
+                            // No saved preferences - populate form with Site Default values
+                            // but don't apply them (let site's natural CSS show through)
+                            populateForm(SITE_DEFAULT);
+                        }
+                        
+                        // Show login status hint
+                        if (isLoggedIn) {
+                            if (saved) {
+                                showStatus('Preferences synced from your account');
+                            } else {
+                                showStatus('No saved preferences found - using defaults');
+                            }
+                        }
+
+                        document.getElementById('pref-font-size').addEventListener('input', function(e){
+                            document.getElementById('font-size-label').textContent = e.target.value;
+                        });
+                        
+                        // TTS slider labels
+                        document.getElementById('pref-tts-rate').addEventListener('input', function(e){
+                            document.getElementById('tts-rate-label').textContent = e.target.value;
+                        });
+                        document.getElementById('pref-tts-pitch').addEventListener('input', function(e){
+                            document.getElementById('tts-pitch-label').textContent = e.target.value;
+                        });
+                        document.getElementById('pref-tts-volume').addEventListener('input', function(e){
+                            document.getElementById('tts-volume-label').textContent = Math.round(e.target.value * 100);
+                        });
+                        
+                        // TTS test button
+                        document.getElementById('tts-test-btn').addEventListener('click', testTTS);
+
+                        document.querySelectorAll('.save-section-btn').forEach(btn => {
+                            btn.addEventListener('click', async function() {
+                                await saveSectionPrefs(this.dataset.section);
+                                showStatus('Saved! Reloading...');
+                                // Clean reload to ensure styles and translation apply correctly
+                                setTimeout(() => cleanReload(), 200);
+                            });
+                        });
+
+                        document.getElementById('save-preferences').addEventListener('click', async function(){
+                            const formValues = currentFormValues();
+                            await savePreferences(formValues);
+                            showStatus('Preferences saved! Reloading...');
+                            // Clean reload to ensure styles and translation apply correctly
+                            setTimeout(() => cleanReload(), 200);
+                        });
+
+                        document.getElementById('restore-styles').addEventListener('click', async function(){
+                            // Delete from backend if logged in
+                            if (isLoggedIn) {
+                                const deleted = await deletePreferencesFromBackend();
+                                if (!deleted) {
+                                    showStatus('Failed to delete from server, trying again...');
+                                    await deletePreferencesFromBackend();
+                                }
+                            }
+                            
+                            // Clear localStorage and set a flag to indicate user wants site defaults
+                            localStorage.removeItem(localStorageKey);
+                            localStorage.removeItem(localThemesKey);
+                            localStorage.setItem('preferencesReset', 'true');
+                            cachedPrefs = null;
+                            backendPrefsExist = false;
+                            
+                            // Reset to site's natural CSS by removing all user theme overrides
+                            if (window.SitePreferences && typeof window.SitePreferences.resetPreferences === 'function') {
+                                window.SitePreferences.resetPreferences();
+                            }
+                            
+                            // Populate form with Site Default values
+                            populateForm(SITE_DEFAULT);
+                            
+                            // Reset language translation
+                            document.getElementById('pref-language').value = '';
+                            
+                            showStatus('Preferences reset! Reloading...');
+                            
+                            // Use cleanReload for faster/cleaner reset
+                            setTimeout(() => cleanReload(), 300);
+                        });
+
+                        document.getElementById('save-theme-btn').addEventListener('click', async function(){
+                            await saveThemeAs(document.getElementById('new-theme-name').value.trim());
+                        });
+                        
+                        document.getElementById('new-theme-name').addEventListener('keypress', async function(e){
+                            if (e.key === 'Enter') await saveThemeAs(this.value.trim());
+                        });
+                        
+                        // Live preview for selection color and button style
+                        ['pref-selection-color', 'pref-button-style'].forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                const applyLivePreview = function() {
+                                    // Only apply live preview if we have existing preferences
+                                    // Don't create new preferences with Midnight fallback
+                                    const stored = localStorage.getItem(localStorageKey);
+                                    if (!stored && !cachedPrefs) return; // No preferences, don't apply anything
+                                    
+                                    const current = cachedPrefs || (stored ? JSON.parse(stored) : null);
+                                    if (!current) return;
+                                    
+                                    const form = currentFormValues();
+                                    current.selectionColor = form.selectionColor;
+                                    current.buttonStyle = form.buttonStyle;
+                                    applyPreferences(current);
+                                };
+                                el.addEventListener('change', applyLivePreview);
+                                el.addEventListener('input', applyLivePreview);
+                            }
+                        });
+                    });
+
+                    // Expose loadPreferences globally for other scripts
+                    window.loadPreferences = loadPreferences;
+                    window.checkLoginStatus = checkLoginStatus;
+                    
+                    // Initial load from localStorage only (no backend call yet)
+                    // Full loadPreferences() with backend check will be called on DOMContentLoaded
+                    try { 
+                        // Check if user explicitly reset preferences
+                        const wasReset = localStorage.getItem('preferencesReset');
+                        if (wasReset !== 'true') {
+                            const raw = localStorage.getItem(localStorageKey);
+                            if (raw) {
+                                const prefs = JSON.parse(raw);
+                                cachedPrefs = prefs;
+                                applyPreferences(prefs);
+                            }
+                        }
+                        // If reset flag is set or no localStorage, don't apply anything - let site defaults show
+                    } catch(e) { 
+                        console.error('Initial localStorage load error', e);
+                    }
+                })();
+                </script>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal for info details -->
+<div id="dataModal" class="hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content">
+        <span class="close" title="Close modal">&times;</span>
+        <pre id="modalData"></pre>
+    </div>
+</div>
+
+<!-- FontAwesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- Required plugins -->
+<script src="https://cdn.jsdelivr.net/npm/preline/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts/dist/apexcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/preline/dist/helper-apexcharts.js"></script>
+
+<!-- Your GitHub analytics JS integrated -->
+<script type="module">
+    import { javaURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
+    // Tab switcher code with underline animation
+    const tabs = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+    const underline = document.getElementById("tab-underline");
+
+    function setUnderline(el) {
+        const rect = el.getBoundingClientRect();
+        const parentRect = el.parentElement.parentElement.getBoundingClientRect();
+        underline.style.width = `${rect.width}px`;
+        underline.style.left = `${rect.left - parentRect.left}px`;
+    }
+
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", async (e) => {
+            e.preventDefault();
+            tabs.forEach(t => t.classList.remove("active", "text-blue-500", "border-blue-500"));
+            tabContents.forEach(c => c.classList.add("hidden"));
+            tabContents.forEach(c => c.classList.remove("block"));
+            const targetId = `tab-content-${tab.id.replace("tab-", "")}`;
+            document.getElementById(targetId).classList.remove("hidden");
+            document.getElementById(targetId).classList.add("block");
+            tab.classList.add("active", "text-blue-500", "border-blue-500");
+            setUnderline(tab);
+        });
+    });
+
+    // Initialize dashboard on DOM ready
+    document.addEventListener('DOMContentLoaded', async () => {
+        const activeTab = document.querySelector(".tab-btn.active");
+        if (activeTab) setUnderline(activeTab);
+
+        // Check admin status and gate UI
+        try {
+            const userRes = await fetch(`${javaURI}/api/user/info`, fetchOptions);
+            if (userRes.ok) {
+                const user = await userRes.json();
+                const isAdmin = user?.role === "admin";
+                if (isAdmin) {
+                    document.getElementById("admin-only").style.display = "block";
+                    // Trigger admin evaluation fetch
+                    if (window.adminFetchPeople && typeof window.adminFetchPeople === 'function') {
+                        window.adminFetchPeople();
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Error checking admin status', e);
+        }
+
+        // Load and apply saved preferences
+        try {
+            if (window.loadPreferences) await window.loadPreferences();
+        } catch (e) {
+            console.error('Error loading preferences on DOMContentLoaded', e);
+        }
+    });
+</script>
+
+<script type="module">
+  import { javaURI, fetchOptions } from '../../assets/js/api/config.js';
+  (function () {
+
+    // UI elements
+    const toggleBtn = document.getElementById('ask-ai-toggle');
+    const dropdown = document.getElementById('ask-ai-dropdown');
+    const sendBtn = document.getElementById('ask-ai-send');
+    const clearBtn = document.getElementById('ask-ai-clear');
+    const promptEl = document.getElementById('ask-ai-prompt');
+    const statusEl = document.getElementById('ask-ai-status');
+    const responseEl = document.getElementById('ask-ai-response');
+    const applyBtn = document.getElementById('ask-ai-apply');
+    const openLink = document.getElementById('ask-ai-open');
+
+    if (!toggleBtn || !dropdown) return;
+
+    function showStatus(msg, isError) {
+      statusEl.textContent = msg;
+      statusEl.style.color = isError ? '#f87171' : '';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      dropdown.classList.toggle('hidden');
+    });
+
+    clearBtn.addEventListener('click', () => {
+      promptEl.value = '';
+      responseEl.textContent = '';
+      openLink.classList.add('hidden');
+      showStatus('');
+    });
+
+    // Try to capture the current preference form values (read DOM inputs directly)
+    function readCurrentPrefs() {
+      try {
+        return {
+          bg: document.getElementById('pref-bg-color')?.value,
+          text: document.getElementById('pref-text-color')?.value,
+          accent: document.getElementById('pref-accent-color')?.value,
+          selectionColor: document.getElementById('pref-selection-color')?.value,
+          font: document.getElementById('pref-font-family')?.value,
+          size: Number(document.getElementById('pref-font-size')?.value || 14),
+          buttonStyle: document.getElementById('pref-button-style')?.value
+        };
+      } catch (e) {
+        return {};
+      }
+    }
+
+    // Map possible names to the font <select> values used in the form
+    const FONT_MAP = {
+      'inter': "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+      'roboto': "Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial",
+      'open sans': "'Open Sans', Arial, sans-serif",
+      'lato': "Lato, Arial, sans-serif",
+      'montserrat': "Montserrat, Arial, sans-serif",
+      'georgia': "Georgia, 'Times New Roman', Times, serif",
+      'source code pro': "'Source Code Pro', monospace",
+      'sourcecodepro': "'Source Code Pro', monospace"
+    };
+
+    function tryParseResponsePayload(data) {
+      // Data may be JSON like { background: "#...", button: "#...", text: "#...", font: "Roboto" }
+      // Or it may be { response: "..." } or plain text.
+      const parsed = { raw: data };
+
+      if (!data) return parsed;
+
+      // If data is an object with fields, copy known fields.
+      if (typeof data === 'object') {
+        parsed.bg = data.background || data.bg || data.backgroundColor || data.background_color;
+        parsed.button = data.button || data.buttonColor || data.button_color;
+        parsed.selectionColor = data.selection || data.selectionColor || data.selection_color || data.selectionColorHex;
+        parsed.text = data.text || data.textColor || data.text_color;
+        parsed.font = data.font || data.fontFamily || data.font_family;
+        parsed.accent = data.accent || data.accentColor || data.accent_color;
+        return parsed;
+      }
+
+      // If it's a string, try to find hex color values and font names.
+      if (typeof data === 'string') {
+        const s = data;
+        const hexes = [...s.matchAll(/#([0-9a-f]{3,6})/ig)].map(m => '#' + m[1]);
+        if (hexes.length) {
+          parsed.bg = hexes[0];
+          if (hexes[1]) parsed.button = hexes[1];
+          if (hexes[2]) parsed.text = hexes[2];
+          if (hexes[3]) parsed.accent = hexes[3];
+        }
+        // look for font keywords
+        Object.keys(FONT_MAP).forEach(k => {
+          if (s.toLowerCase().includes(k)) parsed.font = FONT_MAP[k];
+        });
+        return parsed;
+      }
+
+      return parsed;
+    }
+
+    async function sendPromptToBackend(promptText) {
+
+      try {
+        showStatus('Sending to AI...', false);
+        sendBtn.disabled = true;
+
+        const res = await fetch(`${javaURI}/api/upai`, {
+          ...fetchOptions,
+          method: 'POST',
+          body: JSON.stringify({
+            prompt: promptText
+          })
+        });
+
+        if (!res.ok) {
+          const txt = await res.text().catch(() => '');
+          showStatus('Server error: ' + (res.status + ' ' + txt), true);
+          responseEl.textContent = txt || `Status: ${res.status}`;
+          openLink.classList.add('hidden');
+          return null;
+        }
+
+        // Try JSON first, then text
+        let json;
+        try { json = await res.json(); } catch (e) { json = null; }
+        let payload = json;
+        if (json && json.response) {
+          payload = json.response;
+        }
+        if (!payload) {
+          payload = await res.text();
+        }
+
+        showStatus('Response received', false);
+        return payload;
+
+      } catch (err) {
+        showStatus('Network error: ' + (err.message || err), true);
+        return null;
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+        sendBtn.addEventListener('click', async () => {
+      const promptText = promptEl.value && promptEl.value.trim();
+      if (!promptText) { showStatus('Please write a description first', true); return; }
+
+      responseEl.textContent = '';
+      openLink.classList.add('hidden');
+
+      const payload = await sendPromptToBackend(promptText);
+      if (!payload) return;
+            // Normalize the response so frontend can apply values consistently.
+            // Use tryParseResponsePayload to extract common tokens from text or object
+            const parsedRaw = (typeof payload === 'object') ? tryParseResponsePayload(payload) : tryParseResponsePayload(String(payload));
+
+            const normalized = {
+                background: (payload && (payload.background || payload.bg || payload.backgroundColor || payload.background_color)) || parsedRaw.bg || parsedRaw.background,
+                button: (payload && (payload.button || payload.buttonColor || payload.button_color)) || parsedRaw.button,
+                selectionColor: (payload && (payload.selectionColor || payload.selection || payload.selection_color)) || parsedRaw.selectionColor || parsedRaw.selection,
+                textColor: (payload && (payload.textColor || payload.text || payload.text_color)) || parsedRaw.text,
+                fontFamily: (payload && (payload.fontFamily || payload.font || payload.font_family)) || parsedRaw.font,
+                suggestions: (payload && (payload.suggestions || payload.response)) || (typeof payload === 'string' ? payload : parsedRaw.raw)
+            };
+
+            // Display the human-friendly suggestion (if present) instead of raw JSON
+            responseEl.textContent = normalized.suggestions || JSON.stringify(payload, null, 2);
+
+            // Keep the normalized object on the element for Apply to read
+            try { responseEl.dataset.parsed = JSON.stringify(normalized); } catch (e) { /* ignore */ }
+
+            // Provide a quick link to view response in a new tab (use a data: URI)
+            const safeText = encodeURIComponent(responseEl.textContent);
+            openLink.href = `data:text/plain;charset=utf-8,${safeText}`;
+            openLink.classList.remove('hidden');
+
+            showStatus('AI suggestions ready — review below. Use "Apply to Form" to copy values', false);
+    });
+
+    applyBtn.addEventListener('click', () => {
+            const raw = responseEl.textContent;
+            if (!raw && !responseEl.dataset.parsed) { showStatus('No AI response to apply', true); return; }
+
+            let parsed = null;
+            if (responseEl.dataset.parsed) {
+                try { parsed = JSON.parse(responseEl.dataset.parsed); } catch (e) { parsed = null; }
+            }
+
+            if (!parsed) {
+                // Fallbacks: try JSON in the box, then try to parse free text
+                try { parsed = JSON.parse(raw); } catch (e) { parsed = tryParseResponsePayload(raw); }
+            }
+
+            if (!parsed) { showStatus('Could not parse AI response', true); return; }
+
+            // Set form fields if found (normalized keys: background, button, selectionColor, textColor, fontFamily)
+            try {
+                if (parsed.background) {
+                    const el = document.getElementById('pref-bg-color');
+                    if (el) el.value = parsed.background;
+                }
+                if (parsed.textColor) {
+                    const el = document.getElementById('pref-text-color');
+                    if (el) el.value = parsed.textColor;
+                }
+                const accent = parsed.button || parsed.accent || parsed.buttonColor;
+        if (accent) {
+          const el = document.getElementById('pref-accent-color');
+          if (el) el.value = accent;
+        }
+                const selection = parsed.selectionColor || parsed.selection || parsed.selection_color;
+        if (selection) {
+          const el = document.getElementById('pref-selection-color');
+          if (el) el.value = selection;
+        }
+                // Handle fontFamily mapping
+                const fontVal = (parsed.fontFamily || parsed.font || '').toString().toLowerCase();
+                if (fontVal) {
+                    let mapped = null;
+                    Object.keys(FONT_MAP).forEach(k => {
+                        if (fontVal.includes(k)) mapped = FONT_MAP[k];
+                    });
+                    const fontSelect = document.getElementById('pref-font-family');
+                    if (fontSelect) {
+                        if (mapped) {
+                            fontSelect.value = mapped;
+                        } else {
+                            for (const opt of fontSelect.options) {
+                                if ((opt.value || '').toLowerCase().includes(fontVal)) {
+                                    fontSelect.value = opt.value;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+        showStatus('Values applied to the form. Click "Save All" to persist.', false);
+
+        // Optionally trigger the Save All button so user doesn't need to click twice
+        const saveBtn = document.getElementById('save-preferences');
+        if (saveBtn) {
+          // give tiny delay so UI updates are visible
+          setTimeout(() => {
+            saveBtn.click();
+            showStatus('Preferences saved (via Save All)', false);
+          }, 300);
+        }
+
+      } catch (e) {
+        showStatus('Error applying values: ' + (e.message || e), true);
+      }
+    });
+
+  })();
+</script>

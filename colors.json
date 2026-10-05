@@ -1,0 +1,454 @@
+{
+  "generated_by": "scripts/update_color_map.py",
+  "total_colors": 72,
+  "colors": {
+    "login-container-bg": {
+      "value": "#fff9f3",
+      "source_files": [
+        "_sass/open-coding/elements/forms/containers.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "validation-success-color": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/open-coding/elements/forms/passwordvalidation.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "validation-error-color": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/open-coding/elements/forms/passwordvalidation.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "validation-focus-color": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/open-coding/elements/forms/passwordvalidation.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-pending-bg": {
+      "value": "rgba(212, 132, 90, 0.15)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-pending-border": {
+      "value": "rgba(212, 132, 90, 0.3)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-pending-color": {
+      "value": "#d4845a",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-success-bg": {
+      "value": "rgba(138, 170, 140, 0.15)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-success-border": {
+      "value": "rgba(138, 170, 140, 0.3)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-success-color": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-error-bg": {
+      "value": "rgba(196, 94, 74, 0.15)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-error-border": {
+      "value": "rgba(196, 94, 74, 0.3)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-error-color": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-base-bg": {
+      "value": "rgba(196, 168, 130, 0.1)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "status-indicator-base-border": {
+      "value": "rgba(196, 168, 130, 0.2)",
+      "source_files": [
+        "_sass/open-coding/elements/status-indicators/common.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "background": {
+      "value": "#fdf6ee",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "cream-warm": {
+      "value": "#fff9f3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "rose": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "rose-light": {
+      "value": "#f2b5ab",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "rose-pale": {
+      "value": "#fce9e6",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "terracotta": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "sage": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "sage-light": {
+      "value": "#b8ceb9",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "sage-pale": {
+      "value": "#eaf1ea",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "tan": {
+      "value": "#c4a882",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "tan-light": {
+      "value": "#e8d9c4",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "brown": {
+      "value": "#6b4c3b",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "text-main": {
+      "value": "#3d2c24",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "text-muted": {
+      "value": "#937468",
+      "source_files": [
+        "_sass/user-colors.scss",
+        "_sass/user-colors.scss"
+      ]
+    },
+    "black1": {
+      "value": "rgba(61, 44, 36, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "bg-0": {
+      "value": "#fdf6ee",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "bg-1": {
+      "value": "#fff9f3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "bg-2": {
+      "value": "#f5ede3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "bg-3": {
+      "value": "#ecddd0",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "panel": {
+      "value": "#fff9f3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "surface": {
+      "value": "#f5ede3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "popup-bg": {
+      "value": "#fff9f3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "white1": {
+      "value": "rgba(61, 44, 36, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "white2": {
+      "value": "rgba(61, 44, 36, 0.85)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "white3": {
+      "value": "rgba(61, 44, 36, 0.7)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "text": {
+      "value": "#3d2c24",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray1": {
+      "value": "rgba(147, 116, 104, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray2": {
+      "value": "rgba(120, 90, 76, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray3": {
+      "value": "rgba(100, 72, 58, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray4": {
+      "value": "rgba(80, 55, 42, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray5": {
+      "value": "rgba(65, 42, 30, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gray6": {
+      "value": "rgba(50, 30, 20, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "accent": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "accent-700": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "accent-700-hover": {
+      "value": "#a84838",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "blue": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "blue1": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "blueShadow1": {
+      "value": "rgba(224, 122, 106, 0.35)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "lightBlue1": {
+      "value": "rgba(196, 94, 74, 1)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "green": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "green1": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "green-bg": {
+      "value": "#eaf1ea",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "red": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "orange": {
+      "value": "#d4845a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "teal": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "warn": {
+      "value": "#d4845a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "warn-bg": {
+      "value": "#fce9e6",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "success-green": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "gradient1": {
+      "value": "linear-gradient(120deg, #fff9f3 45%, #fce9e6)",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "my-custom-cat": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "my-custom-dog": {
+      "value": "#eaf1ea",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "left-msg-bg": {
+      "value": "#f5ede3",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "msger-send-btn-bg": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "msger-send-btn-hover-bg": {
+      "value": "#c45e4a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "right-msg-bg": {
+      "value": "#e07a6a",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "toggle-btn-bg": {
+      "value": "#8aaa8c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    },
+    "toggle-btn-hover-bg": {
+      "value": "#6a8a6c",
+      "source_files": [
+        "_sass/user-colors.scss"
+      ]
+    }
+  }
+}

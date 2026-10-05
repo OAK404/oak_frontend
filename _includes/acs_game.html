@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ACS Data Defender — Networking Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#fdf6ee; --warm:#fff9f3;
+  --rose:#e07a6a; --rose-d:#c45e4a; --rose-pale:#fce9e6;
+  --sage:#8aaa8c; --sage-pale:#eaf1ea;
+  --tan:#c4a882; --tan-light:#e8d9c4;
+  --brown:#6b4c3b; --text:#3d2c24; --muted:#937468;
+  --border:rgba(196,168,130,0.3);
+  --l1:#e07a6a; --l2:#8aaa8c; --l3:#c4a882; --l4:#6b9fd4; --l5:#a07cc5;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Nunito',system-ui,sans-serif;
+  --mono:'Share Tech Mono',monospace;
+}
+body{background:var(--cream);font-family:var(--sans);overflow:hidden;height:100vh;width:100vw;display:flex;flex-direction:column;color:var(--text);}
+
+/* HEADER */
+#hdr{background:linear-gradient(135deg,var(--brown) 0%,#4a2e22 100%);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 14px rgba(61,44,36,0.3);}
+#hdr h1{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;letter-spacing:0.02em;}
+#hdr h1 em{color:var(--rose);font-style:italic;}
+.hrow{display:flex;gap:16px;align-items:center;}
+.hitem{display:flex;flex-direction:column;align-items:center;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+.hval{font-family:var(--mono);font-size:14px;color:#fce9e6;}
+
+/* LAYOUT */
+#gw{display:flex;flex:1;overflow:hidden;min-height:0;}
+
+/* LEFT PANEL */
+#lp{width:170px;flex-shrink:0;background:var(--warm);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.lph{padding:9px 11px 7px;border-bottom:1px solid var(--border);font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.lc{padding:7px 9px;border-bottom:1px solid rgba(196,168,130,0.1);display:flex;align-items:center;gap:7px;transition:background 0.2s;}
+.lc.active{background:rgba(224,122,106,0.07);}
+.lc.hit{animation:lcHit 0.4s ease;}
+@keyframes lcHit{0%,100%{background:rgba(224,122,106,0.07);}50%{background:rgba(224,122,106,0.3);}}
+.lcn{font-family:var(--serif);font-size:16px;font-weight:700;min-width:20px;text-align:center;line-height:1;}
+.lci{flex:1;}
+.lcname{font-size:9px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;}
+.lcproto{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:1px;}
+.lcbar{height:3px;background:rgba(196,168,130,0.18);border-radius:2px;margin-top:3px;overflow:hidden;}
+.lcfill{height:100%;border-radius:2px;transition:width 0.4s;}
+
+/* CANVAS */
+#cw{flex:1;position:relative;overflow:hidden;}
+canvas{display:block;width:100%;height:100%;}
+
+/* RIGHT PANEL */
+#rp{width:185px;flex-shrink:0;background:var(--warm);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.rps{padding:9px 11px;border-bottom:1px solid rgba(196,168,130,0.12);}
+.rph{font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.dc{background:var(--rose-pale);border:1px solid rgba(224,122,106,0.22);border-radius:7px;padding:7px 9px;font-family:var(--mono);font-size:9px;line-height:1.9;}
+.dcl{color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:0.05em;}
+.dcv{color:var(--brown);font-weight:700;}
+.dcw{color:var(--rose);font-weight:700;}
+.mwrap{margin-top:7px;}
+.mlbl{font-size:9px;color:var(--muted);margin-bottom:2px;font-family:var(--mono);display:flex;justify-content:space-between;}
+.mout{width:100%;height:7px;background:rgba(196,168,130,0.18);border-radius:3px;overflow:hidden;}
+.min{height:100%;border-radius:3px;transition:width 0.2s,background 0.3s;background:var(--sage);}
+.min.warn{background:var(--rose);}
+.legrow{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:10px;color:var(--text);}
+.legico{font-size:13px;width:16px;text-align:center;}
+.ctrlg{display:grid;grid-template-columns:auto 1fr;gap:2px 7px;font-size:9px;}
+.ck{font-family:var(--mono);font-size:8px;background:var(--brown);color:#fff;border-radius:3px;padding:1px 5px;text-align:center;line-height:1.8;}
+.cd{color:var(--muted);line-height:1.8;}
+.fb{font-size:9px;color:var(--muted);line-height:1.7;background:rgba(196,168,130,0.08);border-left:2px solid var(--tan);padding:5px 7px;border-radius:0 4px 4px 0;}
+
+/* OVERLAYS */
+.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:100;background:rgba(253,246,238,0.97);backdrop-filter:blur(5px);}
+.ov h2{font-family:var(--serif);font-size:clamp(20px,3.2vw,36px);font-weight:700;color:var(--text);}
+.ov h2 em{color:var(--rose);font-style:italic;}
+.ov p{font-size:12px;color:var(--muted);text-align:center;max-width:340px;line-height:1.7;}
+.obtn{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:11px 26px;background:var(--rose);color:#fff;border:none;border-radius:7px;cursor:pointer;box-shadow:0 4px 14px rgba(224,122,106,0.35);transition:background 0.2s,transform 0.15s;}
+.obtn:hover{background:var(--rose-d);transform:translateY(-2px);}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%;max-width:380px;}
+.icell{background:#fff;border:1px solid var(--border);border-radius:7px;padding:9px;font-size:10px;}
+.inum{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1;margin-bottom:2px;}
+.ilbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.lleg{font-family:var(--mono);font-size:9px;background:#fff;border:1px solid var(--border);border-radius:7px;padding:9px 12px;line-height:2.1;width:100%;max-width:380px;}
+
+/* Flash */
+.flash{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;background:rgba(253,246,238,0.97);border:1px solid var(--border);color:var(--brown);padding:5px 14px;border-radius:18px;pointer-events:none;opacity:0;transition:opacity 0.3s;z-index:50;white-space:nowrap;box-shadow:0 2px 10px rgba(61,44,36,0.1);}
+.flash.on{opacity:1;}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <h1>ACS Body Map — <em>Data Defender</em></h1>
+  <div class="hrow">
+    <div class="hitem"><div class="hval" id="hScore">0</div>Score</div>
+    <div class="hitem"><div class="hval" id="hLevel">1</div>Level</div>
+    <div class="hitem"><div class="hval" id="hDel">0</div>Delivered</div>
+    <div class="hitem"><div id="hLives"></div>Lives</div>
+    <div class="hitem"><div class="hval" id="hWave">1</div>Wave</div>
+  </div>
+</div>
+
+<div id="gw">
+  <div id="lp">
+    <div class="lph">TCP/IP Layers</div>
+    <div id="lcards"></div>
+  </div>
+
+  <div id="cw">
+    <canvas id="gc"></canvas>
+    <div class="flash" id="flashEl"></div>
+
+    <!-- START -->
+    <div class="ov" id="ovStart">
+      <div style="font-size:20px;font-family:var(--mono);letter-spacing:0.12em;color:var(--rose)">ACS DATA</div>
+      <h2>ACS Body Map<br><em>Data Defender</em></h2>
+      <p>You are a cancer data packet. Travel through all <strong>5 TCP/IP layers</strong> to deliver critical cancer information to the ACS Body Map. Collect ribbon fragments, avoid corrupt packets, and don't exceed the <strong>1500B MTU limit!</strong></p>
+      <div class="lleg">
+        <span style="color:var(--l5)">■</span> Layer 5 — APPLICATION (HTTPS / cancer.org)<br>
+        <span style="color:var(--l4)">■</span> Layer 4 — TRANSPORT (TCP port 443)<br>
+        <span style="color:var(--l3)">■</span> Layer 3 — NETWORK (IP routing → GitHub Pages)<br>
+        <span style="color:var(--l2)">■</span> Layer 2 — DATA LINK (Ethernet / MAC)<br>
+        <span style="color:var(--l1)">■</span> Layer 1 — PHYSICAL (Wi-Fi signals / fiber)
+      </div>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)">1500</div><div class="ilbl">MTU Bytes</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)">80+</div><div class="ilbl">Cancer Types</div></div>
+        <div class="icell"><div class="inum" style="color:var(--tan)">TCP</div><div class="ilbl">Protocol</div></div>
+        <div class="icell"><div class="inum" style="color:var(--brown)">5</div><div class="ilbl">Layers</div></div>
+      </div>
+      <button class="obtn" onclick="G.start()">▶ Begin Transmission</button>
+    </div>
+
+    <!-- GAME OVER -->
+    <div class="ov" id="ovGameOver" style="display:none">
+      <div style="font-size:18px;font-family:var(--mono);letter-spacing:0.1em;color:var(--rose)">TRANSMISSION FAILED</div>
+      <h2>Packet <em>Lost</em></h2>
+      <p>The cancer data never reached the ACS Body Map. TCP retransmit initiated.</p>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)" id="goSc">0</div><div class="ilbl">Score</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)" id="goDel">0</div><div class="ilbl">Delivered</div></div>
+      </div>
+      <button class="obtn" onclick="G.reset()">↺ TCP Retry</button>
+    </div>
+
+    <!-- WIN -->
+    <div class="ov" id="ovWin" style="display:none">
+      <div style="font-size:18px;font-family:var(--mono);letter-spacing:0.1em;color:var(--sage)">TRANSMISSION COMPLETE</div>
+      <h2>Data <em>Delivered!</em></h2>
+      <p id="winMsg">Cancer data reached the ACS Body Map!</p>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)" id="winSc">0</div><div class="ilbl">Score</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)" id="winDel">0</div><div class="ilbl">Packets</div></div>
+      </div>
+      <button class="obtn" onclick="G.nextWave()">► Next Wave</button>
+    </div>
+  </div>
+
+  <div id="rp">
+    <div class="rps">
+      <div class="rph">Current Packet</div>
+      <div class="dc">
+        <div class="dcl">ACS Data</div><div class="dcv" id="rpData">BM_CANCERS[lung]</div>
+        <div class="dcl">Size</div><div class="dcv" id="rpSize">0 B</div>
+        <div class="dcl">MTU Status</div><div class="dcv" id="rpStat">OK</div>
+      </div>
+      <div class="mwrap">
+        <div class="mlbl"><span>MTU Fill</span><span id="mPct">0%</span></div>
+        <div class="mout"><div class="min" id="mBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="rps">
+      <div class="rph">Legend</div>
+      <div class="legrow"><span class="legico">PKT</span>You — data packet</div>
+      <div class="legrow"><span class="legico">DAT</span>Cancer data fragment</div>
+      <div class="legrow"><span class="legico">RTR</span>Router NPC (helper)</div>
+      <div class="legrow"><span class="legico">ERR</span>Corrupt packet (avoid)</div>
+      <div class="legrow"><span class="legico">AI</span>AI Firewall boss</div>
+    </div>
+    <div class="rps">
+      <div class="rph">Controls</div>
+      <div class="ctrlg">
+        <div class="ck">A D</div><div class="cd">Move left / right</div>
+        <div class="ck">W S</div><div class="cd">Move up / down</div>
+        <div class="ck">SPC</div><div class="cd">Fragment packet</div>
+        <div class="ck">P</div><div class="cd">Pause</div>
+      </div>
+    </div>
+    <div class="rps">
+      <div class="rph">Layer Fact</div>
+      <div class="fb" id="factBox">Move your packet through the layers to learn how the ACS Body Map reaches users around the world.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas=document.getElementById('gc'),ctx=canvas.getContext('2d'),wrap=document.getElementById('cw');
+
+const ACS_CANCERS=[
+  {id:'lung',      name:'Lung Cancer',       region:'Lung & Chest',   bytes:380},
+  {id:'breast',    name:'Breast Cancer',     region:'Breast',         bytes:420},
+  {id:'melanoma',  name:'Melanoma',          region:'Skin',           bytes:350},
+  {id:'colorectal',name:'Colorectal Cancer', region:'Digestive',      bytes:410},
+  {id:'brain',     name:'Glioblastoma',      region:'Brain & NS',     bytes:390},
+  {id:'leukemia',  name:'Leukemia',          region:'Blood & Lymph',  bytes:360},
+  {id:'pancreatic',name:'Pancreatic Cancer', region:'Pancreas',       bytes:430},
+  {id:'prostate',  name:'Prostate Cancer',   region:'Reproductive',   bytes:370},
+  {id:'thyroid',   name:'Thyroid Cancer',    region:'Endocrine',      bytes:310},
+  {id:'ovarian',   name:'Ovarian Cancer',    region:'Reproductive',   bytes:440},
+  {id:'bladder',   name:'Bladder Cancer',    region:'Urinary',        bytes:330},
+  {id:'hodgkin',   name:'Hodgkin Lymphoma',  region:'Blood & Lymph',  bytes:400},
+];
+
+const LAYERS=[
+  {num:1,name:'PHYSICAL',   proto:'Wi-Fi / Fiber', color:'#e07a6a',fact:'Your Wi-Fi card converts the ACS cancer data into radio waves at 2.4–5 GHz. Fiber optic cables carry that same data as pulses of light across the internet backbone to GitHub Pages servers.'},
+  {num:2,name:'DATA LINK',  proto:'Ethernet / MAC',color:'#8aaa8c',fact:'Ethernet frames carry your packet hop-to-hop using MAC addresses. Every router between you and GitHub Pages unwraps and re-wraps the frame — like re-labeling a package at each post office stop.'},
+  {num:3,name:'NETWORK',    proto:'IP Routing',    color:'#c4a882',fact:'IP addresses route ACS data across the internet to GitHub Pages (185.199.108.153). Your request might cross 12+ routers using BGP to find the fastest path to the server.'},
+  {num:4,name:'TRANSPORT',  proto:'TCP : 443',     color:'#6b9fd4',fact:'TCP guarantees every cancer data packet arrives correctly and in order. If a packet drops, TCP retransmits it. The Body Map shows 80+ cancer types — TCP ensures none are missing.'},
+  {num:5,name:'APPLICATION',proto:'HTTPS / HTTP2', color:'#a07cc5',fact:'HTTPS with TLS 1.3 encrypts your cancer research so nobody can snoop. HTTP/2 loads HTML, CSS, the SVG body diagram, and BM_CANCERS data simultaneously — that is why pages load fast.'},
+];
+
+const MTU=1500,MSS=1431;
+
+const G={
+  running:false,paused:false,
+  score:0,lives:3,level:1,wave:1,
+  delivered:0,currentBytes:0,
+  currentCancer:ACS_CANCERS[0],
+  layerHP:[100,100,100,100,100],
+  keys:{},lastTime:0,animId:null,
+};
+
+let player,frags,corrupt,routers,boss,particles;
+
+function resize(){canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;}
+
+function initEntities(){
+  const W=canvas.width,H=canvas.height;
+  player={x:W/2,y:H*0.85,w:34,h:22,vx:0,vy:0,speed:190,shield:0,trail:[],layer:0};
+  frags=[];corrupt=[];routers=[];boss=null;particles=[];
+  const diff=1+(G.level-1)*0.2+(G.wave-1)*0.12;
+
+  // Data fragments
+  const fc=Math.min(5+G.level*2,13);
+  for(let i=0;i<fc;i++){
+    const c=ACS_CANCERS[i%ACS_CANCERS.length];
+    frags.push({x:50+Math.random()*(W-100),y:40+Math.random()*(H-80),w:40,h:22,cancer:c,bytes:c.bytes,collected:false,bob:Math.random()*Math.PI*2,id:Math.random()});
+  }
+
+  // Corrupt packets
+  const cc=Math.min(2+G.level,7);
+  for(let i=0;i<cc;i++){
+    const ly=(i/cc)*H+H/cc/2;
+    corrupt.push({x:Math.random()*W,y:ly+(Math.random()-0.5)*50,w:26,h:26,vx:(Math.random()>0.5?1:-1)*(55+Math.random()*55*diff),angle:0});
+  }
+
+  // Router NPCs
+  for(let i=0;i<3;i++){
+    routers.push({x:80+i*(W-160)/2,y:H*(0.2+i*0.28),w:34,h:34,vx:(i%2===0?1:-1)*28,bob:i*Math.PI*0.66,tip:['Route via BGP','TCP SYN-ACK','MTU=1500B'][i],tipTimer:0});
+  }
+
+  // Boss
+  if(G.wave>=3||G.level>=2){
+    boss={x:W/2,y:48,w:74,h:36,vx:70+G.level*10,hp:3,hitTimer:0,phase:0,phaseTimer:0};
+  }
+
+  G.currentCancer=ACS_CANCERS[Math.floor(Math.random()*ACS_CANCERS.length)];
+  G.currentBytes=0;
+}
+
+// Collision
+function hits(a,b){return a.x-a.w/2<b.x+b.w/2&&a.x+a.w/2>b.x-b.w/2&&a.y-a.h/2<b.y+b.h/2&&a.y+a.h/2>b.y-b.h/2;}
+function layerIdx(y){return Math.max(0,Math.min(4,Math.floor(y/canvas.height*5)));}
+
+// Flash
+let ftmr=null;
+function flash(msg,col='#6b4c3b'){
+  const el=document.getElementById('flashEl');
+  el.textContent=msg;el.style.color=col;el.style.borderColor=col+'44';
+  el.classList.add('on');clearTimeout(ftmr);
+  ftmr=setTimeout(()=>el.classList.remove('on'),2400);
+}
+
+function burst(x,y,col,n=10){
+  for(let i=0;i<n;i++){
+    const a=(Math.PI*2/n)*i,sp=50+Math.random()*80;
+    particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,col,life:1,r:2+Math.random()*3});
+  }
+}
+
+function update(dt){
+  if(!G.running||G.paused||!player)return;
+  const W=canvas.width,H=canvas.height,p=player;
+
+  p.vx=p.vy=0;
+  if(G.keys['a']||G.keys['A']||G.keys['ArrowLeft']) p.vx=-p.speed;
+  if(G.keys['d']||G.keys['D']||G.keys['ArrowRight'])p.vx= p.speed;
+  if(G.keys['w']||G.keys['W']||G.keys['ArrowUp'])   p.vy=-p.speed;
+  if(G.keys['s']||G.keys['S']||G.keys['ArrowDown']) p.vy= p.speed;
+  p.x=Math.max(p.w/2,Math.min(W-p.w/2,p.x+p.vx*dt));
+  p.y=Math.max(p.h/2,Math.min(H-p.h/2,p.y+p.vy*dt));
+  if(p.shield>0)p.shield--;
+
+  p.trail.push({x:p.x,y:p.y});
+  if(p.trail.length>14)p.trail.shift();
+
+  // Layer change
+  const nowL=4-layerIdx(p.y);
+  if(nowL!==p.layer){
+    p.layer=nowL;
+    const ld=LAYERS[nowL];
+    flash(`Layer ${ld.num}: ${ld.name} — ${ld.proto}`,ld.color);
+    const fb=document.getElementById('factBox');
+    fb.textContent=ld.fact;fb.style.borderLeftColor=ld.color;
+    updateLayerCards();
+  }
+
+  // SPACE to fragment
+  if(G.keys[' ']&&G.currentBytes>MSS){
+    G.keys[' ']=false;
+    const n=Math.ceil(G.currentBytes/MSS);
+    flash(`Fragmented into ${n} packets of ${MSS}B (MSS)`, '#8aaa8c');
+    burst(p.x,p.y,'#8aaa8c',16);
+    G.score+=300;G.currentBytes=Math.floor(G.currentBytes/n);
+    updateHUD();
+  }
+
+  // Collect fragments
+  frags.forEach(f=>{
+    if(f.collected)return;
+    f.bob+=dt*2.2;
+    if(hits(p,f)){
+      f.collected=true;G.currentBytes+=f.bytes;G.score+=f.bytes;G.delivered++;
+      burst(f.x,f.y,'#c4a882',10);
+      flash(`${f.cancer.name} +${f.bytes}B -> ${f.cancer.region}`, '#c4a882');
+      if(G.currentBytes>MTU){
+        flash('MTU exceeded! Press SPACE to fragment','#e07a6a');
+        G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-12);
+        hitCard(p.layer);
+      }
+      updateHUD();
+    }
+  });
+
+  // Corrupt packets
+  corrupt.forEach(cp=>{
+    cp.x+=cp.vx*dt;cp.angle+=2.5*dt;
+    if(cp.x<0||cp.x>W)cp.vx*=-1;
+    cp.y+=Math.sin(Date.now()*0.002+cp.x*0.008)*16*dt;
+    if(p.shield===0&&hits(p,cp)){
+      G.lives--;p.shield=90;
+      G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-20);
+      hitCard(p.layer);burst(p.x,p.y,'#e07a6a',18);
+      flash('Corrupt packet! TCP retransmitting...','#e07a6a');
+      updateHUD();if(G.lives<=0)G.end();
+    }
+  });
+
+  // Router NPCs
+  routers.forEach(r=>{
+    r.x+=r.vx*dt;if(r.x<r.w||r.x>W-r.w)r.vx*=-1;
+    r.tipTimer=Math.max(0,r.tipTimer-dt);
+    if(Math.random()<0.004)r.tipTimer=2;
+    if(hits(p,r)&&p.shield===0){G.score+=25;r.tipTimer=1.8;burst(r.x,r.y,'#8aaa8c',4);}
+  });
+
+  // Boss
+  if(boss){
+    boss.hitTimer=Math.max(0,boss.hitTimer-dt);
+    boss.phaseTimer+=dt;
+    if(boss.phaseTimer>1.8){boss.phase=(boss.phase+1)%3;boss.phaseTimer=0;}
+    if(boss.phase===0){boss.x+=boss.vx*dt;if(boss.x<boss.w||boss.x>W-boss.w)boss.vx*=-1;}
+    else if(boss.phase===1){boss.y+=48*dt;if(boss.y>H*0.35)boss.y=40;}
+    else{boss.x+=boss.vx*1.6*dt;if(boss.x<boss.w||boss.x>W-boss.w)boss.vx*=-1;boss.y=48+Math.sin(boss.phaseTimer*3)*34;}
+
+    if(p.shield===0&&hits(p,boss)){
+      G.lives--;p.shield=100;G.layerHP[4]=Math.max(0,G.layerHP[4]-25);
+      hitCard(4);burst(boss.x,boss.y,'#a07cc5',20);
+      flash('Data Breach blocked HTTPS! TLS re-negotiating...','#a07cc5');
+      updateHUD();if(G.lives<=0)G.end();
+    }
+    if(G.keys[' ']&&G.currentBytes<=MSS){
+      const d=Math.hypot(p.x-boss.x,p.y-boss.y);
+      if(d<90){
+        G.keys[' ']=false;boss.hp--;boss.hitTimer=0.35;
+        burst(boss.x,boss.y,'#a07cc5',22);G.score+=600;
+        if(boss.hp<=0){
+          flash('Data Breach defeated! TLS handshake complete.','#8aaa8c');
+          burst(boss.x,boss.y,'#8aaa8c',35);boss=null;G.score+=1500;
+        } else {
+          flash(`Data Breach HP: ${boss.hp}/3 — send valid packets!`,'#a07cc5');
+        }
+        updateHUD();
+      }
+    }
+  }
+
+  particles.forEach(pt=>{pt.x+=pt.vx*dt;pt.y+=pt.vy*dt;pt.life-=dt*1.6;pt.vy+=24*dt;});
+  for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);
+
+  if(frags.filter(f=>!f.collected).length===0&&!boss&&G.delivered>0)G.win();
+}
+
+function draw(){
+  if(!G.running)return;
+  const W=canvas.width,H=canvas.height,lh=H/5,now=Date.now()*0.003;
+
+  // Background
+  ctx.fillStyle='#fdf6ee';ctx.fillRect(0,0,W,H);
+
+  // Body silhouette (ACS theme)
+  ctx.save();ctx.globalAlpha=0.045;ctx.fillStyle='#6b4c3b';
+  const cx=W*0.5,cy=H*0.5,sc=Math.min(W,H)*0.5;
+  ctx.beginPath();ctx.arc(cx,cy-sc*0.38,sc*0.09,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(cx,cy+sc*0.02,sc*0.14,sc*0.27,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+
+  // 5 layer lanes (physical=bottom, app=top)
+  LAYERS.forEach((ld,i)=>{
+    const y=(4-i)*lh;
+    ctx.save();ctx.globalAlpha=0.07;ctx.fillStyle=ld.color;ctx.fillRect(0,y,W,lh);ctx.restore();
+    ctx.strokeStyle=ld.color+'44';ctx.lineWidth=1;ctx.setLineDash([6,5]);
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.setLineDash([]);
+    // Layer label
+    ctx.save();ctx.globalAlpha=0.11;ctx.fillStyle=ld.color;
+    ctx.font=`700 ${Math.min(lh*0.48,26)}px 'Cormorant Garamond',serif`;
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText(`L${ld.num} ${ld.name}`,W-12,y+lh/2);ctx.restore();
+    // Protocol left
+    ctx.save();ctx.globalAlpha=0.45;ctx.fillStyle=ld.color;
+    ctx.font=`700 9px 'Share Tech Mono',monospace`;ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(ld.proto,8,y+lh/2);ctx.restore();
+    // MSS line
+    ctx.save();ctx.globalAlpha=0.13;ctx.strokeStyle=ld.color;ctx.lineWidth=1;ctx.setLineDash([3,5]);
+    ctx.beginPath();ctx.moveTo((MSS/MTU)*W,y);ctx.lineTo((MSS/MTU)*W,y+lh);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  });
+
+  // Fragments (cancer data ribbons)
+  frags.forEach(f=>{
+    if(f.collected)return;
+    const by=Math.sin(now+f.bob)*5;
+    ctx.save();ctx.translate(f.x,f.y+by);
+    ctx.shadowColor='#c4a882';ctx.shadowBlur=9+Math.sin(now+f.id*3)*4;
+    ctx.fillStyle='#fff9f3';ctx.strokeStyle='#c4a882';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.roundRect(-f.w/2,-f.h/2,f.w,f.h,4);ctx.fill();ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('DAT',-f.w/2+10,0);
+    ctx.fillStyle='#6b4c3b';ctx.font=`700 8px 'Share Tech Mono',monospace`;ctx.fillText(f.cancer.id.toUpperCase(),5,-3);
+    ctx.fillStyle='#937468';ctx.font=`600 7px 'Nunito',sans-serif`;ctx.fillText(f.bytes+'B',5,5);
+    ctx.restore();
+  });
+
+  // Corrupt packets
+  corrupt.forEach(cp=>{
+    ctx.save();ctx.translate(cp.x,cp.y);ctx.rotate(cp.angle);
+    ctx.shadowColor='#e07a6a';ctx.shadowBlur=10;
+    ctx.fillStyle='#fce9e6';ctx.strokeStyle='#e07a6a';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(-cp.w/2,-cp.h/2,cp.w,cp.h,3);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#e07a6a';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('',0,0);
+    ctx.shadowBlur=0;ctx.restore();
+  });
+
+  // Router NPCs
+  routers.forEach(r=>{
+    const by=Math.sin(now+r.bob)*5;
+    ctx.save();ctx.translate(r.x,r.y+by);
+    ctx.shadowColor='#8aaa8c';ctx.shadowBlur=8;
+    ctx.fillStyle='#eaf1ea';ctx.strokeStyle='#8aaa8c';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(-r.w/2,-r.h/2,r.w,r.h,8);ctx.fill();ctx.stroke();
+    ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('RTR',0,0);
+    if(r.tipTimer>0){
+      const tw=ctx.measureText(r.tip).width+16;
+      ctx.fillStyle='rgba(253,246,238,0.97)';ctx.strokeStyle='#8aaa8c55';ctx.lineWidth=1;
+      ctx.beginPath();ctx.roundRect(-tw/2,-r.h/2-20,tw,15,3);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#8aaa8c';ctx.font=`700 8px 'Share Tech Mono',monospace`;ctx.textBaseline='middle';
+      ctx.fillText(r.tip,0,-r.h/2-12.5);
+    }
+    ctx.shadowBlur=0;ctx.restore();
+  });
+
+  // Boss: AI Firewall / Data Breach
+  if(boss){
+    const ph=Math.sin(now*2.5)*0.5+0.5;
+    ctx.save();ctx.translate(boss.x,boss.y);
+    const bc=boss.hitTimer>0?'#ffffff':'#a07cc5';
+    ctx.shadowColor=bc;ctx.shadowBlur=16+ph*8;
+    ctx.fillStyle=boss.hitTimer>0?'rgba(255,255,255,0.92)':'rgba(160,124,197,0.13)';
+    ctx.strokeStyle=bc;ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.roundRect(-boss.w/2,-boss.h/2,boss.w,boss.h,6);ctx.fill();ctx.stroke();
+    ctx.fillStyle=boss.hitTimer>0?'#3d2c24':'#a07cc5';
+    ctx.font=`800 9px 'Nunito',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('AI DATA BREACH',0,-6);
+    ctx.font=`700 8px 'Share Tech Mono',monospace`;
+    ctx.fillText(`HP: ${'●'.repeat(boss.hp)}${'○'.repeat(3-boss.hp)}`,0,6);
+    ctx.fillStyle='rgba(196,168,130,0.2)';ctx.beginPath();ctx.roundRect(-26,boss.h/2+5,52,5,2);ctx.fill();
+    ctx.fillStyle='#a07cc5';ctx.beginPath();ctx.roundRect(-26,boss.h/2+5,(boss.hp/3)*52,5,2);ctx.fill();
+    ctx.shadowBlur=0;ctx.restore();
+  }
+
+  // Particles
+  particles.forEach(pt=>{
+    ctx.save();ctx.globalAlpha=Math.max(0,pt.life);ctx.fillStyle=pt.col;
+    ctx.shadowColor=pt.col;ctx.shadowBlur=5;
+    ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r*pt.life,0,Math.PI*2);ctx.fill();ctx.restore();
+  });
+
+  // Player (ribbon/packet)
+  const p=player;
+  p.trail.forEach((tp,i)=>{
+    ctx.save();ctx.globalAlpha=(i/p.trail.length)*0.28;ctx.fillStyle=p.shield>0?'#c4a882':'#6b9fd4';
+    ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=3;
+    const sz=p.w*(i/p.trail.length)*0.5;ctx.fillRect(tp.x-sz/2,tp.y-sz/2,sz,sz*0.65);ctx.restore();
+  });
+  if(p.shield>0){
+    ctx.save();ctx.globalAlpha=p.shield%12<6?0.55:0.12;ctx.strokeStyle='#c4a882';ctx.lineWidth=2;
+    ctx.shadowColor='#c4a882';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(p.x,p.y,p.w*0.82,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }
+  ctx.save();ctx.shadowColor='#6b9fd4';ctx.shadowBlur=11;
+  ctx.fillStyle='#fff9f3';ctx.strokeStyle='#6b9fd4';ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(p.x-p.w/2,p.y-p.h/2,p.w,p.h,5);ctx.fill();ctx.stroke();
+  ctx.shadowBlur=0;ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('PKT',p.x-7,p.y);
+  ctx.fillStyle='rgba(107,156,212,0.55)';
+  for(let i=0;i<3;i++)ctx.fillRect(p.x+2,p.y-p.h/2+5+i*5,4+i*4,2);
+  ctx.restore();
+
+  if(G.paused){
+    ctx.save();ctx.fillStyle='rgba(253,246,238,0.82)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--brown').trim();
+    ctx.font=`700 20px 'Cormorant Garamond',serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('⏸ Paused — Press P to Resume',W/2,H/2);ctx.restore();
+  }
+  if(G.currentBytes>MTU){
+    ctx.save();ctx.globalAlpha=0.5+Math.sin(Date.now()*0.009)*0.45;ctx.fillStyle='#e07a6a';
+    ctx.font=`800 11px 'Nunito',sans-serif`;ctx.textAlign='center';
+    ctx.fillText('MTU OVERFLOW - Press SPACE to fragment!',W/2,20);ctx.restore();
+  }
+}
+
+function updateHUD(){
+  document.getElementById('hScore').textContent=G.score.toLocaleString();
+  document.getElementById('hLevel').textContent=G.level;
+  document.getElementById('hDel').textContent=G.delivered;
+  document.getElementById('hWave').textContent=G.wave;
+  document.getElementById('hLives').textContent='L'.repeat(Math.max(0,G.lives));
+  document.getElementById('rpData').textContent='BM_CANCERS['+G.currentCancer.id+']';
+  document.getElementById('rpSize').textContent=G.currentBytes+'B / '+MTU+'B MTU';
+  const pct=Math.min(100,Math.round(G.currentBytes/MTU*100));
+  document.getElementById('mPct').textContent=pct+'%';
+  const bar=document.getElementById('mBar');
+  bar.style.width=pct+'%';bar.className='min'+(G.currentBytes>MTU?' warn':'');
+  const st=G.currentBytes>MTU?'OVERFLOW':G.currentBytes>MSS?'NEAR LIMIT':'OK';
+  const se=document.getElementById('rpStat');se.textContent=st;se.className=G.currentBytes>MTU?'dcw':'dcv';
+  updateLayerCards();
+}
+
+function updateLayerCards(){
+  const pL=player?(4-layerIdx(player.y)):0;
+  document.getElementById('lcards').innerHTML=LAYERS.slice().reverse().map((ld,ri)=>{
+    const i=4-ri,hp=G.layerHP[i],act=pL===i;
+    return `<div class="lc${act?' active':''}" id="lcard${i}">
+      <div class="lcn" style="color:${ld.color}">${ld.num}</div>
+      <div class="lci">
+        <div class="lcname" style="color:${ld.color}">${ld.name}</div>
+        <div class="lcproto">${ld.proto}</div>
+        <div class="lcbar"><div class="lcfill" style="width:${hp}%;background:${ld.color}"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function hitCard(i){
+  const c=document.getElementById('lcard'+i);
+  if(c){c.classList.add('hit');setTimeout(()=>c.classList.remove('hit'),800);}
+}
+
+document.addEventListener('keydown',e=>{G.keys[e.key]=true;if((e.key==='p'||e.key==='P')&&G.running)G.paused=!G.paused;e.preventDefault();},{passive:false});
+document.addEventListener('keyup',e=>{G.keys[e.key]=false;});
+
+function loop(ts){
+  const dt=Math.min((ts-G.lastTime)/1000,0.05);G.lastTime=ts;
+  update(dt);draw();G.animId=requestAnimationFrame(loop);
+}
+
+G.start=function(){
+  document.getElementById('ovStart').style.display='none';
+  resize();initEntities();G.running=true;G.paused=false;
+  updateHUD();G.lastTime=performance.now();G.animId=requestAnimationFrame(loop);
+};
+
+G.end=function(){
+  G.running=false;
+  document.getElementById('goSc').textContent=G.score.toLocaleString();
+  document.getElementById('goDel').textContent=G.delivered;
+  document.getElementById('ovGameOver').style.display='flex';
+};
+
+G.win=function(){
+  G.running=false;const bonus=G.wave*G.level*250;G.score+=bonus;
+  document.getElementById('winSc').textContent=G.score.toLocaleString();
+  document.getElementById('winDel').textContent=G.delivered;
+  document.getElementById('winMsg').textContent=`Wave ${G.wave} complete! All cancer data delivered. Bonus +${bonus} pts`;
+  document.getElementById('ovWin').style.display='flex';
+};
+
+G.nextWave=function(){
+  document.getElementById('ovWin').style.display='none';
+  G.wave++;if(G.wave>3){G.wave=1;G.level++;}
+  resize();initEntities();G.running=true;
+  updateHUD();flash(`Wave ${G.wave} — Level ${G.level} — Transmitting ACS data...`,'#8aaa8c');
+};
+
+G.reset=function(){
+  cancelAnimationFrame(G.animId);
+  document.getElementById('ovGameOver').style.display='none';
+  G.score=0;G.lives=3;G.level=1;G.wave=1;G.delivered=0;G.currentBytes=0;
+  G.layerHP=[100,100,100,100,100];
+  resize();initEntities();G.running=true;
+  updateHUD();G.lastTime=performance.now();G.animId=requestAnimationFrame(loop);
+};
+
+window.addEventListener('resize',()=>{
+  resize();
+  if(player){
+    player.x=Math.max(player.w/2,Math.min(canvas.width-player.w/2,player.x));
+    player.y=Math.max(player.h/2,Math.min(canvas.height-player.h/2,player.y));
+  }
+});
+
+resize();updateLayerCards();updateHUD();
+</script>
+</body>
+</html>

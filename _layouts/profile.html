@@ -1,0 +1,2275 @@
+---
+layout: opencs
+title: Treatment Tracker
+---
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TREATMENT TRACKER  —  ACS warm palette
+   All colours reference the CSS variables from theme.scss
+═══════════════════════════════════════════════════════════ */
+
+
+/* ── Page wrapper ── */
+.tx-app {
+  /* Lock profile to original warm palette regardless of global theme state */
+  --cream: #fdf6ee;
+  --warm-white: #fff9f3;
+  --rose: #e07a6a;
+  --rose-light: #f2b5ab;
+  --rose-pale: #fce9e6;
+  --terracotta: #c45e4a;
+  --tan: #c4a882;
+  --tan-light: #e8d9c4;
+  --sage: #8aaa8c;
+  --sage-light: #9fc2a1;
+  --sage-pale: #eaf1ea;
+  --text-main: #3d2c24;
+  --text-muted: #937468;
+  --border: rgba(196,168,130,0.3);
+
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 72px;
+}
+
+/* Hard override to prevent global theme CSS from tinting profile text blue */
+
+
+/* Keep primary filled buttons legible */
+.tx-add-btn,
+.tn-save-btn,
+.time-add-btn,
+.f-submit {
+  color: #ffffff !important;
+}
+
+/* Keep bookmark icon/button in original accent red */
+.tx-bookmarks-btn,
+.tx-bookmarks-btn * {
+  color: var(--rose) !important;
+}
+
+/* ── Page header ── */
+.tx-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 28px 0 22px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.tx-page-title {
+  font-family: var(--serif) !important;
+  font-size: 34px !important;
+  font-weight: 600;
+  color: var(--text-main) !important;
+  margin: 0;
+  line-height: 1.1;
+}
+.tx-page-sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.tx-notebook-toggle {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tx-notebook-toggle:hover {
+  background: var(--tan-light);
+  border-color: var(--tan);
+}
+
+.tx-notebook-top {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--warm-white);
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(61,44,36,0.06);
+  display: none;
+  max-width: 620px;
+}
+
+.tx-notebook-top.open { display: block; }
+
+
+.tx-add-btn {
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(224,122,106,0.3);
+  flex-shrink: 0;
+}
+.tx-add-btn:hover {
+  background: var(--terracotta);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(196,94,74,0.35);
+}
+
+.tx-head-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tx-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.tx-bookmarks-btn {
+  background: var(--cream);
+  color: var(--rose);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  line-height: 1;
+}
+.tx-bookmarks-btn:hover {
+  background: var(--tan-light);
+  border-color: var(--rose-light);
+  transform: translateY(-1px);
+}
+
+.tx-bookmark-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rose);
+}
+
+.tx-bmk-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tx-bmk-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tx-bmk-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tx-bmk-item {
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.tx-bmk-item a {
+  color: var(--text-main);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tx-bmk-item a:hover { color: var(--terracotta); }
+
+.tx-bmk-meta {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tx-bmk-mini {
+  width: min(360px, 100%);
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(61,44,36,0.06);
+  display: none;
+}
+
+.tx-bmk-mini.open { display: block; }
+
+.tx-bmk-mini-list {
+  display: grid;
+  gap: 6px;
+}
+
+.tx-bmk-mini-item-wrap {
+  position: relative;
+}
+
+.tx-bmk-mini-item {
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.5;
+  padding: 4px 0;
+  border-bottom: 1px dashed rgba(196,168,130,0.35);
+}
+
+.tx-bmk-mini-item:last-child { border-bottom: 0; }
+
+.tx-bmk-mini-tip {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  width: min(380px, calc(100vw - 80px));
+  background: #fffdf8;
+  border: 1px solid var(--tan-light);
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(61,44,36,0.14);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-main);
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  pointer-events: none;
+}
+
+.tx-bmk-mini-item-wrap:hover .tx-bmk-mini-tip,
+.tx-bmk-mini-item-wrap:focus-within .tx-bmk-mini-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tx-notes-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tx-notes-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tx-notes-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tx-notes-tools {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tx-notes-search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 9px 11px;
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.tx-notes-filter-row {
+  display: flex;
+  gap: 8px;
+}
+
+.tx-notes-filter-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tx-notes-filter-btn.active {
+  border-color: var(--rose-light);
+  color: var(--rose);
+  background: var(--rose-pale);
+}
+
+.tx-note-item {
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.tx-note-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tx-note-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.tx-note-remove {
+  border: 1px solid var(--rose-light);
+  background: #fff;
+  color: var(--rose);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-remove:hover {
+  color: var(--terracotta);
+  border-color: var(--rose);
+}
+
+.tx-note-pin {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-pin.pinned {
+  border-color: rgba(138,170,140,0.7);
+  background: rgba(138,170,140,0.15);
+  color: #426744;
+}
+
+.tx-note-toq {
+  border: 1px solid rgba(107,158,207,0.55);
+  background: rgba(107,158,207,0.12);
+  color: #3f6791;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-toq:hover {
+  background: rgba(107,158,207,0.2);
+}
+
+.tx-note-toq.added {
+  border-color: rgba(138,170,140,0.7);
+  background: rgba(138,170,140,0.2);
+  color: #426744;
+}
+
+.tx-note-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-main);
+  white-space: pre-wrap;
+}
+
+/* ── Two-column grid ── */
+.tx-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .tx-grid { grid-template-columns: 1fr; }
+  .tx-header-right { width: 100%; align-items: stretch; }
+  .tx-head-actions { flex-wrap: wrap; }
+  .tx-bmk-mini { width: 100%; }
+}
+
+/* ── Card base ── */
+.tx-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(61,44,36,0.05);
+}
+.tx-card + .tx-card { margin-top: 20px; }
+
+.tx-section-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 4px;
+}
+
+/* ═══════════════════════════════════
+   CALENDAR
+═══════════════════════════════════ */
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cal-month-label {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.cal-nav-btn {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 13px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-main);
+  transition: background 0.15s, border-color 0.15s;
+  line-height: 1;
+}
+.cal-nav-btn:hover {
+  background: var(--tan-light);
+  border-color: var(--tan);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+.cal-dow {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 5px 0 8px;
+}
+.cal-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6px 2px 3px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.12s;
+  min-width: 0;
+  position: relative;
+}
+.cal-cell:hover { background: var(--rose-pale); }
+.cal-cell.empty  { cursor: default; pointer-events: none; }
+.cal-cell.empty:hover { background: transparent; }
+.cal-cell.today {
+  background: var(--rose-pale);
+}
+.cal-cell.today .cal-num {
+  color: var(--terracotta);
+  font-weight: 800;
+}
+.cal-cell.selected {
+  background: var(--rose) !important;
+}
+.cal-cell.selected .cal-num { color: white; font-weight: 700; }
+.cal-cell.selected .cal-dots span { background: rgba(255,255,255,0.6) !important; }
+
+.cal-num {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.cal-dots {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cal-dots span {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  display: block;
+}
+
+/* ═══════════════════════════════════
+   MEDICATIONS LIST
+═══════════════════════════════════ */
+.meds-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.meds-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+.med-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  margin-bottom: 8px;
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+.med-item:hover {
+  box-shadow: 0 4px 16px rgba(61,44,36,0.08);
+  transform: translateY(-1px);
+}
+.med-color-strip {
+  width: 5px;
+  align-self: stretch;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.med-info { flex: 1; min-width: 0; }
+.med-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.med-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.med-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.med-btn {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 9px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.12s, border-color 0.12s;
+}
+.med-btn:hover { background: var(--tan-light); border-color: var(--tan); }
+.med-btn.del:hover {
+  background: var(--rose-pale);
+  border-color: var(--rose-light);
+  color: var(--terracotta);
+}
+
+/* ═══════════════════════════════════
+   RIGHT COLUMN: DAILY CHECKLIST
+═══════════════════════════════════ */
+.checklist-day-header {
+  margin-bottom: 2px;
+}
+.checklist-date-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+/* Progress bar */
+.tx-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+.tx-progress-bar {
+  flex: 1;
+  height: 7px;
+  background: var(--tan-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.tx-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sage), #6aaa6e);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.tx-progress-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  flex-shrink: 0;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Checklist item */
+.chk-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 13px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+}
+.chk-item:hover { transform: translateY(-1px); box-shadow: 0 3px 12px rgba(61,44,36,0.07); }
+.chk-item:active { transform: translateY(0); }
+.chk-item.taken {
+  background: var(--sage-pale) !important;
+  border-color: var(--sage-light) !important;
+}
+.chk-item.taken .chk-name {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.chk-box {
+  width: 22px; height: 22px;
+  border: 2px solid var(--tan-light);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  color: white;
+}
+.chk-item.taken .chk-box {
+  background: var(--sage);
+  border-color: var(--sage);
+}
+
+.chk-info { flex: 1; min-width: 0; }
+.chk-name  {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chk-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.chk-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.tx-empty {
+  text-align: center;
+  padding: 28px 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.tx-empty-icon { font-size: 30px; margin-bottom: 10px; }
+
+/* ═══════════════════════════════════
+   TABS  (schedule / notes)
+═══════════════════════════════════ */
+.tx-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tx-tab-btn {
+  flex: 1; padding: 12px 8px;
+  background: var(--cream); border: none;
+  font-family: var(--sans); font-size: 13px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.tx-tab-btn.active {
+  background: var(--warm-white);
+  color: var(--terracotta);
+  border-bottom-color: var(--rose);
+}
+.tx-tab-btn:hover:not(.active) { color: var(--text-main); background: var(--warm-white); }
+.tx-tab-badge {
+  background: var(--rose); color: white;
+  font-size: 9px; font-weight: 800;
+  padding: 1px 5px; border-radius: 8px;
+  display: none;
+}
+.tx-tab-badge.show { display: inline-block; }
+.tx-tab-pane { display: none; }
+.tx-tab-pane.active { display: block; }
+
+/* ═══════════════════════════════════
+   NOTES PANE
+═══════════════════════════════════ */
+.tn-form-area {
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgba(196,168,130,0.2);
+  margin-bottom: 12px;
+}
+.tn-form-date {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 10px; display: block;
+}
+.tn-sel, .tn-ta {
+  width: 100%; box-sizing: border-box;
+  background: var(--cream);
+  border: 1px solid rgba(196,168,130,0.4);
+  border-radius: 9px; font-family: var(--sans);
+  font-size: 13px; color: var(--text-main);
+  margin-bottom: 7px;
+  transition: border-color 0.2s;
+}
+.tn-sel { padding: 8px 10px; appearance: none; cursor: pointer; }
+.tn-ta  { padding: 9px 10px; resize: vertical; min-height: 68px; }
+.tn-sel:focus, .tn-ta:focus {
+  outline: none; border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
+}
+.tn-ta::placeholder { color: var(--text-muted); }
+.tn-cat-row {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;
+}
+.tn-cat-chip {
+  padding: 3px 10px; border-radius: 12px;
+  border: 1.5px solid rgba(196,168,130,0.35);
+  background: var(--warm-white); font-size: 11px; font-weight: 600;
+  cursor: pointer; color: var(--text-muted);
+  transition: all 0.12s; user-select: none;
+}
+.tn-cat-chip.active {
+  border-color: var(--rose); background: var(--rose-pale);
+  color: var(--terracotta);
+}
+.tn-save-btn {
+  width: 100%; padding: 9px;
+  background: var(--rose); color: white; border: none;
+  border-radius: 9px; font-family: var(--sans);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+}
+.tn-save-btn:hover:not(:disabled) { background: var(--terracotta); transform: translateY(-1px); }
+.tn-save-btn:disabled { background: var(--tan-light); color: var(--text-muted); cursor: not-allowed; transform: none; }
+.tn-status {
+  font-size: 11px; margin-top: 5px; min-height: 14px;
+  text-align: center; color: var(--sage); font-weight: 600;
+}
+.tn-status.err { color: var(--terracotta); }
+
+.tn-filter-row {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 10px;
+}
+.tn-f-btn {
+  padding: 3px 10px; border-radius: 12px;
+  border: 1px solid rgba(196,168,130,0.3);
+  background: transparent; font-family: var(--sans);
+  font-size: 10px; font-weight: 700; cursor: pointer;
+  color: var(--text-muted); transition: all 0.12s;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tn-f-btn.active {
+  background: var(--rose-pale); border-color: var(--rose-light);
+  color: var(--terracotta);
+}
+
+.tn-list-wrap {
+  max-height: 340px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.tn-list-wrap::-webkit-scrollbar { width: 4px; }
+.tn-list-wrap::-webkit-scrollbar-thumb { background: var(--tan-light); border-radius: 2px; }
+
+.tn-note {
+  background: var(--cream);
+  border: 1px solid rgba(196,168,130,0.28);
+  border-radius: 10px; padding: 10px 34px 10px 12px;
+  position: relative;
+  animation: tnIn 0.18s ease;
+}
+@keyframes tnIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+.tn-note[data-cat="side_effect"] { border-left: 3px solid var(--rose); }
+.tn-note[data-cat="reminder"]    { border-left: 3px solid var(--tan); }
+.tn-note[data-cat="general"]     { border-left: 3px solid var(--sage); }
+.tn-note[data-cat="dosage"]      { border-left: 3px solid #6b9ecf; }
+.tn-note[data-cat="symptom"]     { border-left: 3px solid #c987b8; }
+
+.tn-note-badge {
+  display: inline-block; padding: 2px 7px;
+  border-radius: 4px; font-size: 9px; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px;
+}
+.tn-note-badge.side_effect { background: var(--rose-pale);  color: var(--terracotta); }
+.tn-note-badge.reminder    { background: #fdf3e3; color: #9b6a00; }
+.tn-note-badge.general     { background: var(--sage-pale);  color: #4a7a4c; }
+.tn-note-badge.dosage      { background: #e8f0fb; color: #2255aa; }
+.tn-note-badge.symptom     { background: #f5eafb; color: #8a3fa0; }
+.tn-note-med  { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px; }
+.tn-note-text { font-size: 13px; color: var(--text-main); line-height: 1.5; }
+.tn-note-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.tn-del {
+  position: absolute; right: 8px; top: 8px;
+  background: rgba(224,122,106,0.12); border: none;
+  border-radius: 5px; width: 21px; height: 21px;
+  cursor: pointer; font-size: 11px; font-weight: 800;
+  color: var(--terracotta); display: flex; align-items: center;
+  justify-content: center; transition: background 0.12s;
+}
+.tn-del:hover { background: var(--rose-pale); }
+.tn-empty-note {
+  text-align: center; padding: 28px 12px;
+  color: var(--text-muted); font-size: 13px; line-height: 1.7;
+}
+.tn-empty-note-icon { font-size: 26px; margin-bottom: 6px; }
+
+/* ═══════════════════════════════════
+   MODAL OVERLAY
+═══════════════════════════════════ */
+.tx-overlay {
+  position: fixed; inset: 0;
+  background: rgba(61,44,36,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 9200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.tx-overlay.open { opacity: 1; pointer-events: auto; }
+
+.tx-modal {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 530px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 72px rgba(61,44,36,0.2);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.2s;
+}
+.tx-overlay.open .tx-modal { transform: scale(1) translateY(0); }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.modal-title {
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.modal-close {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 33px; height: 33px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: var(--text-muted);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.modal-close:hover { background: var(--rose-pale); border-color: var(--rose-light); color: var(--rose); }
+
+/* Form fields */
+.f-group { margin-bottom: 16px; }
+.f-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.f-input,
+.f-select,
+.f-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--cream);
+  color: var(--text-main);
+  border: 1px solid var(--tan-light);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-family: var(--sans);
+  font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.f-input:focus,
+.f-select:focus,
+.f-textarea:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.13);
+}
+.f-textarea { resize: vertical; }
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* AI description */
+.ai-desc {
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--text-main);
+  line-height: 1.65;
+  margin-top: 8px;
+  display: none;
+}
+.ai-desc.visible { display: block; }
+.ai-loading {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+.ai-loading.visible { display: flex; }
+.ai-spin {
+  width: 14px; height: 14px;
+  border: 2px solid var(--tan-light);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: txspin 0.7s linear infinite;
+}
+@keyframes txspin { to { transform: rotate(360deg); } }
+
+/* Times */
+.times-chips {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  margin-bottom: 8px;
+}
+.t-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  border-radius: 20px;
+  padding: 5px 11px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--terracotta);
+}
+.t-chip button {
+  background: none; border: none;
+  cursor: pointer; color: var(--terracotta);
+  font-size: 14px; padding: 0; line-height: 1; opacity: 0.7;
+}
+.t-chip button:hover { opacity: 1; }
+.time-add-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.time-input {
+  flex: 1;
+  background: var(--cream);
+  border: 1px solid var(--tan-light);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text-main);
+}
+.time-input:focus { outline: none; border-color: var(--rose); }
+.time-add-btn {
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+.time-add-btn:hover { background: var(--terracotta); }
+
+/* Color swatches */
+.swatches {
+  display: flex; gap: 9px; flex-wrap: wrap;
+  margin-top: 6px;
+}
+.swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: border-color 0.12s, transform 0.12s;
+}
+.swatch.active { border-color: var(--text-main); transform: scale(1.15); }
+
+/* Modal submit */
+.f-submit {
+  width: 100%;
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.12s;
+  margin-top: 10px;
+  box-shadow: 0 4px 14px rgba(224,122,106,0.3);
+}
+.f-submit:hover { background: var(--terracotta); transform: translateY(-1px); }
+.f-submit:disabled { background: var(--tan-light); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE STRUCTURE
+═══════════════════════════════════════════════════════════ -->
+<div class="tx-app">
+
+  <!-- Header -->
+  <div class="tx-header">
+    <div class="tx-header-left">
+      <h1 class="tx-page-title">  Treatment Tracker</h1>
+      <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
+    </div>
+    <div class="tx-header-right">
+      <div class="tx-head-actions">
+        <button class="tx-add-btn" onclick="txOpenAdd()">+ Add Medication</button>
+        <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()" title="Cancer Bookmarks" aria-label="Cancer Bookmarks">
+          ⛊
+        </button>
+      </div>
+      <div class="tx-bmk-mini" id="txBookmarksCard">
+        <div class="tx-bmk-head" style="margin-bottom:8px;">
+          <div class="tx-section-title" style="font-size:16px;">Bookmarked Cancer Types</div>
+          <span class="tx-bmk-count" id="txBmkCount">0 saved</span>
+        </div>
+        <div class="tx-bmk-mini-list" id="txBmkList">
+          <div class="tx-empty" style="padding:10px 8px;">No bookmarks yet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-column layout -->
+  <div class="tx-grid">
+
+    <!-- ── Left column ── -->
+    <div>
+
+      <!-- Calendar card -->
+      <div class="tx-card" style="margin-bottom:22px;">
+        <div class="cal-head">
+          <button class="cal-nav-btn" onclick="txChangeMonth(-1)">‹</button>
+          <div class="cal-month-label" id="calLabel"></div>
+          <button class="cal-nav-btn" onclick="txChangeMonth(1)">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- ── Right column — Schedule + Notes + Notebook tabs ── -->
+    <div class="tx-card" style="padding:0;overflow:hidden;">
+
+      <!-- Tab bar -->
+      <div class="tx-tabs">
+        <button class="tx-tab-btn active" id="tabScheduleBtn" onclick="tnSwitchTab('schedule')">
+           Schedule
+        </button>
+        <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
+          ✎𓂃 Notes
+          <span class="tx-tab-badge" id="tnBadge"></span>
+        </button>
+        <button class="tx-tab-btn" id="tabNotebookBtn" onclick="tnSwitchTab('notebook')">
+          Digital Notebook
+        </button>
+      </div>
+
+      <!-- Schedule pane -->
+      <div class="tx-tab-pane active" id="paneSchedule" style="padding:20px;">
+        <div class="tx-card" style="margin-bottom:14px;">
+          <div class="meds-header">
+            <div class="tx-section-title">My Medications</div>
+            <span class="meds-count" id="medsCount" style="display:none;"></span>
+          </div>
+          <div id="medsList">
+            <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
+          </div>
+        </div>
+        <div class="checklist-day-header">
+          <div class="tx-section-title" id="chkDayTitle">Today's Schedule</div>
+        </div>
+        <div class="checklist-date-label" id="chkDateLabel"></div>
+        <div class="tx-progress-wrap" id="txProgress" style="display:none;">
+          <div class="tx-progress-bar">
+            <div class="tx-progress-fill" id="txProgressFill" style="width:0%"></div>
+          </div>
+          <div class="tx-progress-count" id="txProgressCount">0 / 0</div>
+        </div>
+        <div id="chkList">
+          <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
+        </div>
+      </div>
+
+      <!-- Notes pane -->
+      <div class="tx-tab-pane" id="paneNotes" style="padding:20px;">
+
+        <!-- Add note form -->
+        <div class="tn-form-area">
+          <span class="tn-form-date" id="tnFormDate">Notes for today</span>
+
+          <select class="tn-sel" id="tnMedSel">
+            <option value="">Day note (no specific medication)</option>
+          </select>
+
+          <div class="tn-cat-row" id="tnCatRow"></div>
+
+          <textarea class="tn-ta" id="tnText"
+            placeholder="e.g. Feeling dizzy after evening dose, reminder to take with food…"></textarea>
+
+          <button class="tn-save-btn" id="tnSaveBtn" onclick="tnSave()">Save Note</button>
+          <div class="tn-status" id="tnStatus"></div>
+        </div>
+
+        <!-- Filter row -->
+        <div class="tn-filter-row" id="tnFilterRow"></div>
+
+        <!-- Notes list -->
+        <div class="tn-list-wrap" id="tnList">
+          <div class="tn-empty-note">
+            <div class="tn-empty-note-icon">𓂃</div>
+            No notes yet for this day.
+          </div>
+        </div>
+
+      </div><!-- /paneNotes -->
+
+      <!-- Digital Notebook pane -->
+      <div class="tx-tab-pane" id="paneNotebook" style="padding:20px;">
+        <div class="tx-notes-head">
+          <div class="tx-section-title">Digital Notebook</div>
+          <span class="tx-notes-count" id="txNotesCount">0 saved</span>
+        </div>
+        <div class="tx-notes-tools">
+          <input
+            class="tx-notes-search"
+            id="txNotesSearch"
+            type="text"
+            placeholder="Search saved notes..."
+            oninput="window.txNotebookSetSearch(this.value)"
+          >
+          <div class="tx-notes-filter-row">
+            <button class="tx-notes-filter-btn active" id="txNotesFilterAll" onclick="window.txNotebookSetFilter('all')">All</button>
+            <button class="tx-notes-filter-btn" id="txNotesFilterPinned" onclick="window.txNotebookSetFilter('pinned')">Pinned</button>
+          </div>
+        </div>
+        <div class="tx-notes-list" id="txNotesList">
+          <div class="tx-empty">
+            <div class="tx-empty-icon"></div>
+            No notebook notes yet.<br>
+            Save assistant replies with the + button in the Cancer Risk chatbot.
+          </div>
+        </div>
+      </div><!-- /paneNotebook -->
+
+    </div><!-- /right -->
+
+  </div><!-- /tx-grid -->
+
+</div><!-- /tx-app -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADD / EDIT MODAL
+═══════════════════════════════════════════════════════════ -->
+<div class="tx-overlay" id="txOverlay">
+  <div class="tx-modal">
+
+    <div class="modal-header">
+      <div class="modal-title" id="modalHeading">Add Medication</div>
+      <button class="modal-close" onclick="txCloseModal()">X</button>
+    </div>
+
+    <!-- Medication name + AI lookup -->
+  <div class="f-group">
+    <label class="f-label">Medication Name *</label>
+    <div style="display:flex;gap:8px;">
+      <input type="text" class="f-input" id="fMedName"
+            placeholder="e.g. Metformin, Lisinopril, Aspirin…"
+            oninput="txDebounceLookup(this.value)" style="flex:1;">
+      <button type="button" class="time-add-btn" onclick="window.txLookupNow()" style="white-space:nowrap;">🔍 Look up</button>
+    </div>
+    <div class="ai-loading" id="aiLoading">
+      <div class="ai-spin"></div> Looking up medication…
+    </div>
+    <div class="ai-desc" id="aiDesc"></div>
+  </div>
+    <!-- Dosage + Frequency -->
+    <div class="f-row">
+      <div class="f-group">
+        <label class="f-label">Dosage</label>
+        <input type="text" class="f-input" id="fDosage" placeholder="e.g. 500 mg">
+      </div>
+      <div class="f-group">
+        <label class="f-label">Frequency</label>
+        <select class="f-select" id="fFreq">
+          <option value="daily">Daily</option>
+          <option value="twice_daily">Twice Daily</option>
+          <option value="three_times">3× Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="as_needed">As Needed</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Rem
+inder times -->
+    <div class="f-group">
+      <label class="f-label">Reminder Times</label>
+      <div class="times-chips" id="timesChips"></div>
+      <div class="time-add-row">
+        <input type="time" class="time-input" id="fTimeInput">
+        <button class="time-add-btn" onclick="txAddTime()">＋ Add</button>
+      </div>
+    </div>
+
+    <!-- Start / End dates -->
+    <div class="f-row">
+      <div class="f-group">
+        <label class="f-label">Start Date</label>
+        <input type="date" class="f-input" id="fStart">
+      </div>
+      <div class="f-group">
+        <label class="f-label">End Date (opt.)</label>
+        <input type="date" class="f-input" id="fEnd">
+      </div>
+    </div>
+
+    <!-- Colour -->
+    <div class="f-group">
+      <label class="f-label">Colour</label>
+      <div class="swatches" id="fSwatches"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="f-group">
+      <label class="f-label">Notes</label>
+      <textarea class="f-textarea" id="fNotes" rows="2"
+                placeholder="Special instructions, food restrictions, etc."></textarea>
+    </div>
+
+    <button class="f-submit" id="fSubmit" onclick="txSave()">Save Medication</button>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script type="module">
+import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+
+/* ── EXPOSE to notes script (non-module) ── */
+window._txPythonURI    = pythonURI;
+window._txFetchOptions = fetchOptions;
+
+/* ─── Constants ─────────────────────────────────────────── */
+const MONTHS  = ['January','February','March','April','May','June',
+                 'July','August','September','October','November','December'];
+const DOW_ABR = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+const PALETTE = ['#e07a6a','#c4a882','#8aaa8c','#6b9ecf',
+                 '#c987b8','#e8b86d','#937468','#b8ceb9'];
+const CANCER_BOOKMARKS_KEY = 'acsCancerBookmarks';
+const PROFILE_NOTES_KEY = 'acsProfileNotes';
+const USER_QUESTIONS_KEY = 'acsUserQuestions';
+const BOOKMARK_DESCRIPTION_FALLBACKS = {
+  small_intestine: 'A rare cancer with several subtypes including adenocarcinoma, carcinoid tumors, lymphoma, and sarcoma. Crampy abdominal pain, unexplained weight loss, and blood in the stool are main warning signs. Treatment depends on subtype and stage but often starts with surgery.',
+  anal: 'A cancer of the anal canal often linked to HPV infection. Rectal bleeding, anal pain or pressure, and a lump near the anus are common warning signs. Treatment is usually radiation plus chemotherapy.',
+  colorectal: 'One of the most common cancers in the US. Blood in stool, persistent bowel habit changes, and abdominal cramping are key warning signs. Colonoscopy can detect or prevent it early by removing polyps.',
+  'small intestine cancer': 'A rare cancer with several subtypes including adenocarcinoma, carcinoid tumors, lymphoma, and sarcoma. Crampy abdominal pain, unexplained weight loss, and blood in the stool are main warning signs. Treatment depends on subtype and stage but often starts with surgery.',
+  'anal cancer': 'A cancer of the anal canal often linked to HPV infection. Rectal bleeding, anal pain or pressure, and a lump near the anus are common warning signs. Treatment is usually radiation plus chemotherapy.',
+  'colorectal cancer': 'One of the most common cancers in the US. Blood in stool, persistent bowel habit changes, and abdominal cramping are key warning signs. Colonoscopy can detect or prevent it early by removing polyps.'
+};
+
+/* ─── State ─────────────────────────────────────────────── */
+let treatments   = [];          // active treatments for this user
+let logsCache    = {};          // { 'YYYY-MM-DD': [TreatmentLog, …] }
+let selectedDate = new Date();  // currently highlighted calendar date
+let calYear      = new Date().getFullYear();
+let calMonth     = new Date().getMonth();
+let editingId    = null;        // null = add mode, number = edit mode
+let chosenTimes  = [];          // time strings in the modal
+let chosenColor  = PALETTE[0];  // hex in the modal
+let lookupTimer  = null;
+let txNotebookSearch = '';
+let txNotebookFilter = 'all';
+
+
+/* ─── Boot ──────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadUser();
+  await loadTreatments();
+  loadCancerBookmarks();
+  loadProfileNotebook();
+  renderCalendar();
+  await renderChecklist(selectedDate);
+  buildSwatches();
+  document.getElementById('fStart').value = isoDate(new Date());
+
+   // Close modal on overlay click
+  document.getElementById('txOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('txOverlay')) txCloseModal();
+  });
+
+  // Keep bookmarks list in sync if changed in another tab/page
+  window.addEventListener('storage', (e) => {
+    if (e.key === CANCER_BOOKMARKS_KEY) loadCancerBookmarks();
+    if (e.key === PROFILE_NOTES_KEY) loadProfileNotebook();
+  });
+});
+
+window.txJumpToBookmarks = function() {
+  const card = document.getElementById('txBookmarksCard');
+  if (!card) return;
+  card.classList.toggle('open');
+};
+
+function readCancerBookmarks() {
+  const raw = localStorage.getItem(CANCER_BOOKMARKS_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function txNormalizeBookmarkLookup(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+function txBookmarkDescription(item) {
+  const desc = String(item?.description || '').trim();
+  if (desc) return desc;
+  const byId = BOOKMARK_DESCRIPTION_FALLBACKS[txNormalizeBookmarkLookup(item?.id)];
+  if (byId) return byId;
+  const byName = BOOKMARK_DESCRIPTION_FALLBACKS[txNormalizeBookmarkLookup(item?.name)];
+  if (byName) return byName;
+  return 'Description unavailable for this saved item. Re-save from Body Map to include full details.';
+}
+
+function loadCancerBookmarks() {
+  const list = document.getElementById('txBmkList');
+  const count = document.getElementById('txBmkCount');
+  if (!list || !count) return;
+
+  const bookmarks = readCancerBookmarks();
+  count.textContent = `${bookmarks.length} saved`;
+
+  if (!bookmarks.length) {
+    list.innerHTML = `
+      <div class="tx-empty" style="padding:10px 8px;">
+        No bookmarks yet.
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = bookmarks.map(item => {
+    const name = esc(item.name || item.id || 'Cancer type');
+    const tip = esc(txBookmarkDescription(item));
+    return `
+      <div class="tx-bmk-mini-item-wrap">
+        <div class="tx-bmk-mini-item" tabindex="0">${name}</div>
+        <div class="tx-bmk-mini-tip">${tip}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function readProfileNotebookNotes() {
+  const raw = localStorage.getItem(PROFILE_NOTES_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    const arr = Array.isArray(parsed) ? parsed : [];
+    return arr
+      .map(item => typeof item === 'string' ? { id: Date.now() + Math.random(), text: item, at: '', pinned: false } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .map(item => ({
+        id: Number(item.id) || Date.now() + Math.random(),
+        text: String(item.text || '').trim(),
+        at: item.at || '',
+        pinned: !!item.pinned,
+      }));
+  } catch {
+    return [];
+  }
+}
+
+function writeProfileNotebookNotes(notes) {
+  localStorage.setItem(PROFILE_NOTES_KEY, JSON.stringify(notes));
+}
+
+window.txNotebookSetSearch = function(value) {
+  txNotebookSearch = String(value || '').trim().toLowerCase();
+  loadProfileNotebook();
+};
+
+window.txNotebookSetFilter = function(filter) {
+  txNotebookFilter = filter === 'pinned' ? 'pinned' : 'all';
+  document.getElementById('txNotesFilterAll')?.classList.toggle('active', txNotebookFilter === 'all');
+  document.getElementById('txNotesFilterPinned')?.classList.toggle('active', txNotebookFilter === 'pinned');
+  loadProfileNotebook();
+};
+
+function loadProfileNotebook() {
+  const list = document.getElementById('txNotesList');
+  const count = document.getElementById('txNotesCount');
+  if (!list || !count) return;
+
+  const notes = readProfileNotebookNotes().sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return new Date(b.at || 0).getTime() - new Date(a.at || 0).getTime();
+  });
+  const filtered = notes.filter(n => {
+    if (txNotebookFilter === 'pinned' && !n.pinned) return false;
+    if (txNotebookSearch && !n.text.toLowerCase().includes(txNotebookSearch)) return false;
+    return true;
+  });
+  count.textContent = `${notes.length} saved`;
+
+  if (!notes.length) {
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No notebook notes yet.<br>
+        Save assistant replies with the + button in the Cancer Risk chatbot.
+      </div>`;
+    return;
+  }
+
+  if (!filtered.length) {
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No notes match your search/filter.
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(n => {
+    const id = Number(n.id) || Date.now();
+    const ts = n.at ? new Date(n.at).toLocaleString('en-US') : 'Saved note';
+    return `
+      <div class="tx-note-item">
+        <div class="tx-note-item-top">
+          <div class="tx-note-time">${esc(ts)}</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <button class="tx-note-pin ${n.pinned ? 'pinned' : ''}" onclick="window.txToggleNotebookPin(${id})">${n.pinned ? 'Pinned' : 'Pin'}</button>
+            <button class="tx-note-toq" onclick="window.txAddNotebookToQuestions(${id}, this)">Add to Doctor Questions</button>
+            <button class="tx-note-remove" onclick="window.txRemoveNotebookNote(${id})">Remove</button>
+          </div>
+        </div>
+        <div class="tx-note-text">${esc(n.text || '')}</div>
+      </div>`;
+  }).join('');
+}
+
+window.txToggleNotebookPin = function(noteId) {
+  const id = Number(noteId);
+  const notes = readProfileNotebookNotes().map(n => Number(n.id) === id ? { ...n, pinned: !n.pinned } : n);
+  writeProfileNotebookNotes(notes);
+  loadProfileNotebook();
+};
+
+window.txAddNotebookToQuestions = function(noteId, btn) {
+  const id = Number(noteId);
+  const note = readProfileNotebookNotes().find(n => Number(n.id) === id);
+  if (!note || !note.text) return;
+
+  let existing = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(USER_QUESTIONS_KEY) || '[]');
+    existing = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    existing = [];
+  }
+
+  const next = [{ text: note.text, at: new Date().toISOString() }, ...existing]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => String(other.text || '').toLowerCase() === String(item.text || '').toLowerCase()))
+    .slice(0, 20);
+  localStorage.setItem(USER_QUESTIONS_KEY, JSON.stringify(next));
+
+  if (btn) {
+    btn.classList.add('added');
+    btn.textContent = 'Added';
+  }
+};
+
+window.txRemoveNotebookNote = function(noteId) {
+  const id = Number(noteId);
+  const notes = readProfileNotebookNotes().filter(n => Number(n.id) !== id);
+  writeProfileNotebookNotes(notes);
+  loadProfileNotebook();
+};
+
+/* ─── User info ─────────────────────────────────────────── */
+async function loadUser() {
+  try {
+    const r = await fetch(`${pythonURI}/api/id`, fetchOptions);
+    if (r.ok) {
+      const d = await r.json();
+      document.getElementById('txUserLine').textContent =
+        `${d.name}'s personal treatment plan`;
+    }
+  } catch (_) {}
+}
+
+/* ─── Treatments ────────────────────────────────────────── */
+async function loadTreatments() {
+  try {
+    const r = await fetch(`${pythonURI}/api/treatments`, fetchOptions);
+    treatments = r.ok ? await r.json() : [];
+  } catch (_) { treatments = []; }
+  window._txTreatments = treatments;
+  renderMedsList();
+}
+
+function renderMedsList() {
+  const el     = document.getElementById('medsList');
+  const badge  = document.getElementById('medsCount');
+
+  if (!treatments.length) {
+    badge.style.display = 'none';
+    el.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No medications added yet.<br>
+        Click <strong>+ Add Medication</strong> to start tracking.
+      </div>`;
+    return;
+  }
+
+  badge.style.display = 'inline-block';
+  badge.textContent   = `${treatments.length} active`;
+
+  el.innerHTML = treatments.map(m => `
+    <div class="med-item">
+      <div class="med-color-strip" style="background:${m.color}"></div>
+      <div class="med-info">
+        <div class="med-name">${esc(m.medication_name)}</div>
+        <div class="med-detail">
+          ${m.dosage ? esc(m.dosage) + ' &middot; ' : ''}
+          ${fmtFreq(m.frequency)}
+          ${m.times && m.times.length ? ' &middot; ' + m.times.map(fmtTime).join(', ') : ''}
+        </div>
+      </div>
+      <div class="med-actions">
+        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})">🖋</button>
+        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ─── Calendar ──────────────────────────────────────────── */
+function renderCalendar() {
+  document.getElementById('calLabel').textContent = `${MONTHS[calMonth]} ${calYear}`;
+
+  const grid    = document.getElementById('calGrid');
+  const today   = new Date();
+  const firstDow = new Date(calYear, calMonth, 1).getDay();
+  const daysInM  = new Date(calYear, calMonth + 1, 0).getDate();
+
+  // Build header row
+  let html = DOW_ABR.map(d =>
+    `<div class="cal-dow">${d}</div>`).join('');
+
+  // Empty cells before first day
+  for (let i = 0; i < firstDow; i++) {
+    html += `<div class="cal-cell empty"></div>`;
+  }
+
+  for (let d = 1; d <= daysInM; d++) {
+    const dt     = new Date(calYear, calMonth, d);
+    const isT    = dt.toDateString() === today.toDateString();
+    const isSel  = dt.toDateString() === selectedDate.toDateString();
+    const meds   = activeMedsForDate(dt);
+    const cls    = ['cal-cell', isT && 'today', isSel && 'selected']
+                     .filter(Boolean).join(' ');
+
+    const dots = meds.slice(0, 5).map(m =>
+      `<span style="background:${m.color}"></span>`).join('');
+
+    html += `
+      <div class="${cls}" onclick="window.txSelectDate(${calYear},${calMonth},${d})">
+        <span class="cal-num">${d}</span>
+        <div class="cal-dots">${dots}</div>
+      </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function activeMedsForDate(dt) {
+  const ms = dt.getTime();
+  return treatments.filter(m => {
+    const s = m.start_date ? new Date(m.start_date + 'T00:00:00').getTime() : 0;
+    const e = m.end_date   ? new Date(m.end_date   + 'T00:00:00').getTime() : Infinity;
+    if (ms < s || ms > e) return false;
+
+    // Frequency gating
+    if (m.frequency === 'weekly') {
+      // Only show on the same day of week as the start date
+      const startDow = new Date(m.start_date + 'T00:00:00').getDay();
+      return dt.getDay() === startDow;
+    }
+
+    if (m.frequency === 'as_needed') {
+      // Only show if a log entry exists for this day — don't pre-populate calendar
+      return false;
+    }
+
+    // daily, twice_daily, three_times — show every day in range
+    return true;
+  });
+}
+
+/* ─── Checklist ─────────────────────────────────────────── */
+async function renderChecklist(dt) {
+  const ds     = isoDate(dt);
+  const today  = new Date();
+  const isT    = dt.toDateString() === today.toDateString();
+
+   // Title + date label
+  document.getElementById('chkDayTitle').textContent =
+    isT ? "Today's Schedule"
+        : `Schedule — ${dt.toLocaleDateString('en-US',{month:'long',day:'numeric'})}`;
+  document.getElementById('chkDateLabel').textContent =
+    dt.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  const meds = activeMedsForDate(dt);
+  const prog = document.getElementById('txProgress');
+  const list = document.getElementById('chkList');
+
+  if (!meds.length) {
+    prog.style.display = 'none';
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"> 𓆉 𓆝 𓆡</div>
+        No medications scheduled for this day.
+      </div>`;
+    return;
+  }
+
+    // Fetch logs for this date (cached)
+  if (!logsCache[ds]) {
+    try {
+      const r = await fetch(`${pythonURI}/api/treatment/log?date=${ds}`, fetchOptions);
+      logsCache[ds] = r.ok ? await r.json() : [];
+    } catch (_) { logsCache[ds] = []; }
+  }
+  const logs = logsCache[ds];
+
+  // Flatten (med × time) → items
+  const items = [];
+  meds.forEach(m => {
+    const times = m.times && m.times.length ? m.times : ['anytime'];
+    times.forEach(ts => {
+      const log = logs.find(l => l.treatment_id === m.id && l.time_slot === ts);
+      items.push({ m, ts, taken: log?.taken ?? false });
+    });
+  });
+
+  // Sort by time
+  items.sort((a, b) => {
+    if (a.ts === 'anytime') return 1;
+    if (b.ts === 'anytime') return -1;
+    return a.ts.localeCompare(b.ts);
+  });
+
+  const takenN = items.filter(i => i.taken).length;
+  prog.style.display = 'flex';
+  document.getElementById('txProgressFill').style.width =
+    items.length ? `${(takenN / items.length) * 100}%` : '0%';
+  document.getElementById('txProgressCount').textContent =
+    `${takenN} / ${items.length}`;
+
+  list.innerHTML = items.map((item, idx) => `
+    <div class="chk-item ${item.taken ? 'taken' : ''}"
+         onclick="window.txToggle(${idx})"
+         data-idx="${idx}">
+      <div class="chk-box">${item.taken ? '' : ''}</div>
+      <div class="chk-info">
+        <div class="chk-name">${esc(item.m.medication_name)}</div>
+        <div class="chk-time">${item.m.dosage ? esc(item.m.dosage) + ' · ' : ''}${fmtTime(item.ts)}</div>
+      </div>
+      <div class="chk-dot" style="background:${item.m.color}"></div>
+    </div>`).join('');
+
+// Store items for toggle handler
+  window._txItems = items;
+  window._txDate  = ds;
+}
+
+/* ─── Modal helpers ─────────────────────────────────────── */
+function buildSwatches() {
+  document.getElementById('fSwatches').innerHTML =
+    PALETTE.map(c => `
+      <div class="swatch ${c === chosenColor ? 'active' : ''}"
+           style="background:${c}"
+           data-c="${c}"
+           onclick="window.txPickColor('${c}')"></div>`).join('');
+}
+
+function resetModal() {
+  chosenTimes = [];
+  chosenColor = PALETTE[0];
+  document.getElementById('fMedName').value = '';
+  document.getElementById('fDosage').value  = '';
+  document.getElementById('fFreq').value    = 'daily';
+  document.getElementById('fNotes').value   = '';
+  document.getElementById('fEnd').value     = '';
+  document.getElementById('fStart').value   = isoDate(new Date());
+  document.getElementById('aiDesc').textContent = '';
+  document.getElementById('aiDesc').classList.remove('visible');
+  document.getElementById('aiLoading').classList.remove('visible');
+  document.getElementById('timesChips').innerHTML = '';
+  buildSwatches();
+}
+
+function renderTimesChips() {
+  document.getElementById('timesChips').innerHTML =
+    chosenTimes.map((t, i) => `
+      <div class="t-chip">
+        ${fmtTime(t)}
+        <button onclick="window.txRemoveTime(${i})"></button>
+      </div>`).join('');
+}
+
+/* ─── Global window API ──────────────────────────────────── */
+window.txOpenAdd = function () {
+  editingId = null;
+  resetModal();
+  document.getElementById('modalHeading').textContent = 'Add Medication';
+  document.getElementById('txOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('fMedName').focus(), 100);
+};
+
+window.txOpenEdit = function (id) {
+  const m = treatments.find(t => t.id === id);
+  if (!m) return;
+  editingId = id;
+  resetModal();
+
+  document.getElementById('modalHeading').textContent = 'Edit Medication';
+  document.getElementById('fMedName').value = m.medication_name;
+  document.getElementById('fDosage').value  = m.dosage  || '';
+  document.getElementById('fFreq').value    = m.frequency || 'daily';
+  document.getElementById('fNotes').value   = m.notes   || '';
+  document.getElementById('fStart').value   = m.start_date || isoDate(new Date());
+  document.getElementById('fEnd').value     = m.end_date   || '';
+
+  chosenTimes = [...(m.times || [])];
+  chosenColor = m.color || PALETTE[0];
+  renderTimesChips();
+  buildSwatches();
+
+  if (m.ai_description) {
+    const box = document.getElementById('aiDesc');
+    box.textContent = m.ai_description;
+    box.classList.add('visible');
+  }
+
+  document.getElementById('txOverlay').classList.add('open');
+};
+
+window.txCloseModal = function () {
+  document.getElementById('txOverlay').classList.remove('open');
+};
+
+window.txPickColor = function (c) {
+  chosenColor = c;
+  buildSwatches();
+};
+
+window.txAddTime = function () {
+  const val = document.getElementById('fTimeInput').value;
+  if (!val || chosenTimes.includes(val)) return;
+  chosenTimes.push(val);
+  chosenTimes.sort();
+  renderTimesChips();
+  document.getElementById('fTimeInput').value = '';
+};
+
+window.txRemoveTime = function (idx) {
+  chosenTimes.splice(idx, 1);
+  renderTimesChips();
+};
+
+window.txSelectDate = function (y, mo, d) {
+  selectedDate = new Date(y, mo, d);
+  renderCalendar();
+  renderChecklist(selectedDate);
+  /* notify notes tab */
+  window._tnDateChanged && window._tnDateChanged(selectedDate);
+};
+
+window.txChangeMonth = function (dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+};
+
+window.txToggle = async function (idx) {
+  const item = window._txItems[idx];
+  const ds   = window._txDate;
+  const nowTaken = !item.taken;
+
+  try {
+    const r = await fetch(`${pythonURI}/api/treatment/log`, {
+      ...fetchOptions,
+      method: 'POST',
+      body: JSON.stringify({
+        treatment_id: item.m.id,
+        date:      ds,
+        time_slot: item.ts,
+        taken:     nowTaken,
+      }),
+    });
+    if (r.ok) {
+      delete logsCache[ds];
+      await renderChecklist(selectedDate);
+      renderCalendar();
+    }
+  } catch (e) { console.error(e); }
+};
+
+window.txSave = async function () {
+  const name = document.getElementById('fMedName').value.trim();
+  if (!name) {
+    document.getElementById('fMedName').focus();
+    return;
+  }
+
+  const btn = document.getElementById('fSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  const aiText = document.getElementById('aiDesc').textContent || '';
+  const body = {
+    medication_name: name,
+    dosage:         document.getElementById('fDosage').value.trim(),
+    frequency:      document.getElementById('fFreq').value,
+    times:          chosenTimes,
+    color:          chosenColor,
+    notes:          document.getElementById('fNotes').value.trim(),
+    ai_description: aiText,
+    start_date:     document.getElementById('fStart').value || isoDate(new Date()),
+    end_date:       document.getElementById('fEnd').value   || null,
+  };
+
+  try {
+    const method = editingId ? 'PUT' : 'POST';
+    if (editingId) body.id = editingId;
+
+    const r = await fetch(`${pythonURI}/api/treatments`, {
+      ...fetchOptions, method,
+      body: JSON.stringify(body),
+    });
+
+    if (r.ok) {
+      txCloseModal();
+      logsCache = {};
+      await loadTreatments();
+      renderCalendar();
+      await renderChecklist(selectedDate);
+    } else {
+      alert('Could not save medication. Please try again.');
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Save Medication';
+};
+
+window.txDelete = async function (id) {
+  const med = treatments.find(t => t.id === id);
+  if (!med) return;
+  if (!confirm(`Remove "${med.medication_name}" from your treatment plan?`)) return;
+
+  try {
+    const r = await fetch(`${pythonURI}/api/treatments`, {
+      ...fetchOptions, method: 'DELETE',
+      body: JSON.stringify({ id }),
+    });
+    if (r.ok) {
+      logsCache = {};
+      await loadTreatments();
+      renderCalendar();
+      await renderChecklist(selectedDate);
+    }
+  } catch (e) { console.error(e); }
+};
+
+/* ─── AI Medication Lookup ──────────────────────────────── */
+window.txLookupNow = function () {
+  const val = document.getElementById('fMedName').value.trim();
+  if (!val || val.length < 2) return;
+  doLookup(val);
+};
+
+async function doLookup(name) {
+  const box  = document.getElementById('aiDesc');
+  const spin = document.getElementById('aiLoading');
+  spin.classList.add('visible');
+  box.classList.remove('visible');
+
+  try {
+    const r = await fetch(
+      `${pythonURI}/api/medication/info?name=${encodeURIComponent(name)}`,
+      fetchOptions
+    );
+    if (r.ok) {
+      const d = await r.json();
+      box.textContent = d.description || '';
+      if (d.description) box.classList.add('visible');
+    }
+  } catch (_) {
+    box.textContent = 'Unable to fetch medication information.';
+    box.classList.add('visible');
+  }
+
+  spin.classList.remove('visible');
+}
+
+/* ─── Utilities ─────────────────────────────────────────── */
+function isoDate(dt) {
+  return `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}`;
+}
+function pad(n) { return String(n).padStart(2,'0'); }
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtTime(t) {
+  if (!t || t === 'anytime') return 'As Needed';
+  const [h, m] = t.split(':').map(Number);
+  return `${h % 12 || 12}:${pad(m)} ${h >= 12 ? 'PM' : 'AM'}`;
+}
+function fmtFreq(f) {
+  return { daily:'Daily', twice_daily:'Twice Daily', three_times:'3× Daily',
+           weekly:'Weekly', as_needed:'As Needed' }[f] || f;
+}
+
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TREATMENT NOTES — inline tab script
+     Uses window._txPythonURI + window._txFetchOptions
+     exposed by the module script above.
+═══════════════════════════════════════════════════════════ -->
+<script>
+const TN_CATS = [
+  { key:'general',     label:'General'     },
+  { key:'side_effect', label:'Side Effect' },
+  { key:'reminder',    label:'Reminder'    },
+  { key:'dosage',      label:'Dosage'      },
+  { key:'symptom',     label:'Symptom'     },
+];
+
+let _tnDate    = _tnIsoToday();
+let _tnNotes   = [];
+let _tnCat     = 'general';
+let _tnFilter  = 'all';
+let _tnInited  = false;
+
+/* ── Tab switching ── */
+window.tnSwitchTab = function(tab) {
+  document.getElementById('tabScheduleBtn').classList.toggle('active', tab === 'schedule');
+  document.getElementById('tabNotesBtn').classList.toggle('active', tab === 'notes');
+  document.getElementById('tabNotebookBtn').classList.toggle('active', tab === 'notebook');
+  document.getElementById('paneSchedule').classList.toggle('active', tab === 'schedule');
+  document.getElementById('paneNotes').classList.toggle('active', tab === 'notes');
+  document.getElementById('paneNotebook').classList.toggle('active', tab === 'notebook');
+
+  if (tab === 'notes') {
+    _tnInited = true;
+    _tnRefreshMeds();
+    _tnBuildCats();
+    _tnBuildFilters();
+    _tnLoad();
+  }
+
+  if (tab === 'notebook') {
+    loadProfileNotebook();
+  }
+};
+
+/* ── Called by the module script when the calendar date changes ── */
+window._tnDateChanged = function(dt) {
+  _tnDate = _tnIsoFrom(dt);
+  const label = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const el = document.getElementById('tnFormDate');
+  if (el) el.textContent = 'Notes for ' + label;
+  if (_tnInited) _tnLoad();
+  _tnSilentBadge();
+};
+
+/* ── Medication dropdown ── */
+function _tnRefreshMeds() {
+  const sel  = document.getElementById('tnMedSel');
+  const meds = window._txTreatments || [];
+  sel.innerHTML = '<option value="">Day note (no specific medication)</option>';
+  meds.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m.id;
+    o.textContent = m.medication_name + (m.dosage ? ' (' + m.dosage + ')' : '');
+    sel.appendChild(o);
+  });
+}
+
+/* ── Category chips ── */
+function _tnBuildCats() {
+  document.getElementById('tnCatRow').innerHTML = TN_CATS.map(c =>
+    `<div class="tn-cat-chip${c.key === _tnCat ? ' active' : ''}"
+          onclick="_tnPickCat('${c.key}')">${c.label}</div>`
+  ).join('');
+}
+window._tnPickCat = function(key) { _tnCat = key; _tnBuildCats(); };
+
+/* ── Filter buttons ── */
+function _tnBuildFilters() {
+  const opts = [{ key:'all', label:'All' }, ...TN_CATS];
+  document.getElementById('tnFilterRow').innerHTML = opts.map(c =>
+    `<button class="tn-f-btn${c.key === _tnFilter ? ' active' : ''}"
+             onclick="_tnSetFilter('${c.key}')">${c.label}</button>`
+  ).join('');
+}
+window._tnSetFilter = function(key) { _tnFilter = key; _tnBuildFilters(); _tnRender(); };
+
+/* ── Fetch notes ── */
+function _tnApi() {
+  return window._txPythonURI + '/api/treatment/notes';
+}
+function _tnFetchOpts(extra) {
+  const base = window._txFetchOptions;
+  return Object.assign({}, base, extra);
+}
+
+async function _tnLoad() {
+  document.getElementById('tnList').innerHTML =
+    '<div class="tn-empty-note"><div class="tn-empty-note-icon"></div>Loading...</div>';
+  try {
+    const r = await fetch(`${_tnApi()}?date=${_tnDate}`,
+                          _tnFetchOpts({ method:'GET' }));
+    _tnNotes = r.ok ? await r.json() : [];
+  } catch(_) { _tnNotes = []; }
+  _tnUpdateBadge();
+  _tnRender();
+}
+
+async function _tnSilentBadge() {
+  try {
+    const r = await fetch(`${_tnApi()}?date=${_tnDate}`,
+                          _tnFetchOpts({ method:'GET' }));
+    const notes = r.ok ? await r.json() : [];
+    _tnNotes = notes;
+    _tnUpdateBadge();
+  } catch(_) {}
+}
+
+/* ── Render ── */
+function _tnRender() {
+  const list = document.getElementById('tnList');
+  const meds = window._txTreatments || [];
+  let shown  = _tnFilter === 'all' ? _tnNotes : _tnNotes.filter(n => n.category === _tnFilter);
+
+  if (!shown.length) {
+    list.innerHTML = `<div class="tn-empty-note"><div class="tn-empty-note-icon"></div>
+      No${_tnFilter !== 'all' ? ' ' + _tnFilter.replace('_',' ') : ''} notes for this day yet.</div>`;
+    return;
+  }
+
+  list.innerHTML = shown.map(n => {
+    const med = meds.find(m => m.id === n.treatment_id);
+    const cat = TN_CATS.find(c => c.key === n.category) || TN_CATS[0];
+    const raw = n.created_at || '';
+    const ts  = raw ? new Date(raw.endsWith('Z') ? raw : raw + 'Z')
+                        .toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : '';
+    return `
+      <div class="tn-note" data-cat="${n.category||'general'}">
+        <span class="tn-note-badge ${n.category||'general'}">${cat.label}</span>
+        ${med ? `<div class="tn-note-med">${_tnEsc(med.medication_name)}</div>` : ''}
+        <div class="tn-note-text">${_tnEsc(n.content)}</div>
+        ${ts ? `<div class="tn-note-time">${ts}</div>` : ''}
+        <button class="tn-del" onclick="_tnDel(${n.id})" title="Delete note">x</button>
+      </div>`;
+  }).join('');
+}
+
+/* ── Save ── */
+window.tnSave = async function() {
+  const content = document.getElementById('tnText').value.trim();
+  const status  = document.getElementById('tnStatus');
+  const btn     = document.getElementById('tnSaveBtn');
+
+  if (!content) {
+    document.getElementById('tnText').focus();
+    status.textContent = 'Please write something first.';
+    status.className = 'tn-status err';
+    return;
+  }
+
+  const tid = document.getElementById('tnMedSel').value;
+  btn.disabled = true; btn.textContent = 'Saving…';
+  status.textContent = ''; status.className = 'tn-status';
+
+  try {
+    const r = await fetch(_tnApi(), _tnFetchOpts({
+      method: 'POST',
+      body: JSON.stringify({
+        content,
+        date:         _tnDate,
+        treatment_id: tid ? parseInt(tid) : null,
+        category:     _tnCat,
+      }),
+    }));
+
+    if (r.ok) {
+      document.getElementById('tnText').value = '';
+      status.textContent = 'Note saved!';
+      status.className = 'tn-status';
+      await _tnLoad();
+      setTimeout(() => { status.textContent = ''; }, 2500);
+    } else {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || 'Server ' + r.status);
+    }
+  } catch(e) {
+    status.textContent = 'Error: ' + e.message;
+    status.className = 'tn-status err';
+  }
+
+  btn.disabled = false; btn.textContent = 'Save Note';
+};
+
+/* ── Delete ── */
+window._tnDel = async function(id) {
+  if (!confirm('Delete this note?')) return;
+  try {
+    const r = await fetch(`${_tnApi()}/${id}`, _tnFetchOpts({ method:'DELETE' }));
+    if (r.ok) await _tnLoad();
+  } catch(_) {}
+};
+
+/* ── Badge ── */
+function _tnUpdateBadge() {
+  const b = document.getElementById('tnBadge');
+  if (!b) return;
+  if (_tnNotes.length) { b.textContent = _tnNotes.length; b.classList.add('show'); }
+  else                 { b.classList.remove('show'); }
+}
+
+/* ── Utilities ── */
+function _tnIsoToday() { return _tnIsoFrom(new Date()); }
+function _tnIsoFrom(dt) {
+  const p = n => String(n).padStart(2,'0');
+  return `${dt.getFullYear()}-${p(dt.getMonth()+1)}-${p(dt.getDate())}`;
+}
+function _tnEsc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Init: silent badge load for today ── */
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(_tnSilentBadge, 2000);
+});
+</script>
+
+{{ content }}

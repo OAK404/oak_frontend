@@ -1,0 +1,27 @@
+// ============================================================
+// ACS CANCER AWARENESS SITE — MAIN SCSS ENTRY POINT
+// _sass/minima/custom-styles.scss
+//
+// Import order matters:
+//   1. Color map (variables) first
+//   2. ACS theme (resets, global overrides)
+//   3. Layout pieces (nav, footer)
+//   4. Keep login form styles (auth system preserved)
+// ============================================================
+
+// 1. Variables & color map
+@import "root-color-map";
+
+// 2. Core ACS theme — replaces open-coding/main
+@import "acs/theme";
+
+// 3. Nav & footer layout
+@import "nav";
+@import "footer";
+
+// 4. Preserve login/auth styles
+@import "acs/login";
+
+// 5. Preserve lessonbase for any utility classes still used
+//    (comment out if you've fully removed those pages)
+// @import "lessonbase";
