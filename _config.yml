@@ -19,7 +19,7 @@ description: "Class of 2026"
 owner_name: Not_Found
 github_username: anwitabandaru-gif 
 github_repo: "oak_frontend" 
-baseurl: "" 
+baseurl: "/oak_frontend" 
 future: true
 
 # Build settings
