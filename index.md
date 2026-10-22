@@ -8,18 +8,18 @@ show_reading_time: false
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
   :root {
-    --ink:       #3d2c24;
-    --ink-2:     #fff9f3;
-    --ink-3:     #ecddd0;
-    --ink-4:     #f5ede3;
-    --rose:      #e07a6a;
-    --rose-deep: #c45e4a;
-    --sage:      #8aaa8c;
+    --ink:       #03045e;
+    --ink-2:     #90e0ef;
+    --ink-3:     #ade8f4;
+    --ink-4:     #caf0f8;
+    --rose:      #00b4d8;
+    --rose-deep: #0077b6;
+    --sage:      #eac8ec;
     --sage-pale: #eaf1ea;
-    --orange:    #d4845a;
-    --tan:       #c4a882;
+    --orange:    #bfacdc;
+    --tan:       #a09688;
     --paper:     #fdf6ee;
-    --muted:     #937468;
+    --muted:     #023e8a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -241,11 +241,12 @@ show_reading_time: false
 
   <!-- HERO -->
   <section class="cf-hero" aria-labelledby="hero-heading">
-    <p class="cf-hero-eyebrow">American Cancer Society · 2026 Report</p>
+    <p class="cf-hero-eyebrow">American Cancer Society · 2026-2027</p>
     <h1 id="hero-heading">The State<br>of <em>Cancer</em><br>in America</h1>
     <p class="cf-hero-sub">Every year, millions of Americans face a diagnosis. Understanding the numbers is the first step toward changing them.</p>
-    <p class="cf-hero-source">Data · Cancer Facts &amp; Figures 2026 · ACS Surveillance Research</p>
   </section>
+
+ <!----------------------------------------END OF HEADER-------------------------------------------------------------------->
 
   <!-- KEY NUMBERS -->
   <section class="cf-section alt" aria-labelledby="numbers-heading">
