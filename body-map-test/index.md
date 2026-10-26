@@ -12,19 +12,19 @@ show_reading_time: false
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 #body-map-root {
-  --cream:      #fdf6ee;
-  --warm-white: #fff9f3;
-  --rose:       #e07a6a;
-  --rose-light: #f2b5ab;
-  --rose-pale:  #fce9e6;
-  --terra:      #c45e4a;
-  --sage:       #8aaa8c;
+  --cream:      #03045e;                       
+  --warm-white: #90e0ef;
+  --rose:       #ade8f4;
+  --rose-light: #caf0f8;
+  --rose-pale:  #00b4d8;
+  --terra:      #0077b6;
+  --sage:       #eac8ec;
   --sage-pale:  #eaf1ea;
-  --tan:        #c4a882;
-  --tan-light:  #e8d9c4;
-  --brown:      #6b4c3b;
-  --text:       #3d2c24;
-  --muted:      #937468;
+  --tan:        #bfacdc;
+  --tan-light:  #1f1e1c;
+  --brown:      #fdf6ee;
+  --text:       #023e8a;
+  --muted:      #03045e;
   --hero-title-color: #fff;
   --hero-label-color: rgba(255,255,255,0.4);
   --border:     rgba(196,168,130,0.3);
