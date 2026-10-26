@@ -245,7 +245,7 @@ show_reading_time: false
 
   <!-- HERO -->
   <section class="cf-hero" aria-labelledby="hero-heading">
-    <p class="cf-hero-eyebrow">American Cancer Society · 2026-2027</p>
+    <p class="cf-hero-eyebrow">Oncology and Kids · 2026-2027</p>
     <h1 id="hero-heading">The State<br>of <em>Cancer</em><br>in America</h1>
     <p class="cf-hero-sub">Every year, millions of Americans face a diagnosis. Understanding the numbers is the first step toward changing them.</p>
   </section>
@@ -367,7 +367,7 @@ show_reading_time: false
 
   <!-- SCREENING -->
   <section class="cf-section" aria-labelledby="screening-heading">
-    <p class="cf-section-label">Early Detection · ACS Guidelines</p>
+    <p class="cf-section-label">Early Detection · OAK Guidelines</p>
     <h2 class="cf-progress-headline" id="screening-heading">Screening saves lives.<br>Know your <span>schedule</span>.</h2>
     <div class="cf-screening-grid" role="list" aria-label="Cancer screening recommendations">
       <div class="cf-screen-card cf-animate" role="listitem" tabindex="0"><span class="cf-screen-icon" aria-hidden="true"></span><div class="cf-screen-type">Breast</div><div class="cf-screen-age">Start at 45</div><div class="cf-screen-detail">Annual mammography. Option to begin at 40.</div></div>
