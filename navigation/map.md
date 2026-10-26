@@ -1,8 +1,7 @@
 ---
 layout: opencs
-title: Body Map
-permalink: /map/
-comments: true
+hide: true
+show_reading_time: false
 ---
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,19 +12,21 @@ comments: true
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 #body-map-root {
-  --cream:      #fdf6ee;
-  --warm-white: #fff9f3;
-  --rose:       #e07a6a;
-  --rose-light: #f2b5ab;
-  --rose-pale:  #fce9e6;
-  --terra:      #c45e4a;
-  --sage:       #8aaa8c;
+  --cream:      #03045e;                       
+  --warm-white: #90e0ef;
+  --rose:       #ade8f4;
+  --rose-light: #caf0f8;
+  --rose-pale:  #00b4d8;
+  --terra:      #0077b6;
+  --sage:       #eac8ec;
   --sage-pale:  #eaf1ea;
-  --tan:        #c4a882;
-  --tan-light:  #e8d9c4;
-  --brown:      #6b4c3b;
-  --text:       #3d2c24;
-  --muted:      #937468;
+  --tan:        #bfacdc;
+  --tan-light:  #1f1e1c;
+  --brown:      #fdf6ee;
+  --text:       #023e8a;
+  --muted:      #03045e;
+  --hero-title-color: #fff;
+  --hero-label-color: rgba(255,255,255,0.4);
   --border:     rgba(196,168,130,0.3);
   --serif:      'Cormorant Garamond', Georgia, serif;
   --sans:       'Nunito', system-ui, sans-serif;
@@ -67,13 +68,13 @@ comments: true
 #body-map-root .hero-title {
   font-family: var(--serif);
   font-size: clamp(32px, 4.5vw, 58px);
-  font-weight: 700; line-height: 1.08; color: #fff;
+  font-weight: 700; line-height: 1.08; color: var(--hero-title-color);
   letter-spacing: -0.3px;
 }
 #body-map-root .hero-title em { font-style: italic; color: var(--rose-light); }
 #body-map-root .hero-sub {
   margin-top: 14px; font-size: 15px;
-  color: rgba(255,255,255,0.55); line-height: 1.7;
+  color: #000; line-height: 1.7;
   max-width: 500px;
 }
 #body-map-root .hero-stats {
@@ -85,7 +86,7 @@ comments: true
 }
 #body-map-root .hstat-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
-  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  text-transform: uppercase; color: var(--hero-label-color);
   margin-top: 3px;
 }
 #body-map-root .hero-cta {
@@ -99,6 +100,19 @@ comments: true
 }
 #body-map-root .hero-cta:hover { background: var(--terra); transform: translateY(-2px); }
 #body-map-root .hero-cta svg { width: 13px; height: 13px; }
+#body-map-root .hero-cta-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#body-map-root .hero-cta-secondary {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.28);
+  box-shadow: none;
+}
+#body-map-root .hero-cta-secondary:hover {
+  background: rgba(255,255,255,0.16);
+}
 
 /* ── MAIN LAYOUT ─────────────────────────────────────── */
 #body-map-root .main-section {
@@ -108,6 +122,11 @@ comments: true
 #body-map-root .gender-row {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
+}
+#body-map-root .gender-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 #body-map-root .section-eyebrow {
   font-family: var(--sans); font-size: 11px; font-weight: 600;
@@ -253,6 +272,11 @@ comments: true
 #body-map-root .cancer-row {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
 }
+#body-map-root .cancer-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 #body-map-root .cancer-name-link {
   font-size: 13px; font-weight: 700; color: var(--text);
   text-decoration: none; line-height: 1.3; transition: color 0.15s;
@@ -265,6 +289,51 @@ comments: true
 }
 #body-map-root .cancer-item:hover .cancer-arrow,
 #body-map-root .cancer-item.open .cancer-arrow { transform: translateX(4px); color: var(--rose); }
+#body-map-root .bookmark-icon-btn {
+  border: 1px solid rgba(196,168,130,0.35);
+  background: #fff;
+  color: var(--muted);
+  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(4px);
+  transition: all 0.15s;
+}
+#body-map-root .bookmark-icon-btn::before {
+  content: '☆';
+  font-size: 13px;
+  line-height: 1;
+}
+#body-map-root .bookmark-icon-btn:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .bookmark-icon-btn.active {
+  color: #fff;
+  border-color: var(--rose);
+  background: var(--rose);
+}
+#body-map-root .bookmark-icon-btn.active::before {
+  content: '★';
+}
+#body-map-root .cancer-item:hover .bookmark-icon-btn,
+#body-map-root .cancer-item:focus-within .bookmark-icon-btn,
+#body-map-root .cancer-item.open .bookmark-icon-btn,
+#body-map-root .bookmark-icon-btn.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
 #body-map-root .cancer-tags {
   display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px;
 }
@@ -305,19 +374,18 @@ comments: true
 }
 #body-map-root .cat-heading {
   font-family: var(--serif); font-size: clamp(28px,3vw,42px);
-  font-weight: 700; color: var(--text); margin-bottom: 6px; padding-left: 46px;
+  font-weight: 700; color: var(--text); margin-bottom: 6px;
 }
 #body-map-root .cat-sub {
-  font-size: 14px; color: var(--muted); margin-bottom: 36px; line-height: 1.6; padding-left: 46px;
+  font-size: 14px; color: var(--muted); margin-bottom: 36px; line-height: 1.6;
 }
 #body-map-root .cat-divider {
-  height: 1px; background: var(--border); margin-bottom: 36px; padding-left: 66px;
+  height: 1px; background: var(--border); margin-bottom: 36px;
 }
 #body-map-root .sys-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px; 
-  padding-left: 50px;
+  gap: 16px;
 }
 #body-map-root .sys-card {
   background: var(--warm-white);
@@ -360,14 +428,967 @@ comments: true
 }
 #body-map-root .fade-in { animation: fadeUp 0.5s ease both; }
 
+/* ── SEARCH BAR ──────────────────────────────────────────── */
+#body-map-root .search-row {
+  margin-bottom: 20px;
+  position: relative;
+}
+#body-map-root .bm-search-input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--warm-white);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#body-map-root .bm-search-input:focus {
+  border-color: var(--rose-light);
+}
+#body-map-root .bm-search-input::placeholder { color: var(--muted); }
+#body-map-root .bm-search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(61,44,36,0.1);
+  z-index: 100;
+  overflow: hidden;
+  display: none;
+}
+#body-map-root .bm-search-results.open { display: block; }
+#body-map-root .bm-search-result-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(196,168,130,0.15);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#body-map-root .bm-search-result-item:last-child { border-bottom: none; }
+#body-map-root .bm-search-result-item:hover { background: var(--rose-pale); }
+#body-map-root .bm-search-result-region {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+#body-map-root .bm-search-no-results {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── SHARE BUTTON ─────────────────────────────────────────── */
+#body-map-root .share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+#body-map-root .share-btn:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .share-btn.copied {
+  background: var(--sage-pale);
+  border-color: var(--sage);
+  color: var(--sage);
+}
+#body-map-root .panel-share-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 24px 4px;
+  border-bottom: 1px solid var(--border);
+}
+#body-map-root .bookmarks-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--warm-white);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#body-map-root .bookmarks-trigger:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .bookmarks-count {
+  color: var(--terra);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0;
+}
+#body-map-root .bookmarks-count::before {
+  content: '★';
+  margin-right: 4px;
+  color: var(--rose);
+}
+
+/* ── BOOKMARKS DRAWER ───────────────────────────────────── */
+#body-map-root .bookmarks-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 120;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#body-map-root .bookmarks-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+#body-map-root .bookmarks-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(400px, 92vw);
+  background: var(--warm-white);
+  border-left: 1px solid var(--border);
+  box-shadow: -12px 0 28px rgba(61,44,36,0.12);
+  z-index: 130;
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
+  display: flex;
+  flex-direction: column;
+}
+#body-map-root .bookmarks-drawer.open {
+  transform: translateX(0);
+}
+#body-map-root .bookmarks-head {
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#body-map-root .bookmarks-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--text);
+}
+#body-map-root .bookmarks-close {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  color: var(--muted);
+}
+#body-map-root .bookmarks-body {
+  padding: 14px 18px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+#body-map-root .bookmark-item {
+  border: 1px solid rgba(196,168,130,0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+#body-map-root .bookmark-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+#body-map-root .bookmark-item a {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+#body-map-root .bookmark-item a:hover {
+  color: var(--rose);
+}
+#body-map-root .bookmark-meta {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+#body-map-root .bookmark-remove {
+  border: 1px solid rgba(196,168,130,0.35);
+  background: #fff;
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 4px 6px;
+}
+#body-map-root .bookmark-remove:hover {
+  color: var(--rose);
+  border-color: var(--rose-light);
+}
+#body-map-root .bookmarks-empty {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  padding: 28px 10px;
+}
+
+/* ── REPORT PAGE PROTOTYPE ───────────────────────────────── */
+#body-map-root .report-view {
+  display: none;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 42px 48px 72px;
+  color: #000;
+}
+#body-map-root.report-mode .main-section,
+#body-map-root.report-mode .categories-section,
+#body-map-root.report-mode .acs-chat-section {
+  display: none;
+}
+#body-map-root.report-mode .report-view {
+  display: block;
+}
+#body-map-root .report-card {
+  background: #fff;
+  border: 1px solid #d6d9d4;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(27, 32, 26, 0.07);
+  overflow: hidden;
+}
+#body-map-root .report-header {
+  background: #fff;
+  border-bottom: 1px solid #d3d7d1;
+  border-top: 4px solid #5b6358;
+  padding: 28px 30px 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+#body-map-root .report-brand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 8px;
+}
+#body-map-root .report-title {
+  font-family: var(--sans);
+  font-size: clamp(25px, 3.1vw, 34px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #000;
+}
+#body-map-root .report-meta {
+  font-size: 12px;
+  color: #000;
+  line-height: 1.6;
+  text-align: right;
+}
+#body-map-root .report-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+#body-map-root .report-lang-switch {
+  display: inline-flex;
+  background: #e9ece6;
+  border: 1px solid #c9cdc6;
+  border-radius: 999px;
+  padding: 3px;
+  gap: 3px;
+}
+#body-map-root .report-lang-btn {
+  border: none;
+  background: transparent;
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+#body-map-root .report-lang-btn.active {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 5px rgba(20, 24, 28, 0.12);
+}
+#body-map-root .report-content {
+  padding: 26px 30px 30px;
+  display: grid;
+  gap: 14px;
+}
+#body-map-root .report-section {
+  border: 1px solid #d5d8d4;
+  border-radius: 9px;
+  padding: 16px 18px;
+  background: #fff;
+}
+#body-map-root .report-section h3 {
+  font-family: var(--sans);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #000;
+}
+#body-map-root .report-clinical-note {
+  border: 1px solid #d2d7cf;
+  background: #f7f8f6;
+  border-left: 4px solid #6f756a;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #000;
+  line-height: 1.55;
+}
+#body-map-root .report-kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+#body-map-root .report-kv-item {
+  background: #fff;
+  border: 1px solid #d8dbd6;
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+#body-map-root .report-kv-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 700;
+}
+#body-map-root .report-kv-value {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+}
+#body-map-root .report-region {
+  border-top: 1px dashed rgba(196,168,130,0.35);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+#body-map-root .report-region:first-child {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+#body-map-root .report-region-title {
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+#body-map-root .report-cancer-list,
+#body-map-root .report-bullet-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #000;
+  line-height: 1.7;
+  font-size: 13px;
+}
+#body-map-root .report-bullet-list li + li {
+  margin-top: 6px;
+}
+#body-map-root .report-qa-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#body-map-root .report-qa-group + .report-qa-group {
+  margin-top: 14px;
+}
+#body-map-root .report-qa-group-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+#body-map-root .report-qa-item {
+  background: #fff;
+  border: 1px solid #d8dbd6;
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+#body-map-root .report-qa-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 700;
+}
+#body-map-root .report-qa-value {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.45;
+  word-break: break-word;
+}
+#body-map-root .report-cancer-list a {
+  color: #000;
+  font-weight: 700;
+}
+
+#body-map-root .report-section-bookmarks a,
+#body-map-root .report-bullet-list a {
+  color: #000;
+  font-weight: 600;
+}
+#body-map-root .report-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 0 30px 28px;
+  flex-wrap: wrap;
+}
+#body-map-root .report-btn {
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: 1px solid #a9aea7;
+  background: #fff;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#body-map-root .report-btn.primary {
+  background: #fff;
+  border-color: #7f847d;
+  color: #000;
+}
+#body-map-root .report-btn.primary:hover {
+  background: #f6f7f5;
+}
+#body-map-root .report-btn:hover {
+  border-color: #81877e;
+}
+
+/* ── Overall Risk Hero ─── */
+#body-map-root .report-section-hero { text-align: center; }
+#body-map-root .report-rr-wrap { padding: 16px 0 8px; }
+#body-map-root .report-rr-number {
+  font-family: var(--serif);
+  font-size: clamp(56px, 12vw, 96px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+#body-map-root .report-rr-x { font-size: 0.38em; vertical-align: top; margin-top: 0.2em; opacity: 0.7; }
+#body-map-root .report-rr-sub { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--muted); margin: 6px 0 12px; }
+#body-map-root .report-rr-badge {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 5px 18px; border-radius: 20px;
+}
+#body-map-root .report-rr-badge-high     { background: #f2e3de; color: #7d4636; }
+#body-map-root .report-rr-badge-mod      { background: #f3ecdd; color: #7f6030; }
+#body-map-root .report-rr-badge-low      { background: #eaf0e6; color: #425c42; }
+
+/* ── Cancer Type Breakdown ─── */
+#body-map-root .report-ct-grid { display: grid; gap: 10px; margin-top: 4px; }
+#body-map-root .report-ct-row { padding: 10px 0; border-top: 1px dashed rgba(122, 124, 120, 0.35); }
+#body-map-root .report-ct-row:first-child { border-top: 0; }
+#body-map-root .report-ct-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+#body-map-root .report-ct-stats { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+#body-map-root .report-ct-stats strong { color: var(--text); }
+#body-map-root .report-ct-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; }
+#body-map-root .report-ct-badge-high { background: #f2e3de; color: #7d4636; }
+#body-map-root .report-ct-badge-mod  { background: #f3ecdd; color: #7f6030; }
+#body-map-root .report-ct-badge-low  { background: #eaf0e6; color: #425c42; }
+#body-map-root .report-ct-bar-track { height: 5px; background: rgba(122, 124, 120, 0.2); border-radius: 3px; overflow: hidden; }
+#body-map-root .report-ct-bar-fill  { height: 100%; border-radius: 3px; }
+#body-map-root .report-ct-bar-high     { background: #8e5544; }
+#body-map-root .report-ct-bar-moderate { background: #9e7a45; }
+#body-map-root .report-ct-bar-low      { background: #5f785f; }
+
+/* ── Treatment Tracker Rows ─── */
+#body-map-root .report-tx-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-top: 1px dashed rgba(122, 124, 120, 0.35);
+}
+#body-map-root .report-tx-row:first-of-type { border-top: 0; }
+#body-map-root .report-tx-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+#body-map-root .report-tx-name { font-size: 14px; font-weight: 700; color: var(--text); }
+#body-map-root .report-tx-detail { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+
+/* ── Sub-labels & notes ─── */
+#body-map-root .report-sec-sub { font-size: 12px; color: #000; margin: -4px 0 10px; }
+#body-map-root .report-sec-note { font-size: 13px; color: #000; font-style: italic; margin: 4px 0; }
+
+#body-map-root .report-notes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+#body-map-root .report-note-box {
+  border: 1px solid #d6d9d5;
+  border-radius: 8px;
+  background: #fcfcfb;
+  min-height: 110px;
+  padding: 10px;
+}
+#body-map-root .report-note-box-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5b6157;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+#body-map-root .report-signature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
+}
+#body-map-root .report-signature-line {
+  border-top: 1px solid #a2a8a0;
+  padding-top: 6px;
+  font-size: 11px;
+  color: #4d5449;
+}
+
+/* ── Report question input ─── */
+#body-map-root .report-question-form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+#body-map-root .report-question-input {
+  width: 100%;
+  min-height: 76px;
+  resize: vertical;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(122, 124, 120, 0.38);
+  background: #f7f8f6;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+#body-map-root .report-question-input:focus {
+  outline: none;
+  border-color: #6f756a;
+}
+#body-map-root .report-question-add {
+  justify-self: start;
+  border: 1px solid #b2b8ad;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #fff;
+  color: #4f564b;
+}
+#body-map-root .report-question-add:hover {
+  border-color: #6f756a;
+  color: #3e443b;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROFESSIONAL REPORT REDESIGN
+═══════════════════════════════════════════════════════════ */
+
+/* Clinical section headers */
+#body-map-root .report-section-icon {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  color: #111 !important;
+  letter-spacing: 0.01em;
+}
+
+/* Clinical section surfaces */
+#body-map-root .report-section-summary,
+#body-map-root .report-section-risk,
+#body-map-root .report-section-treatment,
+#body-map-root .report-section-assessment,
+#body-map-root .report-section-bookmarks,
+#body-map-root .report-section-questions,
+#body-map-root .report-section-notes {
+  background: #fff;
+  border: 1px solid #d4d7d3;
+  border-radius: 8px;
+}
+
+/* Clinical table */
+#body-map-root .report-table-wrap {
+  border: 1px solid #d1d4d0;
+  border-radius: 6px;
+  overflow: auto;
+  max-height: 320px;
+  background: #fff;
+}
+#body-map-root .report-table-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#body-map-root .report-table-card {
+  border: 1px solid #d1d4d0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+#body-map-root .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  table-layout: fixed;
+}
+
+#body-map-root .report-table thead {
+  background: #fff;
+  border-bottom: 1px solid #d1d4d0;
+}
+
+#body-map-root .report-table th {
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+#body-map-root .report-table td {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #000;
+  border-top: 1px solid #e2e4e1;
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+#body-map-root .report-table tbody tr:hover {
+  background: #f6f7f5;
+}
+
+#body-map-root .report-med-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #000;
+}
+
+#body-map-root .report-med-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+#body-map-root .report-schedule-line {
+  display: block;
+}
+
+#body-map-root .report-schedule-line + .report-schedule-line {
+  margin-top: 2px;
+}
+
+#body-map-root .report-schedule-label {
+  color: #000;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+/* Clinical lists */
+#body-map-root .report-styled-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+#body-map-root .report-styled-list li {
+  padding: 6px 0;
+  font-size: 13px;
+  color: #000;
+  line-height: 1.5;
+}
+
+/* Empty states */
+#body-map-root .report-empty-state {
+  padding: 10px 12px;
+  border: 1px dashed #ccd0ca;
+  background: #fafbf9;
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+}
+
+/* QA rows */
+#body-map-root .report-qa-section {
+  margin-bottom: 16px;
+}
+
+#body-map-root .report-qa-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #d2d5d0;
+}
+
+#body-map-root .report-qa-table {
+  display: grid;
+  gap: 10px;
+}
+#body-map-root .report-qa-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#body-map-root .report-qa-row {
+  background: #fcfcfb;
+  border: 1px solid #d2d5d0;
+  border-radius: 6px;
+  padding: 9px 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+}
+
+#body-map-root .report-qa-row-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+#body-map-root .report-qa-row-value {
+  font-size: 12px;
+  color: #000;
+  font-weight: 500;
+}
+
+/* ── Inline editable report fields ─── */
+#body-map-root .bm-editable-field {
+  position: relative;
+  padding-right: 48px;
+}
+#body-map-root .bm-edit-display {
+  display: block;
+  min-height: 1.2em;
+}
+#body-map-root .bm-edit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid #b9beb7;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+#body-map-root .bm-editable-field:hover .bm-edit-btn,
+#body-map-root .bm-editable-field:focus-within .bm-edit-btn {
+  opacity: 1;
+}
+#body-map-root .bm-edit-form {
+  display: none;
+  gap: 6px;
+}
+#body-map-root .bm-edit-input {
+  width: 100%;
+  border: 1px solid #b5bbb3;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #000;
+  background: #fff;
+  font-family: var(--sans);
+}
+#body-map-root .bm-edit-input:focus {
+  outline: none;
+  border-color: #5b6358;
+}
+#body-map-root textarea.bm-edit-input {
+  min-height: 68px;
+  resize: vertical;
+  line-height: 1.45;
+}
+#body-map-root .bm-edit-actions {
+  display: flex;
+  gap: 6px;
+}
+#body-map-root .bm-edit-save,
+#body-map-root .bm-edit-cancel {
+  border: 1px solid #aeb3ac;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+}
+#body-map-root .bm-edit-save {
+  background: #fff;
+  border-color: #7f847d;
+  color: #000;
+}
+#body-map-root .bm-edit-save:hover {
+  background: #f6f7f5;
+}
+
+/* Force black typography across the report body for print-like clarity */
+#body-map-root .report-view .report-card,
+#body-map-root .report-view .report-card * {
+  color: #000;
+}
+#body-map-root .bm-edit-cancel:hover {
+  border-color: #7d8479;
+}
+
+/* ── Loading state ─── */
+#body-map-root .report-loading {
+  padding: 48px 20px; text-align: center;
+  font-size: 14px; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+#body-map-root .report-loading-dots span {
+  display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%; background: #70756e;
+  animation: bm-dot-pulse 1.2s ease-in-out infinite;
+}
+#body-map-root .report-loading-dots span:nth-child(2) { animation-delay: .2s; }
+#body-map-root .report-loading-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bm-dot-pulse { 0%,100%{opacity:.25;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+
+@media print {
+  @page { size: Letter portrait; margin: 0.55in; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #body-map-root .acs-hero,
+  #body-map-root .main-section,
+  #body-map-root .categories-section,
+  #body-map-root .acs-chat-section {
+    display: none !important;
+  }
+  #body-map-root .report-actions { display: none !important; }
+  #body-map-root .report-question-form { display: none !important; }
+  #body-map-root .report-table-wrap { max-height: none !important; overflow: visible !important; }
+  #body-map-root .bm-edit-btn,
+  #body-map-root .bm-edit-form { display: none !important; }
+  #body-map-root .report-view {
+    display: block !important;
+    padding: 0 !important;
+  }
+  #body-map-root .report-card { box-shadow: none; border: 0; border-radius: 0; }
+  #body-map-root .report-header {
+    background: #fff !important;
+    border-top: 2px solid #5b6358;
+    border-bottom: 1px solid #8b9189;
+  }
+  /* Hide site nav/footer when printing from the report page */
+  .bm-print-report header,
+  .bm-print-report footer,
+  .bm-print-report nav,
+  .bm-print-report .progress-sidebar { display: none !important; }
+  .bm-print-report #body-map-root .acs-hero,
+  .bm-print-report #body-map-root .main-section,
+  .bm-print-report #body-map-root .categories-section { display: none !important; }
+  .bm-print-report #body-map-root .report-view { display: block !important; padding: 0 !important; }
+}
+
 /* ── RESPONSIVE ───────────────────────────────────────── */
 @media (max-width: 820px) {
   #body-map-root .acs-hero { padding: 36px 24px; }
   #body-map-root .hero-inner { grid-template-columns: 1fr; }
+  #body-map-root .hero-cta-row { width: 100%; }
+  #body-map-root .hero-cta,
+  #body-map-root .hero-cta-secondary { width: 100%; justify-content: center; }
   #body-map-root .main-section { padding: 32px 24px 0; }
+  #body-map-root .gender-actions { width: 100%; justify-content: space-between; }
   #body-map-root .diagram-area { grid-template-columns: 1fr; }
   #body-map-root .body-wrap { margin: 0 auto; }
   #body-map-root .info-panel { position: static; }
+  #body-map-root .report-view { padding: 30px 24px 50px; }
+  #body-map-root .report-header,
+  #body-map-root .report-content,
+  #body-map-root .report-actions { padding-left: 20px; padding-right: 20px; }
+  #body-map-root .report-meta,
+  #body-map-root .report-meta-wrap { text-align: left; align-items: flex-start; }
+  #body-map-root .report-qa-grid { grid-template-columns: 1fr; }
+  #body-map-root .report-table-columns,
+  #body-map-root .report-qa-columns,
+  #body-map-root .report-qa-table { grid-template-columns: 1fr; }
+  #body-map-root .report-notes-grid,
+  #body-map-root .report-signature-grid { grid-template-columns: 1fr; }
+  #body-map-root .report-table-wrap { max-height: none; }
   #body-map-root .categories-section { padding: 40px 24px 60px; }
 }
 
@@ -415,16 +1436,35 @@ comments: true
       Visit Cancer.org
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 3l5 4-5 4"/></svg>
     </a>
+    <div class="hero-cta-row">
+      <button class="hero-cta hero-cta-secondary" onclick="bmOpenPersonalizedReport()" type="button">
+        Personalized Report
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 1v8M3.5 6.5L7 10l3.5-3.5M2 13h10"/></svg>
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- ── MAIN INTERACTIVE SECTION ──────────────────────────── -->
 <div class="main-section">
+<div class="search-row">
+  <input class="bm-search-input" id="bmSearchInput" type="text"
+    placeholder="Search any cancer type — e.g. melanoma, leukemia, ovarian..."
+    oninput="bmSearchCancers(this.value)"
+    onblur="setTimeout(()=>bmCloseSearch(),150)" />
+  <div class="bm-search-results" id="bmSearchResults"></div>
+</div>
   <div class="gender-row">
     <div class="section-eyebrow">Interactive Body Map</div>
-    <div class="gender-toggle">
-      <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')"> Female</button>
-      <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')"> Male</button>
+    <div class="gender-actions">
+      <button class="bookmarks-trigger" type="button" onclick="bmOpenBookmarks()">
+        My Bookmarks
+        <span class="bookmarks-count" id="bmBookmarksCount" aria-label="Bookmark count">0</span>
+      </button>
+      <div class="gender-toggle">
+        <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')"> Female</button>
+        <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')"> Male</button>
+      </div>
     </div>
   </div>
 
@@ -456,13 +1496,46 @@ comments: true
   </div>
 </div>
 
+<!-- ── BOOKMARKS DRAWER ─────────────────────────────────── -->
+<div class="bookmarks-overlay" id="bmBookmarksOverlay" onclick="bmCloseBookmarks()"></div>
+<aside class="bookmarks-drawer" id="bmBookmarksDrawer" aria-label="My Bookmarks">
+  <div class="bookmarks-head">
+    <div class="bookmarks-title">My Bookmarks</div>
+    <button type="button" class="bookmarks-close" onclick="bmCloseBookmarks()"></button>
+  </div>
+  <div class="bookmarks-body" id="bmBookmarksBody"></div>
+</aside>
+
+<!-- ── PERSONALIZED REPORT PROTOTYPE ────────────────────── -->
+<div class="report-view" id="bmReportView" aria-live="polite">
+  <div class="report-card" id="bmReportCard">
+    <div class="report-header">
+      <div>
+        <div class="report-brand">American Cancer Society</div>
+        <div class="report-title" id="bmReportTitle">Personalized Cancer Risk Report</div>
+      </div>
+      <div class="report-meta-wrap">
+        <div class="report-lang-switch" aria-label="Report language">
+          <button class="report-lang-btn active" type="button" data-lang="en" onclick="bmSetReportLanguage('en')">EN</button>
+          <button class="report-lang-btn" type="button" data-lang="es" onclick="bmSetReportLanguage('es')">ES</button>
+        </div>
+        <div class="report-meta" id="bmReportMeta"></div>
+      </div>
+    </div>
+    <div class="report-content" id="bmReportContent"></div>
+    <div class="report-actions">
+      <button class="report-btn" id="bmReportBackBtn" type="button" onclick="bmClosePersonalizedReport()">Back to Body Map</button>
+      <button class="report-btn primary" id="bmReportDownloadBtn" type="button" onclick="bmDownloadPersonalizedReport()">Download PDF</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── ACS CANCER CHAT ─────────────────────────────────── -->
   <div class="acs-chat-section" id="acsChatSection">
     <div class="acs-chat-inner">
       <div class="acs-chat-header">
-        <div class="acs-chat-eyebrow">American Cancer Society · AI Assistant</div>
-        <h2 class="acs-chat-title">Ask About Any Cancer Type</h2>
-        <p class="acs-chat-sub">Get plain-English answers about symptoms, risk factors, and ACS resources — or ask about anything from the body map above.</p>
+        <h2 class="acs-chat-title">American Cancer Society · AI Assistant</h2>
+        <p class="acs-chat-sub">Recieve answers about symptoms, risk factors, and ACS resources — or seek clarifications about the body map above.</p>
       </div>
 
       <div class="acs-chat-card">
@@ -634,6 +1707,9 @@ comments: true
 
 <script type="module">
 import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+window._bmPythonURI    = pythonURI;
+window._bmFetchOptions = fetchOptions;
+
 const ACS_PROMPTS = [
   { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
   { text: "What causes lung cancer?",                             keywords: ["lung"] },
@@ -659,6 +1735,24 @@ const ACS_DEFAULT_PROMPTS = [
   "What is the difference between benign and malignant tumors?",
   "How is cancer staging determined?",
 ];
+
+const ACS_USER_QUESTIONS_KEY = 'acsUserQuestions';
+
+function acsSaveUserQuestion(question) {
+  const q = String(question || '').trim();
+  if (!q) return;
+  let existing = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ACS_USER_QUESTIONS_KEY) || '[]');
+    existing = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    existing = [];
+  }
+  const next = [{ text: q, at: new Date().toISOString() }, ...existing]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => (other.text || '').toLowerCase() === (item.text || '').toLowerCase()))
+    .slice(0, 20);
+  localStorage.setItem(ACS_USER_QUESTIONS_KEY, JSON.stringify(next));
+}
 
 function acsRenderPrompts(query) {
   const grid = document.getElementById('acsPromptsGrid');
@@ -693,6 +1787,8 @@ async function acsChatSend() {
   const input = document.getElementById('acsChatInput');
   const message = input.value.trim();
   if (!message) return;
+
+  acsSaveUserQuestion(message);
 
   const sendBtn = document.getElementById('acsSendBtn');
   const statusEl = document.getElementById('acsChatStatus');
@@ -753,10 +1849,6 @@ function acsChatClear() {
   acsRenderPrompts('');
 }
 
-// Expose handlers
-window.acsChatSend = acsChatSend;
-window.acsChatClear = acsChatClear;
-
 document.addEventListener('DOMContentLoaded', () => {
   acsRenderPrompts('');
   const inp = document.getElementById('acsChatInput');
@@ -772,6 +1864,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- ── CATEGORIES GRID ───────────────────────────────────── -->
 <div class="categories-section">
+  <div class="cat-divider" style="margin-top:48px"></div>
   <h2 class="cat-heading">Browse by Body System</h2>
   <p class="cat-sub">All 13 body systems covered — click any card to jump to that region on the diagram above.</p>
   <div class="sys-grid" id="bmSysGrid"></div>
@@ -933,6 +2026,1419 @@ const BM_HOTSPOTS = [
 // ─── GENDER STATE ──────────────────────────────────────────────────────────
 let bmGender = 'female';
 let bmActiveId = null;
+const BM_BOOKMARKS_STORAGE_KEY = 'acsCancerBookmarks';
+
+// ─── BOOKMARKS ─────────────────────────────────────────────────────────────
+function bmGetBookmarks() {
+  const raw = localStorage.getItem(BM_BOOKMARKS_STORAGE_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function bmSetBookmarks(items) {
+  localStorage.setItem(BM_BOOKMARKS_STORAGE_KEY, JSON.stringify(items));
+  bmRefreshBookmarksUI();
+}
+
+function bmBookmarkPayload(cancerId) {
+  const cancer = BM_CANCERS[cancerId];
+  if (!cancer) return null;
+  const hs = BM_HOTSPOTS.find(h => h.cancerIds.includes(cancerId));
+  return {
+    id: cancerId,
+    name: cancer.name,
+    link: cancer.link,
+    description: cancer.desc || '',
+    regionId: hs ? hs.id : null,
+    regionLabel: hs ? hs.label : 'Body Map Region',
+    savedAt: Date.now(),
+  };
+}
+
+function bmIsBookmarked(cancerId) {
+  return bmGetBookmarks().some(item => item.id === cancerId);
+}
+
+function bmToggleBookmark(cancerId, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const bookmarks = bmGetBookmarks();
+  const existingIdx = bookmarks.findIndex(item => item.id === cancerId);
+
+  if (existingIdx >= 0) {
+    bookmarks.splice(existingIdx, 1);
+  } else {
+    const payload = bmBookmarkPayload(cancerId);
+    if (payload) bookmarks.unshift(payload);
+  }
+
+  bmSetBookmarks(bookmarks);
+  if (bmActiveId) bmActivateHotspot(bmActiveId);
+}
+
+function bmRemoveBookmark(cancerId) {
+  const updated = bmGetBookmarks().filter(item => item.id !== cancerId);
+  bmSetBookmarks(updated);
+  if (bmActiveId) bmActivateHotspot(bmActiveId);
+}
+
+function bmOpenBookmarks() {
+  document.getElementById('bmBookmarksOverlay').classList.add('open');
+  document.getElementById('bmBookmarksDrawer').classList.add('open');
+  bmRenderBookmarksList();
+}
+
+function bmCloseBookmarks() {
+  document.getElementById('bmBookmarksOverlay').classList.remove('open');
+  document.getElementById('bmBookmarksDrawer').classList.remove('open');
+}
+
+function bmJumpToBookmarkRegion(regionId) {
+  if (!regionId) return;
+  bmCloseBookmarks();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => bmActivateHotspot(regionId), 300);
+}
+
+function bmRenderBookmarksList() {
+  const body = document.getElementById('bmBookmarksBody');
+  if (!body) return;
+  const bookmarks = bmGetBookmarks();
+
+  if (!bookmarks.length) {
+    body.innerHTML = `<div class="bookmarks-empty">No saved cancers yet. Click the bookmark icon next to any cancer in the panel to save it here.</div>`;
+    return;
+  }
+
+  body.innerHTML = bookmarks.map(item => `
+    <div class="bookmark-item">
+      <div class="bookmark-item-top">
+        <a href="${item.link}" target="_blank" rel="noopener">${item.name}</a>
+        <button class="bookmark-remove" type="button" onclick="bmRemoveBookmark('${item.id}')">Remove</button>
+      </div>
+      <div class="bookmark-meta">${item.regionLabel || 'Body Map Region'}</div>
+      ${item.regionId ? `<button class="share-btn" type="button" style="margin-top:8px" onclick="bmJumpToBookmarkRegion('${item.regionId}')">Open on body map</button>` : ''}
+    </div>
+  `).join('');
+}
+
+function bmRefreshBookmarksUI() {
+  const bookmarks = bmGetBookmarks();
+  const count = document.getElementById('bmBookmarksCount');
+  if (count) count.textContent = String(bookmarks.length);
+  bmRenderBookmarksList();
+}
+
+// ─── PERSONALIZED REPORT (SINGLE-FILE PROTOTYPE) ─────────────────────────
+const BM_LOGIN_SOURCE_KEYS = [
+  'acsUserProfile', 'userProfile', 'profile', 'patientProfile', 'acs_profile',
+  'currentUser', 'authUser', 'loginUser', 'user'
+];
+
+const BM_RISK_SOURCE_KEYS = [
+  'acsRiskResults', 'riskCalculatorResults', 'riskResults', 'bodyMapRisk', 'acs_risk',
+  'cancerRiskResults', 'mlCancerRiskResults'
+];
+
+const BM_REPORT_LANGUAGE_KEY = 'acsReportLanguage';
+const BM_REPORT_EDIT_STORAGE_KEY = 'acsReportInlineEdits';
+let bmReportLanguage = (() => {
+  const saved = localStorage.getItem(BM_REPORT_LANGUAGE_KEY);
+  return saved === 'es' ? 'es' : 'en';
+})();
+
+const BM_REPORT_I18N = {
+  en: {
+    reportTitle: 'Personalized Cancer Risk Report',
+    generated: 'Generated',
+    document: 'Document',
+    preparedFor: 'Prepared for',
+    patientSummary: 'Patient Summary',
+    name: 'Name',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    age: 'Age',
+    gender: 'Gender',
+    elevatedRiskRegions: 'Body Map Elevated Risk Regions',
+    riskLevel: 'Risk level',
+    watchFor: 'Watch for',
+    noMappedCancers: 'No mapped cancers available for this region in prototype data.',
+    riskCalculatorResults: 'Risk Calculator Cancer-Type Results',
+    score: 'Score',
+    level: 'Level',
+    noCancerTypeList: 'No explicit cancer-type list was found in risk calculator storage yet.',
+    riskFactorNotes: 'Personal Risk Factor Notes',
+    screeningPoints: 'Recommended Screening Discussion Points',
+    overallRiskScore: 'Overall Cancer Risk Score',
+    timesPopAvg: 'times the population average',
+    notAssessed: 'Not yet assessed — complete the Risk Calculator first.',
+    riskBreakdown: 'Cancer Type Risk Breakdown',
+    lifetimeRisk: 'Lifetime Risk',
+    treatmentPlan: 'Current Treatment Plan',
+    treatmentTrackerNote: 'Loaded from your Treatment Tracker',
+    noTreatments: 'No medications found in your Treatment Tracker.',
+    started: 'Started',
+    ends: 'Ends',
+    visitPacket: 'Prepared Visit Packet',
+    bookmarkedConcerns: 'Bookmarked Cancer Concerns',
+    noBookmarks: 'No bookmarked cancer concerns yet.',
+    userQuestions: 'Your Questions for the Visit',
+    noQuestions: 'No saved questions yet. Ask the ACS assistant to build this list.',
+    adherenceSummary: 'Treatment Adherence Summary (Last 7 Days)',
+    adherenceRate: 'Adherence Rate',
+    dosesTaken: 'Doses Taken',
+    expectedDoses: 'Expected Doses',
+    noAdherenceData: 'No adherence data available yet for the last 7 days.',
+    backToMap: 'Back to Body Map',
+    downloadPdf: 'Download PDF',
+    reportLanguage: 'Report language',
+    questionnaireResponses: 'Clinical Risk Profile',
+    highRiskCancers: 'High-Risk Cancer Results',
+    noHighRiskCancers: 'No high-risk cancer categories were identified from your latest risk run.',
+    addQuestionPrompt: 'Type a question to include in your printed report',
+    addQuestionBtn: 'Add Question',
+    yes: 'Yes',
+    no: 'No',
+    clinicalUseNote: 'Clinical Use Note: This summary is generated from user-entered questionnaire responses and ACS educational data. Use it to support provider discussion, not as a diagnosis.',
+    providerNotes: 'Provider Discussion Notes',
+    patientPriorities: 'Patient Priorities',
+    clinicianPlan: 'Clinician Plan / Follow-Up',
+    patientSignature: 'Patient Signature',
+    providerSignature: 'Provider Signature',
+    signatureDate: 'Date',
+    notebookNotes: 'Digital Notebook Notes',
+    noNotebookNotes: 'No saved chatbot notes yet. Save assistant answers using the + button in the risk chatbot.',
+    categoryDemographics: 'Demographics',
+    categoryLifestyle: 'Lifestyle',
+    categoryMedicalRisks: 'Medical Risk Factors',
+    categoryEnvironmental: 'Environmental Exposure',
+    categoryCancerInterests: 'Cancer Interests',
+    edit: 'Edit',
+    save: 'Save',
+    cancel: 'Cancel',
+    emptyValue: 'Not provided',
+  },
+  es: {
+    reportTitle: 'Informe personalizado de riesgo de cáncer',
+    generated: 'Generado',
+    document: 'Documento',
+    preparedFor: 'Preparado para',
+    patientSummary: 'Resumen del Paciente',
+    name: 'Nombre',
+    firstName: 'Nombre',
+    lastName: 'Apellido',
+    age: 'Edad',
+    gender: 'Género',
+    elevatedRiskRegions: 'Regiones con riesgo elevado en el mapa corporal',
+    riskLevel: 'Nivel de riesgo',
+    watchFor: 'Vigilar',
+    noMappedCancers: 'No hay cánceres mapeados para esta región en los datos del prototipo.',
+    riskCalculatorResults: 'Resultados de la calculadora de riesgo por tipo de cáncer',
+    score: 'Puntaje',
+    level: 'Nivel',
+    noCancerTypeList: 'Aún no se encontró una lista explícita de tipos de cáncer en la calculadora de riesgo.',
+    riskFactorNotes: 'Notas sobre factores de riesgo personales',
+    screeningPoints: 'Puntos recomendados para conversar sobre detección',
+    overallRiskScore: 'Puntuación general de riesgo de cáncer',
+    timesPopAvg: 'veces el promedio de la población',
+    notAssessed: 'Aún no evaluado — complete primero la Calculadora de Riesgo.',
+    riskBreakdown: 'Desglose del riesgo por tipo de cáncer',
+    lifetimeRisk: 'Riesgo de por vida',
+    treatmentPlan: 'Plan de Tratamiento Actual',
+    treatmentTrackerNote: 'Cargado desde su Seguimiento de Tratamiento',
+    noTreatments: 'No se encontraron medicamentos en su Seguimiento de Tratamiento.',
+    started: 'Inicio',
+    ends: 'Fin',
+    visitPacket: 'Paquete Preparado para la Consulta',
+    bookmarkedConcerns: 'Preocupaciones de cáncer marcadas',
+    noBookmarks: 'Aún no hay preocupaciones de cáncer guardadas.',
+    userQuestions: 'Sus preguntas para la consulta',
+    noQuestions: 'Aún no hay preguntas guardadas. Use el asistente ACS para crear esta lista.',
+    adherenceSummary: 'Resumen de adherencia al tratamiento (últimos 7 días)',
+    adherenceRate: 'Tasa de adherencia',
+    dosesTaken: 'Dosis tomadas',
+    expectedDoses: 'Dosis esperadas',
+    noAdherenceData: 'Aún no hay datos de adherencia para los últimos 7 días.',
+    backToMap: 'Volver al Mapa Corporal',
+    downloadPdf: 'Descargar PDF',
+    reportLanguage: 'Idioma del informe',
+    questionnaireResponses: 'Perfil clínico de riesgo',
+    highRiskCancers: 'Resultados de cáncer con riesgo alto',
+    noHighRiskCancers: 'No se identificaron categorías de cáncer de alto riesgo en su cálculo más reciente.',
+    addQuestionPrompt: 'Escriba una pregunta para incluirla en su informe impreso',
+    addQuestionBtn: 'Agregar pregunta',
+    yes: 'Sí',
+    no: 'No',
+    clinicalUseNote: 'Nota de uso clínico: Este resumen se genera con respuestas del cuestionario del usuario y datos educativos de ACS. Úselo para apoyar la conversación con el proveedor, no como diagnóstico.',
+    providerNotes: 'Notas para discusión con el proveedor',
+    patientPriorities: 'Prioridades del paciente',
+    clinicianPlan: 'Plan clínico / Seguimiento',
+    patientSignature: 'Firma del paciente',
+    providerSignature: 'Firma del proveedor',
+    signatureDate: 'Fecha',
+    notebookNotes: 'Notas del cuaderno digital',
+    noNotebookNotes: 'Aún no hay notas guardadas del chatbot. Guarde respuestas del asistente con el botón + en el chatbot de riesgo.',
+    categoryDemographics: 'Datos demográficos',
+    categoryLifestyle: 'Estilo de vida',
+    categoryMedicalRisks: 'Factores de riesgo médicos',
+    categoryEnvironmental: 'Exposición ambiental',
+    categoryCancerInterests: 'Intereses de cáncer',
+    edit: 'Editar',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    emptyValue: 'No proporcionado',
+  },
+};
+
+const BM_REPORT_TEXT_ES = {
+  'Your smoking history may increase risk for lung, bladder, and other cancers.': 'Su historial de tabaquismo puede aumentar el riesgo de cáncer de pulmón, vejiga y otros cánceres.',
+  'Your reported family history may increase inherited cancer risk in specific organs.': 'Sus antecedentes familiares pueden aumentar el riesgo hereditario de cáncer en órganos específicos.',
+  'Weight-related factors can increase risk for colorectal, endometrial, and other cancers.': 'Los factores relacionados con el peso pueden aumentar el riesgo de cáncer colorrectal, endometrial y otros cánceres.',
+  'Alcohol use can increase risk for liver, breast, and head/neck cancers.': 'El consumo de alcohol puede aumentar el riesgo de cáncer de hígado, mama y cabeza/cuello.',
+  'Lower physical activity may contribute to higher risk for several cancers.': 'Una menor actividad física puede contribuir a un mayor riesgo de varios cánceres.',
+  'Risk factors were inferred from your available profile and calculator data in this prototype.': 'Los factores de riesgo se infirieron de su perfil y de los datos disponibles de la calculadora en este prototipo.',
+  'Colorectal screening (colonoscopy or stool-based test) starting at age 45.': 'Pruebas de detección colorrectal (colonoscopia o prueba de heces) a partir de los 45 años.',
+  'Annual mammogram starting at age 40.': 'Mamografía anual a partir de los 40 años.',
+  'Cervical cancer screening (Pap/HPV) per clinician schedule.': 'Prueba de detección de cáncer cervicouterino (Papanicolaou/VPH) según el calendario clínico.',
+  'Discuss PSA testing for prostate cancer with your doctor.': 'Hable con su médico sobre la prueba de PSA para cáncer de próstata.',
+  'Ask about annual low-dose CT screening if smoking history is significant.': 'Hable sobre una tomografía computarizada anual de baja dosis si su historial de tabaquismo es importante.',
+  'Annual full-body skin exam and monthly self-check of changing moles/spots.': 'Examen anual de piel de cuerpo completo y autoevaluación mensual de lunares/manchas cambiantes.',
+  'If high-risk for liver disease, discuss liver ultrasound and blood tests.': 'Si tiene alto riesgo de enfermedad hepática, hable sobre ecografía de hígado y análisis de sangre.',
+  'Discuss age-appropriate routine cancer screening with your primary care doctor.': 'Hable con su médico de atención primaria sobre pruebas rutinarias de detección de cáncer según su edad.',
+  Male: 'Masculino',
+  Female: 'Femenino',
+  'Not provided': 'No proporcionado',
+  'ACS Patient': 'Paciente ACS',
+};
+
+function bmReportText(key) {
+  const langSet = BM_REPORT_I18N[bmReportLanguage] || BM_REPORT_I18N.en;
+  return langSet[key] || BM_REPORT_I18N.en[key] || key;
+}
+
+function bmTranslateReportSentence(text) {
+  if (bmReportLanguage !== 'es') return text;
+  return BM_REPORT_TEXT_ES[text] || text;
+}
+
+function bmUpdateReportLanguageUI() {
+  const switchWrap = document.querySelector('#body-map-root .report-lang-switch');
+  if (switchWrap) {
+    switchWrap.setAttribute('aria-label', bmReportText('reportLanguage'));
+  }
+  document.querySelectorAll('#body-map-root .report-lang-btn').forEach(btn => {
+    const active = btn.getAttribute('data-lang') === bmReportLanguage;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+let _bmCachedReportData = null;
+let _bmReportInlineEdits = bmReadReportInlineEdits();
+
+function bmReadReportInlineEdits() {
+  try {
+    const raw = localStorage.getItem(BM_REPORT_EDIT_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function bmWriteReportInlineEdits() {
+  localStorage.setItem(BM_REPORT_EDIT_STORAGE_KEY, JSON.stringify(_bmReportInlineEdits));
+}
+
+function bmGetInlineEditedValue(editKey, fallback) {
+  const key = String(editKey || '');
+  if (!key) return fallback;
+  if (Object.prototype.hasOwnProperty.call(_bmReportInlineEdits, key)) {
+    return String(_bmReportInlineEdits[key] ?? '');
+  }
+  return fallback;
+}
+
+function bmEscapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function bmRenderEditableField({ editKey, value, multiline = false }) {
+  const resolved = String(bmGetInlineEditedValue(editKey, value) || '').trim();
+  const display = resolved || bmReportText('emptyValue');
+  const inputHtml = multiline
+    ? `<textarea class="bm-edit-input">${bmEscapeHtml(resolved)}</textarea>`
+    : `<input class="bm-edit-input" type="text" value="${bmEscapeHtml(resolved)}" />`;
+
+  return `
+    <div class="bm-editable-field" data-edit-key="${bmEscapeHtml(editKey)}" data-edit-multiline="${multiline ? '1' : '0'}">
+      <span class="bm-edit-display">${bmEscapeHtml(display)}</span>
+      <button type="button" class="bm-edit-btn">${bmReportText('edit')}</button>
+      <div class="bm-edit-form">
+        ${inputHtml}
+        <div class="bm-edit-actions">
+          <button type="button" class="bm-edit-save">${bmReportText('save')}</button>
+          <button type="button" class="bm-edit-cancel">${bmReportText('cancel')}</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function bmBindReportEditableFields() {
+  const wrappers = document.querySelectorAll('#body-map-root .bm-editable-field');
+  wrappers.forEach((wrap) => {
+    const editBtn = wrap.querySelector('.bm-edit-btn');
+    const form = wrap.querySelector('.bm-edit-form');
+    const display = wrap.querySelector('.bm-edit-display');
+    const input = wrap.querySelector('.bm-edit-input');
+    const saveBtn = wrap.querySelector('.bm-edit-save');
+    const cancelBtn = wrap.querySelector('.bm-edit-cancel');
+    const editKey = wrap.getAttribute('data-edit-key') || '';
+
+    if (!editBtn || !form || !display || !input || !saveBtn || !cancelBtn || !editKey) return;
+
+    const beginEdit = () => {
+      const isTextarea = input.tagName.toLowerCase() === 'textarea';
+      const current = bmGetInlineEditedValue(editKey, display.textContent || '');
+      if (isTextarea) {
+        input.value = current;
+      } else {
+        input.value = current;
+      }
+      display.style.display = 'none';
+      editBtn.style.display = 'none';
+      form.style.display = 'grid';
+      input.focus();
+      if (typeof input.select === 'function') input.select();
+    };
+
+    const endEdit = () => {
+      form.style.display = 'none';
+      display.style.display = '';
+      editBtn.style.display = '';
+    };
+
+    editBtn.addEventListener('click', beginEdit);
+
+    saveBtn.addEventListener('click', () => {
+      const next = String(input.value || '').trim();
+      _bmReportInlineEdits[editKey] = next;
+      bmWriteReportInlineEdits();
+      display.textContent = next || bmReportText('emptyValue');
+      endEdit();
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      endEdit();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (input.tagName.toLowerCase() !== 'textarea' && event.key === 'Enter') {
+        event.preventDefault();
+        saveBtn.click();
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        cancelBtn.click();
+      }
+    });
+  });
+}
+
+function bmSetReportLanguage(lang) {
+  const normalized = lang === 'es' ? 'es' : 'en';
+  if (normalized === bmReportLanguage) { bmUpdateReportLanguageUI(); return; }
+  bmReportLanguage = normalized;
+  localStorage.setItem(BM_REPORT_LANGUAGE_KEY, bmReportLanguage);
+  bmUpdateReportLanguageUI();
+  if (document.getElementById('body-map-root')?.classList.contains('report-mode') && _bmCachedReportData) {
+    bmRenderPersonalizedReport(_bmCachedReportData);
+  }
+}
+
+const BM_REGION_ALIASES = {
+  brain: 'brain', brain_ns: 'brain', nervous: 'brain',
+  eye: 'eye',
+  head: 'head_neck', neck: 'head_neck', head_neck: 'head_neck',
+  endocrine: 'endocrine', thyroid: 'endocrine',
+  lung: 'lung', chest: 'lung', lung_chest: 'lung',
+  blood: 'heart', heart: 'heart', leukemia: 'heart',
+  breast: 'breast',
+  skin: 'skin', melanoma: 'skin',
+  liver: 'liver', bile: 'liver', gallbladder: 'liver',
+  stomach: 'stomach', esophagus: 'stomach',
+  kidney: 'kidney', renal: 'kidney',
+  lymph: 'lymph', lymphoma: 'lymph',
+  pancreas: 'pancreas',
+  intestine: 'intestine', colon: 'intestine', colorectal: 'intestine',
+  bladder: 'bladder',
+  reproductive: 'repro', repro: 'repro', uterus: 'repro', ovarian: 'repro', prostate: 'repro', testicular: 'repro', cervical: 'repro',
+  bone: 'bone', spinal: 'bone', soft_tissue: 'bone',
+  other: 'other', rare: 'other', unknown: 'other',
+};
+
+function bmSafeParseJSON(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+function bmReadStorageObject(candidates) {
+  for (const key of candidates) {
+    const parsedLocal = bmSafeParseJSON(localStorage.getItem(key));
+    if (parsedLocal && typeof parsedLocal === 'object') return parsedLocal;
+    const parsedSession = bmSafeParseJSON(sessionStorage.getItem(key));
+    if (parsedSession && typeof parsedSession === 'object') return parsedSession;
+  }
+  return {};
+}
+
+function bmHasMeaningfulData(value) {
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'string') return value.trim() !== '';
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (typeof value === 'boolean') return true;
+  if (Array.isArray(value)) return value.some(item => bmHasMeaningfulData(item));
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (!keys.length) return false;
+    return keys.some(key => bmHasMeaningfulData(value[key]));
+  }
+  return false;
+}
+
+function bmReadUserQuestions() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ACS_USER_QUESTIONS_KEY) || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(item => typeof item === 'string' ? { text: item, at: '' } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+function bmReadProfileNotes() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem('acsProfileNotes') || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(item => typeof item === 'string' ? { text: item, at: '' } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .slice(0, 20);
+  } catch {
+    return [];
+  }
+}
+
+function bmExpectedDosesForDate(treatments, dt) {
+  const ms = dt.getTime();
+  let total = 0;
+  (treatments || []).forEach(t => {
+    const s = t.start_date ? new Date(t.start_date + 'T00:00:00').getTime() : 0;
+    const e = t.end_date   ? new Date(t.end_date   + 'T00:00:00').getTime() : Infinity;
+    if (ms < s || ms > e) return;
+
+    if (t.frequency === 'as_needed') return;
+    if (t.frequency === 'weekly') {
+      if (!t.start_date) return;
+      const startDow = new Date(t.start_date + 'T00:00:00').getDay();
+      if (dt.getDay() !== startDow) return;
+    }
+
+    const perDay = (Array.isArray(t.times) && t.times.length > 0) ? t.times.length : 1;
+    total += perDay;
+  });
+  return total;
+}
+
+async function bmComputeAdherenceSummary(pyURI, fetchOpts, treatments) {
+  if (!pyURI || !Array.isArray(treatments) || treatments.length === 0) {
+    return { expected: 0, taken: 0, pct: null };
+  }
+
+  let expected = 0;
+  let taken = 0;
+
+  const today = new Date();
+  for (let i = 0; i < 7; i++) {
+    const dt = new Date(today);
+    dt.setDate(today.getDate() - i);
+    const ds = dt.toISOString().slice(0, 10);
+    expected += bmExpectedDosesForDate(treatments, dt);
+
+    try {
+      const r = await fetch(`${pyURI}/api/treatment/log?date=${ds}`, fetchOpts);
+      if (!r.ok) continue;
+      const logs = await r.json();
+      if (!Array.isArray(logs)) continue;
+      taken += logs.filter(l => l && l.taken).length;
+    } catch {}
+  }
+
+  if (expected <= 0) return { expected: 0, taken: 0, pct: null };
+  return {
+    expected,
+    taken: Math.min(taken, expected),
+    pct: Math.round((Math.min(taken, expected) / expected) * 100)
+  };
+}
+
+function bmLooksLoggedInFromNav() {
+  const loginArea = document.getElementById('loginArea');
+  if (!loginArea) return false;
+  const hasDropButton = !!loginArea.querySelector('.dropbtn');
+  if (hasDropButton) return true;
+  const text = (loginArea.textContent || '').trim().toLowerCase();
+  if (!text) return false;
+  return !/^login$/.test(text);
+}
+
+function bmHasLoginForReport() {
+  const profileSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
+  const storageSignal = bmHasMeaningfulData(profileSource);
+  const windowSignal = !!(window.user && (window.user.name || window.user.uid || window.user.username));
+  const navSignal = bmLooksLoggedInFromNav();
+  return storageSignal || windowSignal || navSignal;
+}
+
+function bmHasCompletedRiskForReport() {
+  const riskSource = bmReadStorageObject(BM_RISK_SOURCE_KEYS);
+  return bmHasMeaningfulData(riskSource);
+}
+
+function bmValidateReportReadiness() {
+  return {
+    ready: true,
+    needsLogin: false,
+    needsRisk: false,
+  };
+}
+
+function bmRedirectToRiskCalculator({ needsLogin, needsRisk }) {
+  let message = 'Please complete your risk calculator before opening Personalized Report. Taking you there now.';
+  alert(message);
+  window.location.href = '{{ site.baseurl }}/cancerrisk';
+}
+
+function bmPickFirstDefined(source, keys, fallback = '') {
+  for (const key of keys) {
+    if (source && source[key] !== undefined && source[key] !== null && source[key] !== '') {
+      return source[key];
+    }
+  }
+  return fallback;
+}
+
+function bmNormalizeGenderLabel(rawGender) {
+  const val = String(rawGender || '').trim().toLowerCase();
+  if (!val) return 'Not provided';
+  if (val === 'female' || val === 'f' || val === 'woman' || val === 'women') return 'Female';
+  if (val === 'male' || val === 'm' || val === 'man' || val === 'men') return 'Male';
+  return 'Not provided';
+}
+
+const BM_RISK_QUESTION_FIELDS = [
+  ['age', 'Age', 'categoryDemographics'],
+  ['sex', 'Biological Sex', 'categoryDemographics'],
+  ['race', 'Race / Ethnicity', 'categoryDemographics'],
+  ['smoking_status', 'Smoking Status', 'categoryLifestyle'],
+  ['pack_years', 'Pack Years', 'categoryLifestyle'],
+  ['bmi_category', 'BMI Category', 'categoryLifestyle'],
+  ['alcohol_consumption', 'Alcohol Consumption', 'categoryLifestyle'],
+  ['physical_activity', 'Physical Activity', 'categoryLifestyle'],
+  ['diet_quality', 'Diet Quality', 'categoryLifestyle'],
+  ['family_history', 'Family History of Cancer', 'categoryMedicalRisks'],
+  ['diabetes', 'Type 2 Diabetes', 'categoryMedicalRisks'],
+  ['hepatitis', 'Hepatitis B/C', 'categoryMedicalRisks'],
+  ['hpv', 'HPV Infection', 'categoryMedicalRisks'],
+  ['h_pylori', 'H. pylori Infection', 'categoryMedicalRisks'],
+  ['ibd', 'Inflammatory Bowel Disease', 'categoryMedicalRisks'],
+  ['radiation_history', 'Prior Radiation Therapy', 'categoryMedicalRisks'],
+  ['immunosuppression', 'Immunosuppression', 'categoryMedicalRisks'],
+  ['precancerous_lesions', 'Precancerous Lesions', 'categoryMedicalRisks'],
+  ['occupational_exposure', 'Occupational Chemical Exposure', 'categoryEnvironmental'],
+  ['uv_exposure', 'High UV / Sun Exposure', 'categoryEnvironmental'],
+  ['selected_cancer_types', 'Selected Cancer Types', 'categoryCancerInterests'],
+  ['cancer_types', 'Selected Cancer Types', 'categoryCancerInterests'],
+];
+
+function bmFormatQuestionValue(value) {
+  if (Array.isArray(value)) return value.length ? value.join(', ') : '';
+  if (typeof value === 'boolean') return value ? bmReportText('yes') : bmReportText('no');
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function bmBuildQuestionnaireResponses(profile) {
+  const rowsByCategory = new Map();
+  const seen = new Set();
+
+  BM_RISK_QUESTION_FIELDS.forEach(([key, label, categoryKey]) => {
+    if (!profile || seen.has(label)) return;
+    const raw = profile[key];
+    const formatted = bmFormatQuestionValue(raw);
+    if (!formatted) return;
+    seen.add(label);
+    if (!rowsByCategory.has(categoryKey)) rowsByCategory.set(categoryKey, []);
+    rowsByCategory.get(categoryKey).push({ label, value: formatted, editKey: `profile.${key}` });
+  });
+
+  const orderedCategories = [
+    'categoryDemographics',
+    'categoryLifestyle',
+    'categoryMedicalRisks',
+    'categoryEnvironmental',
+    'categoryCancerInterests'
+  ];
+
+  return orderedCategories
+    .map(categoryKey => ({
+      title: bmReportText(categoryKey),
+      rows: rowsByCategory.get(categoryKey) || []
+    }))
+    .filter(group => group.rows.length > 0);
+}
+
+function bmNormalizeRegionKey(input) {
+  const raw = String(input || '').toLowerCase().replace(/[^a-z_ ]/g, '').trim();
+  if (!raw) return null;
+  const direct = BM_REGION_ALIASES[raw];
+  if (direct) return direct;
+  const collapsed = raw.replace(/\s+/g, '_');
+  if (BM_REGION_ALIASES[collapsed]) return BM_REGION_ALIASES[collapsed];
+  const hs = BM_HOTSPOTS.find(h => h.label.toLowerCase().includes(raw));
+  return hs ? hs.id : null;
+}
+
+function bmExtractElevatedRegions(riskData) {
+  const elevated = new Map();
+
+  // ── Handle actual ML API cancer_type_risks output ──────────────────────
+  if (riskData?.cancer_type_risks && typeof riskData.cancer_type_risks === 'object') {
+    Object.entries(riskData.cancer_type_risks).forEach(([cancerType, info]) => {
+      if (!info || info.applicable === false) return;
+      const level = String(info.risk_level || '').toLowerCase();
+      if (!['high', 'moderate'].includes(level)) return;
+      const mapped = bmNormalizeRegionKey(cancerType.replace(/_/g, ' '));
+      if (mapped && !elevated.has(mapped)) {
+        elevated.set(mapped, {
+          regionId: mapped,
+          level,
+          score: info.relative_risk ? info.relative_risk / 4 : 0,
+        });
+      }
+    });
+  }
+
+  if (Array.isArray(riskData?.regions)) {
+    riskData.regions.forEach(region => {
+      const score = Number(region.score ?? region.riskScore ?? 0);
+      const levelRaw = String(region.level ?? region.risk ?? '').toLowerCase();
+      const isElevated = score >= 0.6 || ['high', 'elevated', 'increased', 'above_average'].includes(levelRaw);
+      const mapped = bmNormalizeRegionKey(region.id || region.region || region.name);
+      if (mapped && isElevated) {
+        elevated.set(mapped, {
+          regionId: mapped,
+          level: levelRaw || (score ? `${Math.round(score * 100)}%` : 'elevated'),
+          score,
+        });
+      }
+    });
+  }
+
+  if (riskData && typeof riskData === 'object' && !Array.isArray(riskData)) {
+    Object.entries(riskData).forEach(([key, value]) => {
+      const mapped = bmNormalizeRegionKey(key);
+      if (!mapped) return;
+
+      if (typeof value === 'string') {
+        const levelRaw = value.toLowerCase();
+        if (['high', 'elevated', 'increased', 'above_average'].includes(levelRaw)) {
+          elevated.set(mapped, { regionId: mapped, level: levelRaw, score: 0 });
+        }
+        return;
+      }
+
+      if (value && typeof value === 'object') {
+        const score = Number(value.score ?? value.riskScore ?? 0);
+        const levelRaw = String(value.level ?? value.risk ?? '').toLowerCase();
+        const isElevated = score >= 0.6 || ['high', 'elevated', 'increased', 'above_average'].includes(levelRaw);
+        if (isElevated) {
+          elevated.set(mapped, {
+            regionId: mapped,
+            level: levelRaw || (score ? `${Math.round(score * 100)}%` : 'elevated'),
+            score,
+          });
+        }
+      }
+    });
+  }
+
+  return Array.from(elevated.values());
+}
+
+function bmExtractHighRiskCancers(riskData) {
+  const high = [];
+  if (!riskData?.cancer_type_risks || typeof riskData.cancer_type_risks !== 'object') return high;
+
+  Object.values(riskData.cancer_type_risks).forEach(info => {
+    if (!info || info.applicable === false) return;
+    if (String(info.risk_level || '').toLowerCase() !== 'high') return;
+    const label = String(info.label || '').trim();
+    if (label) high.push(label);
+  });
+
+  return [...new Set(high)];
+}
+
+function bmDeriveRiskFactorNotes(profile, riskData) {
+  // Use actual ML model risk factors if available
+  if (Array.isArray(riskData?.risk_factors) && riskData.risk_factors.length > 0) {
+    return riskData.risk_factors
+      .filter(rf => rf.impact === 'high' || rf.impact === 'moderate')
+      .slice(0, 8)
+      .map(rf => `${rf.factor}: ${rf.detail}`);
+  }
+
+  const factors = [];
+  const aggregate = [];
+
+  const pushText = v => {
+    if (!v) return;
+    if (Array.isArray(v)) aggregate.push(...v.map(x => String(x).toLowerCase()));
+    else aggregate.push(String(v).toLowerCase());
+  };
+
+  pushText(profile.smoking);
+  pushText(profile.tobaccoUse);
+  pushText(profile.familyHistory);
+  pushText(profile.bmi);
+  pushText(profile.activityLevel);
+  pushText(profile.alcoholUse);
+  pushText(profile.exposure);
+  pushText(riskData.riskFactors);
+  pushText(riskData.factors);
+
+  const all = aggregate.join(' | ');
+  if (all.includes('smok')) factors.push('Your smoking history may increase risk for lung, bladder, and other cancers.');
+  if (all.includes('family')) factors.push('Your reported family history may increase inherited cancer risk in specific organs.');
+  if (all.includes('obes') || all.includes('high bmi')) factors.push('Weight-related factors can increase risk for colorectal, endometrial, and other cancers.');
+  if (all.includes('alcohol')) factors.push('Alcohol use can increase risk for liver, breast, and head/neck cancers.');
+  if (all.includes('inactive') || all.includes('sedentary')) factors.push('Lower physical activity may contribute to higher risk for several cancers.');
+
+  if (factors.length === 0) {
+    factors.push('Risk factors were inferred from your available profile and calculator data in this prototype.');
+  }
+
+  return factors;
+}
+
+function bmGetRecommendedScreenings(profile, elevatedRegions) {
+  const age = Number(profile.age) || 0;
+  const gender = bmNormalizeGenderLabel(profile.gender).toLowerCase();
+  const regionIds = new Set(elevatedRegions.map(r => r.regionId));
+  const screenings = [];
+
+  if (age >= 45) screenings.push('Colorectal screening (colonoscopy or stool-based test) starting at age 45.');
+  if (age >= 40 && gender === 'female') screenings.push('Annual mammogram starting at age 40.');
+  if (age >= 21 && gender === 'female') screenings.push('Cervical cancer screening (Pap/HPV) per clinician schedule.');
+  if (age >= 50 && gender === 'male') screenings.push('Discuss PSA testing for prostate cancer with your doctor.');
+  if (age >= 50 && regionIds.has('lung')) screenings.push('Ask about annual low-dose CT screening if smoking history is significant.');
+  if (regionIds.has('skin')) screenings.push('Annual full-body skin exam and monthly self-check of changing moles/spots.');
+  if (regionIds.has('liver')) screenings.push('If high-risk for liver disease, discuss liver ultrasound and blood tests.');
+
+  if (screenings.length === 0) {
+    screenings.push('Discuss age-appropriate routine cancer screening with your primary care doctor.');
+  }
+  return screenings;
+}
+
+async function bmFetchReportData() {
+  // ── 1. Read risk results from localStorage (saved by cancerrisk.md) ────
+  const riskSource = bmReadStorageObject(BM_RISK_SOURCE_KEYS);
+  const profileStorageSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
+
+  // ── 2. Fetch real user profile + treatments from backend ────────────────
+  const pyURI    = window._bmPythonURI;
+  const fetchOpts = window._bmFetchOptions;
+  let apiProfile   = {};
+  let apiTreatments = [];
+
+  if (pyURI) {
+    try {
+      const r = await fetch(`${pyURI}/api/id`, fetchOpts);
+      if (r.ok) apiProfile = await r.json();
+    } catch(_) {}
+    try {
+      const r = await fetch(`${pyURI}/api/treatments`, fetchOpts);
+      if (r.ok) apiTreatments = await r.json();
+    } catch(_) {}
+  }
+
+  // ── 3. Resolve identity fields ──────────────────────────────────────────
+  const fullName = apiProfile.name
+    || bmPickFirstDefined(profileStorageSource, ['fullName', 'name', 'displayName'], 'ACS Patient');
+  const nameParts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] || 'ACS';
+  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Patient';
+  const ageRaw = riskSource?.profile?.age || apiProfile.age
+    || bmPickFirstDefined(profileStorageSource, ['age'], 'Not provided');
+  const age = ageRaw || 'Not provided';
+  const genderRaw = riskSource?.profile?.sex || apiProfile.gender
+    || bmPickFirstDefined(profileStorageSource, ['gender', 'sex'], bmGender);
+  const genderLabel = bmNormalizeGenderLabel(genderRaw);
+
+  // ── 4. Derive report sections ───────────────────────────────────────────
+  const riskProfile = { ...(riskSource?.profile || {}), ...profileStorageSource };
+  const elevatedRegions = bmExtractElevatedRegions(riskSource);
+  const riskFactorNotes = bmDeriveRiskFactorNotes(riskProfile, riskSource);
+  const screeningRecommendations = bmGetRecommendedScreenings({ ...riskProfile, age, gender: genderLabel }, elevatedRegions);
+  const calculatorCancers = bmExtractRiskCalculatorCancers(riskSource, elevatedRegions);
+  const highRiskCancers = bmExtractHighRiskCancers(riskSource);
+  const questionnaireResponses = bmBuildQuestionnaireResponses(riskSource?.profile || {});
+  const bookmarks = bmGetBookmarks();
+  const userQuestions = bmReadUserQuestions();
+  const profileNotes = bmReadProfileNotes();
+  const adherenceSummary = await bmComputeAdherenceSummary(pyURI, fetchOpts, apiTreatments);
+
+  return {
+    fullName,
+    firstName,
+    lastName,
+    age,
+    gender: genderLabel,
+    dateISO: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    riskSource,
+    elevatedRegions,
+    calculatorCancers,
+    highRiskCancers,
+    questionnaireResponses,
+    riskFactorNotes,
+    screeningRecommendations,
+    bookmarks,
+    userQuestions,
+    profileNotes,
+    adherenceSummary,
+    apiTreatments: Array.isArray(apiTreatments) ? apiTreatments : [],
+    overallRR: riskSource?.overall_relative_risk ?? null,
+    cancerTypeRisks: riskSource?.cancer_type_risks ?? null,
+    riskFactorsRaw: riskSource?.risk_factors ?? [],
+    hasRiskData: !!(riskSource && bmHasMeaningfulData(riskSource)),
+  };
+}
+
+function bmSaveQuestionFromReport(questionText) {
+  const q = String(questionText || '').trim();
+  if (!q) return;
+  let existing = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ACS_USER_QUESTIONS_KEY) || '[]');
+    existing = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    existing = [];
+  }
+
+  const next = [{ text: q, at: new Date().toISOString() }, ...existing]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => (other.text || '').toLowerCase() === (item.text || '').toLowerCase()))
+    .slice(0, 20);
+  localStorage.setItem(ACS_USER_QUESTIONS_KEY, JSON.stringify(next));
+}
+
+function bmAddQuestionFromReport() {
+  const input = document.getElementById('bmReportQuestionInput');
+  if (!input) return;
+  const question = input.value.trim();
+  if (!question) return;
+
+  bmSaveQuestionFromReport(question);
+  input.value = '';
+
+  const savedQuestions = bmReadUserQuestions();
+  const listWrap = document.getElementById('bmReportQuestionsList');
+
+  if (listWrap) {
+    listWrap.innerHTML = savedQuestions.length
+      ? `<ul class="report-styled-list">${savedQuestions.map(q => `<li>${bmEscapeHtml(q.text)}</li>`).join('')}</ul>`
+      : `<div class="report-empty-state">${bmReportText('noQuestions')}</div>`;
+  }
+
+  if (_bmCachedReportData) {
+    _bmCachedReportData.userQuestions = savedQuestions;
+  }
+}
+
+window.bmAddQuestionFromReport = bmAddQuestionFromReport;
+
+function bmBindReportQuestionForm() {
+  const input = document.getElementById('bmReportQuestionInput');
+  const button = document.getElementById('bmReportQuestionAddBtn');
+  if (!input || !button) return;
+
+  button.onclick = () => bmAddQuestionFromReport();
+  input.onkeydown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  };
+}
+
+function bmBindReportQuestionDelegates() {
+  if (window._bmQuestionDelegatesBound) return;
+  window._bmQuestionDelegatesBound = true;
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.id === 'bmReportQuestionAddBtn') {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.id === 'bmReportQuestionInput' && event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  });
+}
+
+bmBindReportQuestionDelegates();
+
+function bmExtractRiskCalculatorCancers(riskData, elevatedRegions = []) {
+  const extracted = [];
+  const seen = new Set();
+
+  const addEntry = (name, score, level, sourceId) => {
+    const cleanName = String(name || '').trim();
+    if (!cleanName) return;
+    const key = cleanName.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    extracted.push({
+      name: cleanName,
+      score: Number.isFinite(Number(score)) ? Number(score) : null,
+      level: level ? String(level) : null,
+      sourceId: sourceId || null,
+    });
+  };
+
+  const tryObjectAsCancer = (idOrName, value) => {
+    if (!value || typeof value !== 'object') return;
+    const score = value.score ?? value.riskScore ?? value.probability ?? value.percent;
+    const level = value.level ?? value.risk ?? value.category ?? value.label;
+    const isRiskish = score !== undefined || level !== undefined || value.isElevated || value.selected || value.recommended;
+    if (!isRiskish) return;
+
+    const byId = BM_CANCERS[idOrName];
+    const name = value.name || value.cancer || value.cancerType || value.type || (byId ? byId.name : idOrName);
+    addEntry(name, score, level, byId ? idOrName : null);
+  };
+
+  const knownArrays = [
+    riskData?.cancers,
+    riskData?.cancerTypes,
+    riskData?.results,
+    riskData?.predictions,
+    riskData?.topRisks,
+    riskData?.recommendations,
+  ].filter(Array.isArray);
+
+  knownArrays.forEach(arr => {
+    arr.forEach(item => {
+      if (typeof item === 'string') {
+        const byId = BM_CANCERS[item];
+        addEntry(byId ? byId.name : item, null, null, byId ? item : null);
+        return;
+      }
+      if (!item || typeof item !== 'object') return;
+      const id = item.id || item.cancerId || item.key;
+      const byId = id && BM_CANCERS[id] ? BM_CANCERS[id] : null;
+      const name = item.name || item.cancer || item.cancerType || item.type || (byId ? byId.name : id);
+      addEntry(name, item.score ?? item.riskScore ?? item.probability ?? item.percent, item.level ?? item.risk ?? item.category, byId ? id : null);
+    });
+  });
+
+  if (riskData && typeof riskData === 'object' && !Array.isArray(riskData)) {
+    Object.entries(riskData).forEach(([key, value]) => {
+      if (Array.isArray(value)) return;
+      tryObjectAsCancer(key, value);
+    });
+  }
+
+  if (!extracted.length && Array.isArray(elevatedRegions)) {
+    elevatedRegions.forEach(region => {
+      const hs = BM_HOTSPOTS.find(h => h.id === region.regionId);
+      if (!hs) return;
+      hs.cancerIds.slice(0, 3).forEach(cid => {
+        const c = BM_CANCERS[cid];
+        if (c) addEntry(c.name, region.score, region.level, cid);
+      });
+    });
+  }
+
+  extracted.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+  return extracted.slice(0, 10);
+}
+
+function bmRegionCancersForReport(regionId) {
+  const hotspot = BM_HOTSPOTS.find(h => h.id === regionId);
+  if (!hotspot) return [];
+  return hotspot.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
+    if (!c) return false;
+    if (c.reproGender) return c.reproGender === bmGender;
+    return true;
+  });
+}
+
+function bmRenderPersonalizedReport(reportData) {
+  const meta = document.getElementById('bmReportMeta');
+  const content = document.getElementById('bmReportContent');
+  const title = document.getElementById('bmReportTitle');
+  const backBtn = document.getElementById('bmReportBackBtn');
+  const downloadBtn = document.getElementById('bmReportDownloadBtn');
+  if (!meta || !content) return;
+
+  bmUpdateReportLanguageUI();
+  if (title) title.textContent = bmReportText('reportTitle');
+  if (backBtn) backBtn.textContent = bmReportText('backToMap');
+  if (downloadBtn) downloadBtn.textContent = bmReportText('downloadPdf');
+
+  const translatedName = bmTranslateReportSentence(reportData.fullName);
+  const translatedFirstName = bmTranslateReportSentence(reportData.firstName);
+  const translatedLastName = bmTranslateReportSentence(reportData.lastName);
+  const translatedGender = bmTranslateReportSentence(reportData.gender);
+  const chunkIntoTwo = (arr = []) => {
+    const mid = Math.ceil(arr.length / 2);
+    return [arr.slice(0, mid), arr.slice(mid)];
+  };
+
+  meta.innerHTML = `
+    <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
+    <div><strong>${bmReportText('document')}:</strong> ${bmReportText('visitPacket')}</div>
+    <div><strong>${bmReportText('preparedFor')}:</strong> ${bmEscapeHtml(translatedName)}</div>
+  `;
+
+  // Build treatment table
+  const treatmentTable = (reportData.apiTreatments || []).length
+    ? (() => {
+      const [leftTx, rightTx] = chunkIntoTwo(reportData.apiTreatments);
+      const renderTxTable = (rows) => rows.length
+        ? `<div class="report-table-card"><div class="report-table-wrap"><table class="report-table">
+            <thead>
+              <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Schedule</th></tr>
+            </thead>
+            <tbody>
+              ${rows.map(tx => `
+                <tr>
+                  <td>
+                    <span class="report-med-name">
+                      <span class="report-med-dot" style="background:${bmEscapeHtml(tx.color || '#c4a882')};"></span>
+                      ${bmEscapeHtml(tx.medication_name)}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="report-schedule-line"><span class="report-schedule-label">Dosage</span>${bmEscapeHtml(tx.dosage || '—')}</span>
+                    <span class="report-schedule-line"><span class="report-schedule-label">Frequency</span>${bmEscapeHtml(tx.frequency || '—')}</span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table></div></div>`
+        : '';
+
+      return `<div class="report-table-columns">${renderTxTable(leftTx)}${renderTxTable(rightTx)}</div>`;
+    })()
+    : `<div class="report-empty-state">No medications tracked yet.</div>`;
+
+  // Build high-risk cancers
+  const highRiskHtml = (reportData.highRiskCancers || []).length
+    ? `<ul class="report-bullet-list">${reportData.highRiskCancers.map((name, idx) => `
+      <li>${bmRenderEditableField({ editKey: `risk.highRisk.${idx}`, value: name })}</li>
+    `).join('')}</ul>`
+    : `<div class="report-empty-state">No high-risk cancers identified based on current assessment.</div>`;
+
+  // Build questionnaire responses as styled cards
+  const questionnaireHtml = (reportData.questionnaireResponses || []).length
+    ? reportData.questionnaireResponses.map(group => `
+      <div class="report-qa-section">
+        <div class="report-qa-section-title">${bmEscapeHtml(group.title)}</div>
+        <div class="report-qa-columns">
+          ${(() => {
+            const [leftRows, rightRows] = chunkIntoTwo(group.rows || []);
+            const renderRows = (rows) => `
+              <div class="report-qa-table">
+                ${rows.map(row => `
+                  <div class="report-qa-row">
+                    <div class="report-qa-row-label">${bmEscapeHtml(row.label)}</div>
+                    <div class="report-qa-row-value">${bmRenderEditableField({ editKey: row.editKey || `profile.${row.label}`, value: row.value })}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            return `${renderRows(leftRows)}${renderRows(rightRows)}`;
+          })()}
+        </div>
+      </div>
+    `).join('')
+    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
+
+  // Build bookmarked concerns
+  const bookmarkHtml = (reportData.bookmarks || []).length
+    ? `<ul class="report-bullet-list">${reportData.bookmarks.map(item => {
+        const target = item.regionId
+          ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
+          : (item.link || '#');
+        return `<li><a href="${bmEscapeHtml(target)}">${bmEscapeHtml(item.name || item.id)}</a></li>`;
+      }).join('')}</ul>`
+    : `<div class="report-empty-state">No cancer bookmarks yet.</div>`;
+
+  // Build questions list
+  const questionHtml = (reportData.userQuestions || []).length
+    ? `<ul class="report-styled-list">${reportData.userQuestions.map(q => `<li>${bmEscapeHtml(q.text)}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">No questions added yet.</div>`;
+
+  // Build notes list
+  const profileNoteHtml = (reportData.profileNotes || []).length
+    ? `<ul class="report-styled-list">${reportData.profileNotes.map(n => `<li>${bmEscapeHtml(n.text)}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">No notebook notes yet.</div>`;
+
+  const sections = [];
+
+  // Patient Summary Section (top)
+  sections.push(`
+    <section class="report-section report-section-summary">
+      <h3 class="report-section-icon">Patient Summary</h3>
+      <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
+      <div class="report-kv">
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('firstName')}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedFirstName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('lastName')}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedLastName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('age')}</div>
+          <div class="report-kv-value">${bmEscapeHtml(String(reportData.age))}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('gender')}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedGender)}</div>
+        </div>
+      </div>
+    </section>`);
+
+  // Clinical Risk Profile Section
+  sections.push(`
+    <section class="report-section report-section-risk">
+      <h3 class="report-section-icon">Clinical Risk Profile</h3>
+      ${highRiskHtml}
+    </section>`);
+
+  // Questionnaire Section
+  if ((reportData.questionnaireResponses || []).length) {
+    sections.push(`
+      <section class="report-section report-section-assessment">
+        <h3 class="report-section-icon">Risk Assessment Responses</h3>
+        ${questionnaireHtml}
+      </section>`);
+  }
+
+  // Bookmarked Concerns Section
+  if ((reportData.bookmarks || []).length) {
+    sections.push(`
+      <section class="report-section report-section-bookmarks">
+        <h3 class="report-section-icon">Bookmarked Cancer Concerns</h3>
+        ${bookmarkHtml}
+      </section>`);
+  }
+
+  // Questions Section
+  sections.push(`
+    <section class="report-section report-section-questions">
+      <h3 class="report-section-icon">Questions for Your Doctor</h3>
+      <div class="report-question-form">
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${bmEscapeHtml(bmReportText('addQuestionPrompt'))}"></textarea>
+        <button class="report-question-add" id="bmReportQuestionAddBtn" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
+      </div>
+      <div id="bmReportQuestionsList">${questionHtml}</div>
+    </section>`);
+
+  // Notes Section
+  sections.push(`
+    <section class="report-section report-section-notes">
+      <h3 class="report-section-icon">Clinical Notes</h3>
+      ${profileNoteHtml}
+    </section>`);
+
+  // Treatment Plan Section (moved lower per layout request)
+  sections.push(`
+    <section class="report-section report-section-treatment">
+      <h3 class="report-section-icon">Current Treatment Plan</h3>
+      <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
+      ${treatmentTable}
+    </section>`);
+
+  content.innerHTML = sections.join('');
+  bmBindReportQuestionForm();
+  bmBindReportEditableFields();
+}
+
+async function bmOpenPersonalizedReport() {
+  const root = document.getElementById('body-map-root');
+  root.classList.add('report-mode');
+  const content = document.getElementById('bmReportContent');
+  if (content) {
+    content.innerHTML = '<div class="report-loading"><div class="report-loading-dots"><span></span><span></span><span></span></div>Building your personalized report...</div>';
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  params.set('report', '1');
+  history.pushState({ report: true }, '', `${window.location.pathname}?${params.toString()}`);
+
+  _bmCachedReportData = await bmFetchReportData();
+  bmRenderPersonalizedReport(_bmCachedReportData);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function bmClosePersonalizedReport() {
+  const params = new URLSearchParams(window.location.search);
+  params.delete('report');
+  const query = params.toString();
+  history.pushState({ report: false }, '', query ? `${window.location.pathname}?${query}` : window.location.pathname);
+  document.getElementById('body-map-root').classList.remove('report-mode');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function bmDownloadPersonalizedReport() {
+  document.body.classList.add('bm-print-report');
+  window.print();
+  document.body.classList.remove('bm-print-report');
+}
+
+// ─── SEARCH ────────────────────────────────────────────────────────────────
+function bmSearchCancers(query) {
+  const q = query.toLowerCase().trim();
+  if (q.length < 2) { results.classList.remove('open'); return; }
+
+  const matches = [];
+  BM_HOTSPOTS.forEach(hs => {
+    hs.cancerIds.forEach(cid => {
+      const c = BM_CANCERS[cid];
+      if (!c) return;
+      if (c.name.toLowerCase().includes(q) || c.tags.some(t => t.toLowerCase().includes(q))) {
+        matches.push({ cancer: c, hotspot: hs, cid });
+      }
+    });
+  });
+
+  results.innerHTML = '';
+  if (matches.length === 0) {
+    results.innerHTML = `<div class="bm-search-no-results">No results for "${query}"</div>`;
+  } else {
+    matches.slice(0, 8).forEach(({ cancer, hotspot }) => {
+      const item = document.createElement('div');
+      item.className = 'bm-search-result-item';
+      item.innerHTML = `
+        <span>${cancer.name}</span>
+        <span class="bm-search-result-region">${hotspot.label}</span>`;
+      item.addEventListener('click', () => {
+        bmCloseSearch();
+        document.getElementById('bmSearchInput').value = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => bmActivateHotspot(hotspot.id), 200);
+      });
+      results.appendChild(item);
+    });
+  }
+  results.classList.add('open');
+}
+
+function bmCloseSearch() {
+  document.getElementById('bmSearchResults').classList.remove('open');
+}
+
+// ─── SHARE ─────────────────────────────────────────────────────────────────
+function bmShareRegion(hotspotId) {
+  const url = window.location.href.split('?')[0] + '?region=' + hotspotId;
+  navigator.clipboard.writeText(url).then(() => {
+    const btns = document.querySelectorAll('.share-btn');
+    btns.forEach(b => { if (b.textContent.includes('Share')) { b.textContent = 'Link copied!'; b.classList.add('copied'); }});
+    setTimeout(() => btns.forEach(b => { b.textContent = b.classList.contains('copied') ? 'Share this region' : b.textContent; b.classList.remove('copied'); }), 2000);
+  });
+}
+
+// ─── DEEP LINK on load ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  bmApplySiteThemeToBodyMap();
+  bmUpdateReportLanguageUI();
+  const params = new URLSearchParams(window.location.search);
+  const region = params.get('region');
+  if (region) setTimeout(() => bmActivateHotspot(region), 500);
+  if (params.get('report') === '1') {
+    setTimeout(() => bmOpenPersonalizedReport(), 300);
+  }
+});
+
+function bmApplySiteThemeToBodyMap() {
+  const root = document.getElementById('body-map-root');
+  if (!root) return;
+
+  const theme = localStorage.getItem('acsSiteTheme') || 'default';
+  const navyVars = {
+    '--cream': '#efe4d3',
+    '--warm-white': '#f8f1e5',
+    '--rose': '#1f3f66',
+    '--rose-light': '#4f7099',
+    '--rose-pale': '#dfe8f2',
+    '--terra': '#17324f',
+    '--sage': '#5f7f97',
+    '--sage-pale': '#e8eef2',
+    '--tan': '#b89e7b',
+    '--tan-light': '#ddd0bc',
+    '--brown': '#d7c4a8',
+    '--text': '#27231f',
+    '--muted': '#6a6054',
+    '--hero-title-color': '#1f2a33',
+    '--hero-label-color': '#1f2a33',
+    '--border': 'rgba(122, 101, 71, 0.28)'
+  };
+
+  const warmVars = [
+    '--cream', '--warm-white', '--rose', '--rose-light', '--rose-pale', '--terra',
+    '--sage', '--sage-pale', '--tan', '--tan-light', '--brown', '--text', '--muted',
+    '--hero-title-color', '--hero-label-color', '--border'
+  ];
+
+  if (theme === 'navy_beige') {
+    Object.entries(navyVars).forEach(([k, v]) => root.style.setProperty(k, v));
+  } else {
+    warmVars.forEach((k) => root.style.removeProperty(k));
+  }
+}
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'acsSiteTheme') bmApplySiteThemeToBodyMap();
+});
 
 function bmSwitchGender(g) {
   bmGender = g;
@@ -940,12 +3446,10 @@ function bmSwitchGender(g) {
   document.getElementById('bm-svg-container-male').style.display   = g === 'male'   ? '' : 'none';
   document.getElementById('bm-btn-female').classList.toggle('active', g === 'female');
   document.getElementById('bm-btn-male').classList.toggle('active',   g === 'male');
-  // Hotspots use CSS %, so no repositioning needed
   if (bmActiveId) bmActivateHotspot(bmActiveId);
 }
 
 // ─── HOTSPOT RENDERING ─────────────────────────────────────────────────────
-// Uses CSS percentage positioning — no getBoundingClientRect, no timing issues
 function bmBuildHotspots() {
   const layer = document.getElementById('bmHotspotLayer');
   layer.innerHTML = '';
@@ -981,9 +3485,9 @@ function bmActivateHotspot(id) {
   panel.classList.add('active');
   panel.style.setProperty('--panel-accent', sys.color);
 
-  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
-    if (!c) return false;
-    if (c.reproGender) return c.reproGender === bmGender;
+  const cancers = hs.cancerIds.map(cid => ({ cid, cancer: BM_CANCERS[cid] })).filter(({ cancer }) => {
+    if (!cancer) return false;
+    if (cancer.reproGender) return cancer.reproGender === bmGender;
     return true;
   });
 
@@ -994,14 +3498,20 @@ function bmActivateHotspot(id) {
       <div class="panel-region">${hs.label}</div>
       <div class="panel-count">${cancers.length} cancer type${cancers.length!==1?'s':''} in this region</div>
     </div>
+    <div class="panel-share-row">
+      <button class="share-btn" onclick="bmShareRegion('${hs.id}')">Share this region</button>
+    </div>
     <div class="panel-body">
-      ${cancers.map((c,i) => `
+      ${cancers.map(({ cid, cancer: c }, i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
             <a href="${c.link}" target="_blank" class="cancer-name-link">${c.name}</a>
-            <span class="cancer-arrow">→</span>
+            <span class="cancer-right">
+              <button class="bookmark-icon-btn ${bmIsBookmarked(cid) ? 'active' : ''}" type="button" onclick="bmToggleBookmark('${cid}', event)" title="${bmIsBookmarked(cid) ? 'Remove bookmark' : 'Save bookmark'}"></button>
+              <span class="cancer-arrow">→</span>
+            </span>
           </div>
-          <div class="cancer-tags">${c.tags.map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+          <div class="cancer-tags">${c.tags.map(t => `<span class="ctag">${t}</span>`).join('')}</div>
           <div class="cancer-desc">${c.desc}</div>
         </div>`).join('')}
     </div>`;
@@ -1044,6 +3554,7 @@ function bmBuildSysGrid() {
   function init() {
     bmBuildHotspots();
     bmBuildSysGrid();
+    bmRefreshBookmarksUI();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -1052,5 +3563,3 @@ function bmBuildSysGrid() {
   }
 })();
 </script>
-
-<script src="/ACSstuff/search.js"></script>
