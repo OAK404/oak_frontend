@@ -8,22 +8,18 @@ show_reading_time: false
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
   :root {
-    --ink:       #123047; /* deep blue-black */
-    --ink-2:     #2F5D73; /* muted blue */
-    --ink-3:     #6F9CAF; /* dusty blue */
-    --ink-4:     #C7DDE5; /* pale blue */
-
-    --rose:      #6bbfd9; /* warm terracotta accent */
-    --rose-deep: #4d6db8; /* deeper terracotta */
-
-    --sage:      #A8C5BE; /* muted seafoam */
-    --sage-pale: #E8F0ED; /* very pale sage */
-
-    --orange:    #8aa3d8; /* warm sand */
-    --tan:       #c4c4e6; /* muted taupe */
-
-    --paper:     #FAF7F2; /* warm off-white */
-    --muted:     #647985; /* cool gray-blue */
+    --ink:       #03045e;
+    --ink-2:     #90e0ef;
+    --ink-3:     #ade8f4;
+    --ink-4:     #caf0f8;
+    --rose:      #00b4d8;
+    --rose-deep: #0077b6;
+    --sage:      #eac8ec;
+    --sage-pale: #eaf1ea;
+    --orange:    #bfacdc;
+    --tan:       #1f1e1c;
+    --paper:     #fdf6ee;
+    --muted:     #023e8a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,8 +73,8 @@ show_reading_time: false
   }
   .cf-hero-source {
     margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 10px;
-    color: #c5daed; letter-spacing: .15em; text-transform: uppercase;
-    border-left: 2px solid #3b436b; padding-left: 12px;
+    color: #a07c68; letter-spacing: .15em; text-transform: uppercase;
+    border-left: 2px solid #6b4c3b; padding-left: 12px;
     opacity: 0; animation: fadeUp .6s .6s forwards;
   }
 
@@ -245,7 +241,7 @@ show_reading_time: false
 
   <!-- HERO -->
   <section class="cf-hero" aria-labelledby="hero-heading">
-    <p class="cf-hero-eyebrow">Oncology and Kids · 2026-2027</p>
+    <p class="cf-hero-eyebrow">American Cancer Society · 2026-2027</p>
     <h1 id="hero-heading">The State<br>of <em>Cancer</em><br>in America</h1>
     <p class="cf-hero-sub">Every year, millions of Americans face a diagnosis. Understanding the numbers is the first step toward changing them.</p>
   </section>
@@ -367,7 +363,7 @@ show_reading_time: false
 
   <!-- SCREENING -->
   <section class="cf-section" aria-labelledby="screening-heading">
-    <p class="cf-section-label">Early Detection · OAK Guidelines</p>
+    <p class="cf-section-label">Early Detection · ACS Guidelines</p>
     <h2 class="cf-progress-headline" id="screening-heading">Screening saves lives.<br>Know your <span>schedule</span>.</h2>
     <div class="cf-screening-grid" role="list" aria-label="Cancer screening recommendations">
       <div class="cf-screen-card cf-animate" role="listitem" tabindex="0"><span class="cf-screen-icon" aria-hidden="true"></span><div class="cf-screen-type">Breast</div><div class="cf-screen-age">Start at 45</div><div class="cf-screen-detail">Annual mammography. Option to begin at 40.</div></div>
