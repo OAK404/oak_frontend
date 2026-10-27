@@ -8,25 +8,25 @@ const CellGame = (() => {
 
   // ─── Site color palette ──────────────────────────────────────────────────
   const C = {
-    bg:         '#fdf6ee',
-    surface:    '#f5ede3',
-    panel:      '#fff9f3',
-    rose:       '#e07a6a',
-    terracotta: '#c45e4a',
-    sage:       '#8aaa8c',
-    sageDark:   '#6a8a6c',
-    orange:     '#d4845a',
-    tan:        '#c4a882',
-    tanLight:   '#e8d9c4',
-    text:       '#3d2c24',
-    textMuted:  '#937468',
-    purple:     '#7c5cbf',
-    purpleLight:'#c8b4f0',
-    tealGame:   '#5a9e8a',
-    tealLight:  '#a8d8c8',
-    warn:       '#d4845a',
-    warnBg:     '#fce9e6',
-    darkCanvas: '#2a1f18',
+    bg:         '#FAF7F2',
+    surface:    '#C7DDE5',
+    panel:      '#E8F0ED',
+    rose:       '#6bbfd9',
+    terracotta: '#4d6db8',
+    sage:       '#A8C5BE',
+    sageDark:   '#2F5D73',
+    orange:     '#8aa3d8',
+    tan:        '#c4c4e6',
+    tanLight:   '#C7DDE5',
+    text:       '#123047',
+    textMuted:  '#647985',
+    purple:     '#6F9CAF',
+    purpleLight:'#C7DDE5',
+    tealGame:   '#2F5D73',
+    tealLight:  '#A8C5BE',
+    warn:       '#8aa3d8',
+    warnBg:     '#E8F0ED',
+    darkCanvas: '#123047',
   };
 
   // ─── Phase definitions ───────────────────────────────────────────────────
@@ -574,7 +574,7 @@ const CellGame = (() => {
     const r=22;
     ctx.save(); ctx.translate(checkpointX,H/2);
     ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
-    ctx.fillStyle=game.checkpointOpen?ph.color+'44':'rgba(180,160,140,0.2)';
+    ctx.fillStyle=game.checkpointOpen?ph.color+'44':'rgba(199,221,229,0.2)';
     ctx.fill(); ctx.strokeStyle=game.checkpointOpen?ph.color:C.textMuted; ctx.lineWidth=2; ctx.stroke();
     ctx.fillStyle=game.checkpointOpen?ph.color:C.textMuted;
     ctx.font='bold 8px Georgia,serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
@@ -602,14 +602,14 @@ const CellGame = (() => {
         }
         ctx.closePath(); ctx.fillStyle=e.color+'cc'; ctx.fill();
         ctx.strokeStyle=e.color; ctx.lineWidth=1.5; ctx.stroke();
-        ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='bold 7px sans-serif';
+        ctx.fillStyle='rgba(199,221,229,0.9)'; ctx.font='bold 7px sans-serif';
         ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.label,0,0);
       } else if(e.type==='nutrient'){
         ctx.translate(0,Math.sin(e.bob)*3);
         ctx.beginPath(); ctx.arc(0,0,e.size,0,Math.PI*2);
         ctx.fillStyle=e.color+'99'; ctx.fill();
         ctx.strokeStyle=e.color; ctx.lineWidth=1.5; ctx.stroke();
-        ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='bold 7px sans-serif';
+        ctx.fillStyle='rgba(199,221,229,0.9)'; ctx.font='bold 7px sans-serif';
         ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.label,0,0);
       } else if(e.type==='chromosome'){
         ctx.beginPath(); ctx.ellipse(0,0,e.size*0.4,e.size,0,0,Math.PI*2);
@@ -624,13 +624,13 @@ const CellGame = (() => {
     if(game.p53Active){ctx.shadowColor=C.sage;ctx.shadowBlur=12;}
     ctx.beginPath(); ctx.arc(0,0,game.player.size,0,Math.PI*2);
     ctx.fillStyle=ph.color; ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2; ctx.stroke();
+    ctx.strokeStyle='rgba(199,221,229,0.5)'; ctx.lineWidth=2; ctx.stroke();
     ctx.beginPath(); ctx.arc(0,0,game.player.size*0.45,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.fill();
+    ctx.fillStyle='rgba(199,221,229,0.25)'; ctx.fill();
     if(game.repairCooldown>0){
       ctx.beginPath();
       ctx.arc(0,0,game.player.size+4,Math.PI*1.5,Math.PI*1.5+Math.PI*2*(1-game.repairCooldown/90));
-      ctx.strokeStyle='rgba(255,255,255,0.6)'; ctx.lineWidth=2; ctx.stroke();
+      ctx.strokeStyle='rgba(199,221,229,0.6)'; ctx.lineWidth=2; ctx.stroke();
     }
     ctx.restore();
 
@@ -662,7 +662,7 @@ const CellGame = (() => {
     // Phase bar
     const bw=(W-32)/4;
     for(let i=0;i<4;i++){
-      ctx.fillStyle=i<game.phase?PHASES[i].color+'77':i===game.phase?PHASES[i].color+'33':'rgba(180,160,140,0.15)';
+      ctx.fillStyle=i<game.phase?PHASES[i].color+'77':i===game.phase?PHASES[i].color+'33':'rgba(199,221,229,0.15)';
       ctx.fillRect(16+i*bw,H-22,bw-3,8);
       if(i===game.phase){ctx.strokeStyle=PHASES[i].color;ctx.lineWidth=1.5;ctx.strokeRect(16+i*bw,H-22,bw-3,8);}
       ctx.fillStyle=i===game.phase?PHASES[i].color:C.textMuted;
@@ -725,7 +725,7 @@ const CellGame = (() => {
         border: 1px solid ${C.tanLight};
         border-radius: 14px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(61,44,36,0.08);
+        box-shadow: 0 2px 12px rgba(18,48,71,0.08);
         margin-bottom: 0.5rem;
       }
       .cg-canvas-wrap {
@@ -767,7 +767,7 @@ const CellGame = (() => {
       .cg-overlay {
         position: absolute; top:0; left:0; width:100%; height:100%;
         display: flex; align-items: center; justify-content: center;
-        background: rgba(61,44,36,0.65);
+        background: rgba(18,48,71,0.65);
         backdrop-filter: blur(2px);
       }
       .cg-hidden { display: none !important; }
@@ -779,7 +779,7 @@ const CellGame = (() => {
         width: 90%;
         text-align: center;
         border: 1px solid ${C.tanLight};
-        box-shadow: 0 8px 32px rgba(61,44,36,0.25);
+        box-shadow: 0 8px 32px rgba(18,48,71,0.25);
       }
       .cg-ov-title { font-size: 17px; font-weight: bold; color: ${C.text}; margin-bottom: 8px; }
       .cg-ov-body { font-size: 12px; color: ${C.textMuted}; line-height: 1.65; margin-bottom: 16px; font-family: sans-serif; }

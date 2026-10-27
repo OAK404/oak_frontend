@@ -12,10 +12,10 @@ permalink: /celllab
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --cream:#fdf6ee;--warm-white:#fff9f3;--rose:#e07a6a;--rose-light:#f2b5ab;
-  --rose-pale:#fce9e6;--terra:#c45e4a;--sage:#8aaa8c;--sage-light:#b8ceb9;
-  --sage-pale:#eaf1ea;--tan:#c4a882;--tan-light:#e8d9c4;--brown:#6b4c3b;
-  --text:#3d2c24;--muted:#937468;--border:rgba(196,168,130,0.25);
+  --cream:#FAF7F2;--warm-white:#E8F0ED;--rose:#6bbfd9;--rose-light:#C7DDE5;
+  --rose-pale:#E8F0ED;--terra:#4d6db8;--sage:#A8C5BE;--sage-light:#C7DDE5;
+  --sage-pale:#E8F0ED;--tan:#c4c4e6;--tan-light:#C7DDE5;--brown:#123047;
+  --text:#123047;--muted:#647985;--border:rgba(18,48,71,0.18);
   --serif:'Cormorant Garamond',Georgia,serif;--sans:'Nunito',system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -49,7 +49,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ginfo{flex:1}.gname{font-size:12px;font-weight:700;color:var(--text)}.gdesc{font-size:10px;color:var(--muted);margin-top:1px}
 .pill{width:36px;height:19px;border-radius:10px;background:var(--tan-light);position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;border:none}
 .pill.on{background:var(--sage)}.pill.mutated{background:var(--rose)}
-.pill::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;background:white;border-radius:50%;transition:transform .3s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.pill::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;background:#FAF7F2;border-radius:50%;transition:transform .3s;box-shadow:0 1px 3px rgba(18,48,71,.15)}
 .pill.on::after,.pill.mutated::after{transform:translateX(17px)}
 .phase-nav{padding:16px 20px;flex:1}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;margin-bottom:3px;cursor:pointer;transition:background .2s,border-color .2s;border:1px solid transparent}
@@ -74,22 +74,22 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ctrl-btn{background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s}
 .ctrl-btn:hover{border-color:var(--rose-light);color:var(--terra)}
 .ctrl-btn.active{background:var(--rose-pale);border-color:var(--rose);color:var(--terra)}
-.pause-btn{background:var(--rose);border:none;border-radius:6px;padding:4px 14px;font-family:var(--sans);font-size:11px;font-weight:700;color:white;cursor:pointer;transition:background .2s}
+.pause-btn{background:var(--rose);border:none;border-radius:6px;padding:4px 14px;font-family:var(--sans);font-size:11px;font-weight:700;color:#FAF7F2;cursor:pointer;transition:background .2s}
 .pause-btn:hover{background:var(--terra)}
 .dis-col{display:flex;flex-direction:column;gap:8px}
 .dis-col .sec-lbl{margin-bottom:2px}
 .dis-card{background:var(--warm-white);border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:9px}
-.dis-card:hover{border-color:var(--rose-light);background:var(--rose-pale);transform:translateX(-3px);box-shadow:4px 0 12px rgba(224,122,106,.1)}
+.dis-card:hover{border-color:var(--rose-light);background:var(--rose-pale);transform:translateX(-3px);box-shadow:4px 0 12px rgba(107,191,217,.1)}
 .dis-card.firing{border-color:var(--terra);background:var(--rose-pale);animation:fireShake .4s ease}
 @keyframes fireShake{0%,100%{transform:translateX(-3px)}25%{transform:translateX(-8px) rotate(-1deg)}75%{transform:translateX(-1px) rotate(1deg)}}
-.dis-badge{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:white;flex-shrink:0;letter-spacing:-.5px}
-.dis-badge.uv{background:#c49a10}.dis-badge.smoke{background:#5a5a5a}.dis-badge.metal{background:#3a6e7e}.dis-badge.mut{background:var(--terra)}
+.dis-badge{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#FAF7F2;flex-shrink:0;letter-spacing:-.5px}
+.dis-badge.uv{background:#647985}.dis-badge.smoke{background:#2F5D73}.dis-badge.metal{background:#2F5D73}.dis-badge.mut{background:var(--terra)}
 .dis-info h4{font-size:11px;font-weight:700;color:var(--text);margin-bottom:1px}.dis-info p{font-size:9px;color:var(--muted);line-height:1.3}
 
 /* PHASE CONTENT */
 .phase-content{padding:28px 28px}
 .ph-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.ph-badge{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:24px;font-weight:600;color:white;flex-shrink:0}
+.ph-badge{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:24px;font-weight:600;color:#FAF7F2;flex-shrink:0}
 .ph-header h2{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--text);line-height:1}
 .ph-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 .ph-dur{margin-left:auto;background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:7px 14px;text-align:center;flex-shrink:0}
@@ -109,13 +109,13 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .gate-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .gate-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;cursor:pointer;transition:all .2s;font-family:var(--sans);font-size:12px;color:var(--text);text-align:left;font-weight:500}
 .gate-opt:hover:not(:disabled){border-color:var(--rose-light);background:var(--rose-pale)}
-.gate-opt.correct{background:var(--sage-pale);border-color:var(--sage);color:#2d5e30;font-weight:600}
+.gate-opt.correct{background:var(--sage-pale);border-color:var(--sage);color:#2F5D73;font-weight:600}
 .gate-opt.wrong{background:var(--rose-pale);border-color:var(--rose);color:var(--terra)}
 .gate-opt:disabled{cursor:not-allowed}
 .gate-fb{font-size:12px;line-height:1.65;padding:10px 14px;border-radius:8px;display:none}
-.gate-fb.correct{background:var(--sage-pale);border:1px solid var(--sage-light);color:#2d5e30;display:block}
+.gate-fb.correct{background:var(--sage-pale);border:1px solid var(--sage-light);color:#2F5D73;display:block}
 .gate-fb.wrong{background:var(--rose-pale);border:1px solid var(--rose-light);color:var(--terra);display:block}
-.adv-btn{display:none;background:var(--rose);color:white;border:none;border-radius:8px;padding:10px 24px;font-family:var(--sans);font-size:11px;font-weight:800;cursor:pointer;transition:background .2s,transform .15s;margin-top:12px;letter-spacing:.08em;text-transform:uppercase}
+.adv-btn{display:none;background:var(--rose);color:#FAF7F2;border:none;border-radius:8px;padding:10px 24px;font-family:var(--sans);font-size:11px;font-weight:800;cursor:pointer;transition:background .2s,transform .15s;margin-top:12px;letter-spacing:.08em;text-transform:uppercase}
 .adv-btn:hover{background:var(--terra);transform:translateY(-1px)}
 .adv-btn.show{display:inline-block}
 .gene-tabs{display:flex;gap:5px;margin-bottom:13px;flex-wrap:wrap}
@@ -144,12 +144,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ev-item:last-child{border-bottom:none}
 @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 .ev-type{font-size:7px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:2px 6px;border-radius:4px;flex-shrink:0;margin-top:2px}
-.ev-type.damage{background:var(--rose-pale);color:var(--terra)}.ev-type.repair{background:var(--sage-pale);color:#2d5e30}
-.ev-type.alert{background:#fff0e0;color:#8a5010}.ev-type.system{background:var(--tan-light);color:var(--brown)}
+.ev-type.damage{background:var(--rose-pale);color:var(--terra)}.ev-type.repair{background:var(--sage-pale);color:#2F5D73}
+.ev-type.alert{background:#E8F0ED;color:#2F5D73}.ev-type.system{background:var(--tan-light);color:var(--brown)}
 .ev-txt{font-size:11px;color:var(--muted);line-height:1.5;flex:1}.ev-txt strong{color:var(--text)}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--cream)}
 ::-webkit-scrollbar-thumb{background:var(--tan-light);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--tan)}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:white;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:700;z-index:9000;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#FAF7F2;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:700;z-index:9000;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -193,23 +193,23 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="phase-nav">
     <div class="sec-lbl">Phase Navigator</div>
     <div class="nav-item active" id="nav-g1" onclick="goPhase('g1')">
-      <div class="nav-pip" style="background:#e07a6a"></div><div class="nav-name">G1 Phase</div>
+      <div class="nav-pip" style="background:#A8C5BE"></div><div class="nav-name">G1 Phase</div>
       <div class="nav-st act" id="nst-g1">Active</div>
     </div>
     <div class="nav-item locked" id="nav-s" onclick="goPhase('s')">
-      <div class="nav-pip" style="background:#8aaa8c"></div><div class="nav-name">S Phase</div>
+      <div class="nav-pip" style="background:#6F9CAF"></div><div class="nav-name">S Phase</div>
       <div class="nav-st lock" id="nst-s">Locked</div>
     </div>
     <div class="nav-item locked" id="nav-g2" onclick="goPhase('g2')">
-      <div class="nav-pip" style="background:#c4a882"></div><div class="nav-name">G2 Phase</div>
+      <div class="nav-pip" style="background:#A8C5BE"></div><div class="nav-name">G2 Phase</div>
       <div class="nav-st lock" id="nst-g2">Locked</div>
     </div>
     <div class="nav-item locked" id="nav-m" onclick="goPhase('m')">
-      <div class="nav-pip" style="background:#c45e4a"></div><div class="nav-name">M Phase</div>
+      <div class="nav-pip" style="background:#647985"></div><div class="nav-name">M Phase</div>
       <div class="nav-st lock" id="nst-m">Locked</div>
     </div>
     <div class="nav-item locked" id="nav-genes" onclick="goPhase('genes')">
-      <div class="nav-pip" style="background:#937468"></div><div class="nav-name">Gene Deep-Dive</div>
+      <div class="nav-pip" style="background:#647985"></div><div class="nav-name">Gene Deep-Dive</div>
       <div class="nav-st lock" id="nst-genes">Locked</div>
     </div>
   </div>
@@ -257,7 +257,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
     <div id="c-g1">
       <div class="ph-header">
-        <div class="ph-badge" style="background:#e07a6a">G1</div>
+        <div class="ph-badge" style="background:#A8C5BE">G1</div>
         <div><h2>G1 Phase</h2><div class="ph-sub">Gap 1 -- First Growth Phase</div></div>
         <div class="ph-dur"><div class="dur-n">11 hrs</div><div class="dur-l">Average</div></div>
       </div>
@@ -283,7 +283,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
     <div id="c-s" style="display:none">
       <div class="ph-header">
-        <div class="ph-badge" style="background:#8aaa8c">S</div>
+        <div class="ph-badge" style="background:#6F9CAF">S</div>
         <div><h2>S Phase</h2><div class="ph-sub">Synthesis -- DNA Replication</div></div>
         <div class="ph-dur"><div class="dur-n">6-8 hrs</div><div class="dur-l">Average</div></div>
       </div>
@@ -309,7 +309,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
     <div id="c-g2" style="display:none">
       <div class="ph-header">
-        <div class="ph-badge" style="background:#c4a882">G2</div>
+        <div class="ph-badge" style="background:#A8C5BE">G2</div>
         <div><h2>G2 Phase</h2><div class="ph-sub">Gap 2 -- Pre-Mitotic Verification</div></div>
         <div class="ph-dur"><div class="dur-n">3-4 hrs</div><div class="dur-l">Average</div></div>
       </div>
@@ -335,7 +335,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
     <div id="c-m" style="display:none">
       <div class="ph-header">
-        <div class="ph-badge" style="background:#c45e4a">M</div>
+        <div class="ph-badge" style="background:#647985">M</div>
         <div><h2>M Phase</h2><div class="ph-sub">Mitosis -- Cell Division</div></div>
         <div class="ph-dur"><div class="dur-n">1-2 hrs</div><div class="dur-l">Average</div></div>
       </div>
@@ -361,7 +361,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
     <div id="c-genes" style="display:none">
       <div class="ph-header">
-        <div class="ph-badge" style="background:#937468">GEN</div>
+        <div class="ph-badge" style="background:#647985">GEN</div>
         <div><h2>Gene Deep-Dive</h2><div class="ph-sub">Proto-oncogenes, Oncogenes, and Tumor Suppressors</div></div>
       </div>
       <div class="gene-tabs">
@@ -371,7 +371,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         <button class="g-tab" onclick="gTab('p53',this)">p53 in Detail</button>
       </div>
       <div class="g-tc active" id="gtc-proto">
-        <div class="gtc-head"><div class="gtc-dot" style="background:#8aaa8c"></div><div class="gtc-title">Proto-oncogenes</div><div class="gtc-badge" style="background:var(--sage-pale);color:#2d5e30">Normal Function</div></div>
+        <div class="gtc-head"><div class="gtc-dot" style="background:#6F9CAF"></div><div class="gtc-title">Proto-oncogenes</div><div class="gtc-badge" style="background:var(--sage-pale);color:#123047">Normal Function</div></div>
         <div class="gtc-body">Proto-oncogenes are normal, healthy genes encoding proteins essential for regulated cell growth. They produce <strong>growth factors</strong> (EGF, PDGF), <strong>growth factor receptors</strong> (EGFR, HER2), <strong>intracellular signal transducers</strong> (RAS, RAF, PI3K), and <strong>transcription factors</strong> (MYC, FOS, JUN).<br><br>In a healthy cell, proto-oncogenes are under tight regulatory control -- switched on by external signals and switched off once the signal passes. They only activate when the cell genuinely needs to divide.<br><br>The key insight: proto-oncogenes are <strong>not inherently dangerous</strong>. Every cell requires them. Danger arises only when mutations cause constitutive activation.</div>
         <div class="stat-row">
           <div class="stat-bl"><div class="stat-n" style="color:var(--sage)">350+</div><div class="stat-l">Known proto-oncogenes in humans</div></div>
@@ -380,7 +380,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         </div>
       </div>
       <div class="g-tc" id="gtc-onco">
-        <div class="gtc-head"><div class="gtc-dot" style="background:#e07a6a"></div><div class="gtc-title">Oncogenes</div><div class="gtc-badge" style="background:var(--rose-pale);color:var(--terra)">Gain-of-Function</div></div>
+        <div class="gtc-head"><div class="gtc-dot" style="background:#A8C5BE"></div><div class="gtc-title">Oncogenes</div><div class="gtc-badge" style="background:var(--rose-pale);color:var(--terra)">Gain-of-Function</div></div>
         <div class="gtc-body">Oncogenes are mutated proto-oncogenes that signal constant division even without growth factor binding.<br><br><strong>Point mutation:</strong> A single base change at Gly12 of RAS locks the protein in active GTP-bound state permanently. Mutant KRAS cannot hydrolyze GTP -- found in 40% of all human cancers.<br><br><strong>Gene amplification:</strong> Extra copies produce excess protein. HER2 is amplified in 20% of breast cancers -- targeted by Herceptin (trastuzumab).<br><br><strong>Chromosomal translocation:</strong> BCR-ABL fusion in CML produces a constitutively active tyrosine kinase, targeted by Gleevec (imatinib).</div>
         <div class="stat-row">
           <div class="stat-bl"><div class="stat-n" style="color:var(--rose)">40%</div><div class="stat-l">of cancers carry RAS mutations</div></div>
@@ -389,7 +389,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         </div>
       </div>
       <div class="g-tc" id="gtc-tumor">
-        <div class="gtc-head"><div class="gtc-dot" style="background:#c45e4a"></div><div class="gtc-title">Tumor Suppressor Genes</div><div class="gtc-badge" style="background:#ffeee8;color:#8a3020">Loss-of-Function</div></div>
+        <div class="gtc-head"><div class="gtc-dot" style="background:#647985"></div><div class="gtc-title">Tumor Suppressor Genes</div><div class="gtc-badge" style="background:#FAF7F2;color:#123047">Loss-of-Function</div></div>
         <div class="gtc-body">Tumor suppressors are the brakes of the cell cycle -- they inhibit proliferation, trigger DNA repair, or activate apoptosis. Unlike oncogenes, they are recessive: <strong>both copies must be inactivated</strong> for cancer to develop.<br><br><strong>Knudson Two-Hit Hypothesis (1971):</strong> In hereditary cancers one mutant copy is inherited -- only one somatic second hit is needed. In sporadic cancers both hits occur somatically.<br><br><strong>Rb:</strong> Binds E2F when hypophosphorylated, blocking S phase. Loss of both Rb copies causes retinoblastoma in children.<br><br><strong>BRCA1/BRCA2:</strong> Homologous recombination repair proteins. Without them, double-strand breaks route through error-prone NHEJ.</div>
         <div class="stat-row">
           <div class="stat-bl"><div class="stat-n" style="color:var(--terra)">Recessive</div><div class="stat-l">Both copies must be lost</div></div>
@@ -398,7 +398,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
         </div>
       </div>
       <div class="g-tc" id="gtc-p53">
-        <div class="gtc-head"><div class="gtc-dot" style="background:#c45e4a"></div><div class="gtc-title">p53 -- Guardian of the Genome</div><div class="gtc-badge" style="background:#ffeee8;color:#8a3020">Most Critical Tumor Suppressor</div></div>
+        <div class="gtc-head"><div class="gtc-dot" style="background:#647985"></div><div class="gtc-title">p53 -- Guardian of the Genome</div><div class="gtc-badge" style="background:#FAF7F2;color:#123047">Most Critical Tumor Suppressor</div></div>
         <div class="gtc-body">p53 (encoded by TP53) sits at the center of the cell's damage response. Under normal conditions it is continuously produced but rapidly degraded by MDM2.<br><br><strong>Activation:</strong> DNA damage activates ATM/ATR, which phosphorylate p53 at Ser15/Ser20, blocking MDM2 binding. p53 accumulates rapidly.<br><br><strong>Three outputs p53 can trigger:</strong><br>1. <strong>Cell cycle arrest:</strong> Transcribes CDKN1A (p21), which inhibits CDK2/Cyclin E -- blocks S phase entry.<br>2. <strong>DNA repair:</strong> Activates GADD45 and other repair pathway genes.<br>3. <strong>Apoptosis:</strong> If damage is irreparable, transcribes BAX, PUMA, NOXA -- activating mitochondrial apoptosis.</div>
         <div class="stat-row">
           <div class="stat-bl"><div class="stat-n" style="color:var(--terra)">50%+</div><div class="stat-l">of all cancers have TP53 mutations</div></div>
@@ -445,10 +445,10 @@ const OX=W/2, OY=H/2+10;  // wheel center
 // Phase definitions: angle in degrees clockwise from top (12 o'clock = 0)
 // Layout matches reference: G1=large bottom-right, S=bottom-left, G2=top-left, M=top-right
 const PHASES=[
-  {id:'g1', label:'G1', sub:'Growth',    col:'#e07a6a', startDeg:30,  spanDeg:185},
-  {id:'s',  label:'S',  sub:'Synthesis', col:'#8aaa8c', startDeg:215, spanDeg:85},
-  {id:'g2', label:'G2', sub:'Prep',      col:'#c4a882', startDeg:300, spanDeg:40},
-  {id:'m',  label:'M',  sub:'Mitosis',   col:'#c45e4a', startDeg:340, spanDeg:50},
+  {id:'g1', label:'G1', sub:'Growth',    col:'#A8C5BE', startDeg:30,  spanDeg:185},
+  {id:'s',  label:'S',  sub:'Synthesis', col:'#6F9CAF', startDeg:215, spanDeg:85},
+  {id:'g2', label:'G2', sub:'Prep',      col:'#A8C5BE', startDeg:300, spanDeg:40},
+  {id:'m',  label:'M',  sub:'Mitosis',   col:'#647985', startDeg:340, spanDeg:50},
 ];
 const OUTER_R=155, INNER_R=62;
 const LABEL_R=115; // where phase labels sit
@@ -483,7 +483,7 @@ function drawWheel(){
     } else if(isUnlocked){
       cx.fillStyle=ph.col+'22';
     } else {
-      cx.fillStyle='rgba(196,168,130,0.07)';
+      cx.fillStyle='rgba(168,197,190,0.07)';
     }
     cx.fill();
 
@@ -497,7 +497,7 @@ function drawWheel(){
       cx.strokeStyle=ph.col+'88';
       cx.lineWidth=7;
     } else {
-      cx.strokeStyle='rgba(196,168,130,0.3)';
+      cx.strokeStyle='rgba(168,197,190,0.3)';
       cx.lineWidth=5;
     }
     cx.stroke();
@@ -520,7 +520,7 @@ function drawWheel(){
       cx.beginPath();
       cx.moveTo(inner.x,inner.y);
       cx.lineTo(outer.x,outer.y);
-      cx.strokeStyle='#fff9f3';
+      cx.strokeStyle='#FAF7F2';
       cx.lineWidth=2.5;
       cx.stroke();
     });
@@ -537,17 +537,17 @@ function drawWheel(){
       cx.font='800 18px Cormorant Garamond,serif';
       cx.fillText(ph.label,0,-8);
       cx.font='600 9px Nunito,sans-serif';
-      cx.fillStyle='#937468';
+      cx.fillStyle='#647985';
       cx.fillText(ph.sub,0,6);
     } else if(isUnlocked){
       cx.fillStyle=ph.col+'cc';
       cx.font='700 15px Cormorant Garamond,serif';
       cx.fillText(ph.label,0,-6);
       cx.font='600 8px Nunito,sans-serif';
-      cx.fillStyle='#937468aa';
+      cx.fillStyle='#647985';
       cx.fillText(ph.sub,0,6);
     } else {
-      cx.fillStyle='rgba(196,168,130,0.5)';
+      cx.fillStyle='rgba(168,197,190,0.5)';
       cx.font='700 15px Cormorant Garamond,serif';
       cx.fillText(ph.label,0,-4);
     }
@@ -556,7 +556,7 @@ function drawWheel(){
     // Lock icon for locked phases
     if(!isUnlocked){
       const lk=ptOnCircle(midDeg,OUTER_R-22);
-      cx.fillStyle='rgba(196,168,130,0.5)';
+      cx.fillStyle='rgba(168,197,190,0.5)';
       cx.font='700 13px sans-serif';
       cx.textAlign='center';
       cx.textBaseline='middle';
@@ -568,14 +568,14 @@ function drawWheel(){
   const isM=(S.phase==='m');
   cx.beginPath();
   cx.arc(OX,OY,INNER_R+2,0,Math.PI*2);
-  cx.fillStyle='#fff9f3';
+  cx.fillStyle='#FAF7F2';
   cx.fill();
-  cx.strokeStyle='rgba(196,168,130,0.3)';
+  cx.strokeStyle='rgba(168,197,190,0.3)';
   cx.lineWidth=1.5;
   cx.stroke();
 
   cx.textAlign='center';
-  cx.fillStyle='#937468';
+  cx.fillStyle='#647985';
   cx.font='600 8px Nunito,sans-serif';
   cx.fillText(isM?'MITOSIS':'INTERPHASE',OX,OY-16);
 
@@ -585,7 +585,7 @@ function drawWheel(){
     cx.fillStyle=activePhase.col;
     cx.font='600 20px Cormorant Garamond,serif';
     cx.fillText(activePhase.label,OX,OY+4);
-    cx.fillStyle='#937468';
+    cx.fillStyle='#647985';
     cx.font='600 8px Nunito,sans-serif';
     cx.fillText(activePhase.sub,OX,OY+18);
   }
@@ -594,11 +594,11 @@ function drawWheel(){
   const hp=Math.max(0,1-S.mutation/100);
   cx.beginPath();
   cx.arc(OX,OY,INNER_R-10,-Math.PI/2,-Math.PI/2+Math.PI*2*hp);
-  cx.strokeStyle=hp>0.6?'#8aaa8c':hp>0.3?'#c4a882':'#c45e4a';
+  cx.strokeStyle=hp>0.6?'#6F9CAF':hp>0.3?'#A8C5BE':'#647985';
   cx.lineWidth=4; cx.stroke();
   cx.beginPath();
   cx.arc(OX,OY,INNER_R-10,-Math.PI/2+Math.PI*2*hp,-Math.PI/2+Math.PI*2);
-  cx.strokeStyle='rgba(196,168,130,0.2)';
+  cx.strokeStyle='rgba(168,197,190,0.2)';
   cx.lineWidth=4; cx.stroke();
 }
 
@@ -621,7 +621,7 @@ function drawCheckpoints(){
     cx.beginPath();
     cx.moveTo(inner.x,inner.y);
     cx.lineTo(outer.x,outer.y);
-    cx.strokeStyle=cp.broken?(flash?'#c45e4a':'#e07a6a88'):'rgba(196,168,130,0.6)';
+    cx.strokeStyle=cp.broken?(flash?'#647985':'#A8C5BE'):'rgba(168,197,190,0.6)';
     cx.lineWidth=cp.broken?2.5:1.5;
     cx.setLineDash([4,3]); cx.stroke(); cx.setLineDash([]);
 
@@ -629,13 +629,13 @@ function drawCheckpoints(){
     const dm=ptOnCircle(cp.deg,OUTER_R+4);
     cx.save(); cx.translate(dm.x,dm.y);
     cx.rotate(Math.PI/4);
-    cx.fillStyle=cp.broken?(flash?'#c45e4a':'#e07a6a'):'#8aaa8c';
+    cx.fillStyle=cp.broken?(flash?'#647985':'#A8C5BE'):'#6F9CAF';
     cx.fillRect(-6,-6,12,12);
     cx.restore();
 
     // Label
     const lb=ptOnCircle(cp.deg,OUTER_R+30);
-    cx.fillStyle=cp.broken?'#c45e4a':'#937468';
+    cx.fillStyle=cp.broken?'#647985':'#647985';
     cx.font='700 8px Nunito,sans-serif';
     cx.textAlign='center'; cx.textBaseline='middle';
     cx.fillText(cp.label,lb.x,lb.y);
@@ -652,9 +652,9 @@ function drawDNA(){
   const steps=60;
 
   // Background panel
-  cx.fillStyle='rgba(255,249,243,0.95)';
+  cx.fillStyle='rgba(250,247,242,0.95)';
   cx.beginPath(); cx.roundRect(bx-wd-8,by-8,wd*2+16,ht+16,8); cx.fill();
-  cx.strokeStyle='rgba(196,168,130,0.3)'; cx.lineWidth=1; cx.stroke();
+  cx.strokeStyle='rgba(168,197,190,0.3)'; cx.lineWidth=1; cx.stroke();
 
   // Draw two strands
   for(let s=0;s<2;s++){
@@ -666,7 +666,7 @@ function drawDNA(){
       const xp=bx+Math.cos(phase)*wd;
       if(i===0) cx.moveTo(xp,yp); else cx.lineTo(xp,yp);
     }
-    cx.strokeStyle=s===0?'#e07a6a88':'#8aaa8c88';
+    cx.strokeStyle=s===0?'#A8C5BE':'#6F9CAF';
     cx.lineWidth=2; cx.stroke();
   }
 
@@ -683,19 +683,19 @@ function drawDNA(){
     if(hasDmg){
       // Red break / adduct at this position
       cx.beginPath(); cx.moveTo(x0,yp); cx.lineTo(x1,yp);
-      cx.strokeStyle='#c45e4a'; cx.lineWidth=2.5; cx.stroke();
+      cx.strokeStyle='#647985'; cx.lineWidth=2.5; cx.stroke();
       // X mark
-      cx.strokeStyle='#c45e4a'; cx.lineWidth=2;
+      cx.strokeStyle='#647985'; cx.lineWidth=2;
       cx.beginPath(); cx.moveTo(bx-4,yp-4); cx.lineTo(bx+4,yp+4); cx.stroke();
       cx.beginPath(); cx.moveTo(bx+4,yp-4); cx.lineTo(bx-4,yp+4); cx.stroke();
     } else {
       cx.beginPath(); cx.moveTo(x0,yp); cx.lineTo(x1,yp);
-      cx.strokeStyle='rgba(196,168,130,0.35)'; cx.lineWidth=1.5; cx.stroke();
+      cx.strokeStyle='rgba(168,197,190,0.35)'; cx.lineWidth=1.5; cx.stroke();
     }
   }
 
   // DNA label
-  cx.fillStyle='#937468';
+  cx.fillStyle='#647985';
   cx.font='700 8px Nunito,sans-serif';
   cx.textAlign='center';
   cx.fillText('DNA',bx,by+ht+10);
@@ -808,13 +808,13 @@ function drawOverlayFX(){
     if(p.type==='sun'){
       cx.save(); cx.globalAlpha=Math.min(1,p.life/30)*0.9;
       cx.beginPath(); cx.arc(p.x,p.y,16,0,Math.PI*2);
-      cx.fillStyle='#f5c830'; cx.fill();
+      cx.fillStyle='#A8C5BE'; cx.fill();
       for(let r=0;r<8;r++){
         const ang=(r/8)*Math.PI*2+T*0.015;
         cx.beginPath();
         cx.moveTo(p.x+Math.cos(ang)*20,p.y+Math.sin(ang)*20);
         cx.lineTo(p.x+Math.cos(ang)*30,p.y+Math.sin(ang)*30);
-        cx.strokeStyle='#f5c830'; cx.lineWidth=2.5; cx.stroke();
+        cx.strokeStyle='#A8C5BE'; cx.lineWidth=2.5; cx.stroke();
       }
       cx.restore();
     }
@@ -826,11 +826,11 @@ function drawOverlayFX(){
       cx.beginPath();
       cx.moveTo(p.x-p.vx*5,p.y-p.vy*5);
       cx.lineTo(p.x,p.y);
-      cx.strokeStyle='#f5c830'; cx.lineWidth=p.sz+1; cx.lineCap='round'; cx.stroke();
+      cx.strokeStyle='#A8C5BE'; cx.lineWidth=p.sz+1; cx.lineCap='round'; cx.stroke();
       // Small burst on hit
       if(p.life<8){
         cx.beginPath(); cx.arc(p.x,p.y,6,0,Math.PI*2);
-        cx.fillStyle='#f5c83044'; cx.fill();
+        cx.fillStyle='#A8C5BE'; cx.fill();
       }
       cx.restore();
     }
@@ -838,14 +838,14 @@ function drawOverlayFX(){
     else if(p.type==='cigarette'){
       cx.save(); cx.globalAlpha=Math.min(1,p.life/20)*0.85;
       // Body
-      cx.fillStyle='#ede0d0';
+      cx.fillStyle='#E8F0ED';
       cx.fillRect(p.x-22,p.y-5,20,7);
       // Lit end
-      cx.fillStyle='#c45e4a';
+      cx.fillStyle='#647985';
       cx.fillRect(p.x-26,p.y-5,4,7);
       // Glow
       cx.beginPath(); cx.arc(p.x-24,p.y-1,4,0,Math.PI*2);
-      cx.fillStyle='rgba(244,120,30,0.4)'; cx.fill();
+      cx.fillStyle='rgba(100,121,133,0.4)'; cx.fill();
       cx.restore();
     }
 
@@ -857,7 +857,7 @@ function drawOverlayFX(){
       p.sz+=0.12;
       cx.save(); cx.globalAlpha=a*0.28;
       cx.beginPath(); cx.arc(p.x,p.y,p.sz,0,Math.PI*2);
-      cx.fillStyle='#888'; cx.fill();
+      cx.fillStyle='#647985'; cx.fill();
       cx.restore();
     }
 
@@ -874,8 +874,8 @@ function drawOverlayFX(){
         else cx.lineTo(Math.cos(ang)*rx,Math.sin(ang)*rx);
       }
       cx.closePath();
-      cx.fillStyle='#5a9aaa'; cx.fill();
-      cx.strokeStyle='#8acada'; cx.lineWidth=1; cx.stroke();
+      cx.fillStyle='#6F9CAF'; cx.fill();
+      cx.strokeStyle='#6bbfd9'; cx.lineWidth=1; cx.stroke();
       cx.restore();
     }
 
@@ -883,7 +883,7 @@ function drawOverlayFX(){
       p.x+=p.vx; p.y+=p.vy; p.vx*=0.92; p.vy*=0.92;
       cx.save(); cx.globalAlpha=a;
       cx.beginPath(); cx.arc(p.x,p.y,p.sz,0,Math.PI*2);
-      cx.fillStyle='#c45e4a'; cx.fill();
+      cx.fillStyle='#647985'; cx.fill();
       cx.restore();
     }
 
@@ -892,18 +892,18 @@ function drawOverlayFX(){
       cx.save(); cx.globalAlpha=a*0.75;
       cx.translate(p.x,p.y); cx.rotate(p.rot);
       // Two broken strand halves
-      cx.strokeStyle='#c45e4a'; cx.lineWidth=2.5; cx.lineCap='round';
+      cx.strokeStyle='#647985'; cx.lineWidth=2.5; cx.lineCap='round';
       cx.beginPath(); cx.moveTo(-p.sz,0); cx.lineTo(-2,0); cx.stroke();
       cx.beginPath(); cx.moveTo(2,0); cx.lineTo(p.sz,0); cx.stroke();
       // Gap marker
-      cx.strokeStyle='#e07a6a'; cx.lineWidth=1.5;
+      cx.strokeStyle='#A8C5BE'; cx.lineWidth=1.5;
       cx.beginPath(); cx.moveTo(-2,-5); cx.lineTo(2,5); cx.stroke();
       cx.restore();
     }
 
     else if(p.type==='mutlabel'){
       cx.save(); cx.globalAlpha=a;
-      cx.fillStyle='#c45e4a';
+      cx.fillStyle='#647985';
       cx.font='700 10px Nunito,sans-serif';
       cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText('BRCA1 LOST',p.x,p.y);
@@ -927,12 +927,12 @@ function drawCellIcons(){
 
     // Cell circle
     cx.beginPath(); cx.arc(tipPt.x,tipPt.y,r,0,Math.PI*2);
-    cx.fillStyle='rgba(253,246,238,0.95)'; cx.fill();
-    cx.strokeStyle=isUnlocked?ph.col:'rgba(196,168,130,0.5)'; cx.lineWidth=2; cx.stroke();
+    cx.fillStyle='rgba(250,247,242,0.95)'; cx.fill();
+    cx.strokeStyle=isUnlocked?ph.col:'rgba(168,197,190,0.5)'; cx.lineWidth=2; cx.stroke();
 
     // Nucleus
     cx.beginPath(); cx.arc(tipPt.x,tipPt.y,r*0.4,0,Math.PI*2);
-    cx.fillStyle=isUnlocked?(ph.col+'88'):'rgba(196,168,130,0.3)'; cx.fill();
+    cx.fillStyle=isUnlocked?(ph.col+'88'):'rgba(168,197,190,0.3)'; cx.fill();
 
     // Chromosome count by phase
     const chromCounts={g1:1,s:2,g2:2,m:4};
@@ -941,7 +941,7 @@ function drawCellIcons(){
       const ang=(i/count)*Math.PI*2+T*(ph.id==='m'?0.02:0);
       const cr=r*0.25, cx2=tipPt.x+Math.cos(ang)*r*0.45, cy2=tipPt.y+Math.sin(ang)*r*0.45;
       cx.beginPath(); cx.ellipse(cx2,cy2,cr,cr*2,ang,0,Math.PI*2);
-      cx.fillStyle=isUnlocked?(ph.col+'cc'):'rgba(196,168,130,0.3)'; cx.fill();
+      cx.fillStyle=isUnlocked?(ph.col+'cc'):'rgba(168,197,190,0.3)'; cx.fill();
     }
 
     // G0 branch on G1 icon
@@ -950,13 +950,13 @@ function drawCellIcons(){
       cx.beginPath();
       cx.moveTo(tipPt.x+r,tipPt.y);
       cx.lineTo(g0pt.x-10,g0pt.y);
-      cx.strokeStyle='rgba(147,116,104,0.4)'; cx.lineWidth=1.5;
+      cx.strokeStyle='rgba(100,121,133,0.4)'; cx.lineWidth=1.5;
       cx.setLineDash([3,3]); cx.stroke(); cx.setLineDash([]);
       // G0 circle
       cx.beginPath(); cx.arc(g0pt.x,g0pt.y,9,0,Math.PI*2);
-      cx.fillStyle='rgba(253,246,238,0.95)'; cx.fill();
-      cx.strokeStyle='rgba(147,116,104,0.4)'; cx.lineWidth=1.5; cx.stroke();
-      cx.fillStyle='#937468'; cx.font='700 7px Nunito,sans-serif';
+      cx.fillStyle='rgba(250,247,242,0.95)'; cx.fill();
+      cx.strokeStyle='rgba(100,121,133,0.4)'; cx.lineWidth=1.5; cx.stroke();
+      cx.fillStyle='#647985'; cx.font='700 7px Nunito,sans-serif';
       cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText('G0',g0pt.x,g0pt.y);
     }
@@ -979,7 +979,7 @@ function drawArrows(){
     cx.rotate(degToRad(tangentDeg));
     cx.beginPath();
     cx.moveTo(-5,-4); cx.lineTo(2,0); cx.lineTo(-5,4); cx.closePath();
-    cx.fillStyle='rgba(147,116,104,0.45)'; cx.fill();
+    cx.fillStyle='rgba(100,121,133,0.45)'; cx.fill();
     cx.restore();
   });
 }
@@ -991,7 +991,7 @@ function drawArrows(){
   if(!S.paused){
     T+=0.6*S.speed;
     cx.clearRect(0,0,W,H);
-    cx.fillStyle='#fff9f3';
+    cx.fillStyle='#FAF7F2';
     cx.fillRect(0,0,W,H);
 
     drawWheel();

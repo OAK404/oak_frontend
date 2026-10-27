@@ -18,10 +18,10 @@ search_exclude: true
       margin: auto;
       margin-top: 0; /* remove the top margin */
       width: 45%;
-      border: 1px solid #ddd;
+      border: 1px solid #C7DDE5;
       border-radius: 5px;
       padding: 20px;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 2px 2px 5px rgba(18,48,71, 0.3);
       margin-bottom: 20px;
       overflow-x: auto; /* Enable horizontal scrolling */
   }

@@ -11,20 +11,20 @@ title: Community Forum
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 #fr {
-  --cream:      #fdf6ee;
-  --warm-white: #fff9f3;
-  --rose:       #e07a6a;
-  --rose-light: #f2b5ab;
-  --rose-pale:  #fce9e6;
-  --terra:      #c45e4a;
-  --sage:       #8aaa8c;
-  --sage-pale:  #eaf1ea;
-  --tan:        #c4a882;
-  --tan-light:  #e8d9c4;
-  --brown:      #6b4c3b;
-  --text:       #3d2c24;
-  --muted:      #937468;
-  --border:     rgba(196,168,130,0.28);
+  --cream:      #FAF7F2;
+  --warm-white: #E8F0ED;
+  --rose:       #6bbfd9;
+  --rose-light: #C7DDE5;
+  --rose-pale:  #E8F0ED;
+  --terra:      #4d6db8;
+  --sage:       #A8C5BE;
+  --sage-pale:  #E8F0ED;
+  --tan:        #c4c4e6;
+  --tan-light:  #C7DDE5;
+  --brown:      #123047;
+  --text:       #123047;
+  --muted:      #647985;
+  --border:     rgba(18,48,71,0.18);
   --serif:      'Cormorant Garamond', Georgia, serif;
   --sans:       'Nunito', system-ui, sans-serif;
   font-family: var(--sans);
@@ -35,10 +35,10 @@ title: Community Forum
 
 /* TOP BAR */
 #fr .f-topbar {
-  background: linear-gradient(135deg, var(--brown) 0%, #3a2218 100%);
+  background: linear-gradient(135deg, var(--brown) 0%, #2F5D73 100%);
   padding: 0 32px;
   position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 2px 12px rgba(61,44,36,0.18);
+  box-shadow: 0 2px 12px rgba(18,48,71,0.18);
 }
 #fr .f-topbar-inner {
   max-width: 1200px; margin: 0 auto;
@@ -47,28 +47,28 @@ title: Community Forum
 }
 #fr .f-brand {
   font-family: var(--serif); font-size: 20px; font-weight: 700;
-  color: #fff; white-space: nowrap; flex-shrink: 0;
+  color: #FAF7F2; white-space: nowrap; flex-shrink: 0;
   cursor: pointer; background: none; border: none; padding: 0;
 }
 #fr .f-brand em { font-style: italic; color: var(--rose-light); }
 #fr .f-search-wrap { flex: 1; max-width: 480px; position: relative; }
 #fr .f-search-input {
   width: 100%; padding: 8px 40px 8px 14px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(199,221,229,0.12);
+  border: 1px solid rgba(199,221,229,0.2);
   border-radius: 20px; font-family: var(--sans); font-size: 13px;
-  color: #fff; outline: none; transition: background 0.2s, border-color 0.2s;
+  color: #FAF7F2; outline: none; transition: background 0.2s, border-color 0.2s;
 }
-#fr .f-search-input::placeholder { color: rgba(255,255,255,0.45); }
-#fr .f-search-input:focus { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.45); }
+#fr .f-search-input::placeholder { color: rgba(199,221,229,0.45); }
+#fr .f-search-input:focus { background: rgba(199,221,229,0.2); border-color: rgba(199,221,229,0.45); }
 #fr .f-search-icon {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,0.55); font-size: 16px; padding: 0; line-height: 1;
+  color: rgba(199,221,229,0.55); font-size: 16px; padding: 0; line-height: 1;
   transition: color 0.15s;
 }
-#fr .f-search-icon:hover { color: #fff; }
-#fr .f-auth-area { margin-left: auto; flex-shrink: 0; font-size: 12px; color: rgba(255,255,255,0.55); white-space: nowrap; }
+#fr .f-search-icon:hover { color: #FAF7F2; }
+#fr .f-auth-area { margin-left: auto; flex-shrink: 0; font-size: 12px; color: rgba(199,221,229,0.55); white-space: nowrap; }
 #fr .f-auth-area strong { color: var(--rose-light); }
 #fr .f-auth-area a { color: var(--rose-light); font-weight: 700; text-decoration: none; }
 
@@ -103,7 +103,7 @@ title: Community Forum
   cursor: pointer; background: none; border: none; width: 100%;
   font-family: var(--sans); font-size: 13px; font-weight: 600;
   color: var(--text); text-align: left;
-  border-bottom: 1px solid rgba(196,168,130,0.1);
+  border-bottom: 1px solid rgba(168,197,190,0.1);
   transition: background 0.15s, color 0.15s;
 }
 #fr .f-nav-item:last-child { border-bottom: none; }
@@ -116,7 +116,7 @@ title: Community Forum
 #fr .f-nav-post-btn {
   display: none; /* hidden by default */
   width: 100%; margin-top: 12px; padding: 10px;
-  background: var(--rose); color: #fff;
+  background: var(--rose); color: #FAF7F2;
   font-family: var(--sans); font-size: 12px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase;
   border: none; border-radius: 8px; cursor: pointer;
@@ -134,9 +134,9 @@ title: Community Forum
 #fr .f-feed-count { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
 #fr .f-search-banner {
-  background: var(--sage-pale); border: 1px solid rgba(138,170,140,0.35);
+  background: var(--sage-pale); border: 1px solid rgba(111,156,175,0.35);
   border-radius: 8px; padding: 10px 16px; margin-bottom: 14px;
-  font-size: 13px; color: #3d6b3f;
+  font-size: 13px; color: #2F5D73;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
 }
 #fr .f-clear-btn {
@@ -151,13 +151,13 @@ title: Community Forum
   border-radius: 10px; padding: 16px 18px; cursor: pointer;
   transition: border-color 0.18s, box-shadow 0.18s;
 }
-#fr .f-post-card:hover { border-color: var(--rose-light); box-shadow: 0 3px 14px rgba(61,44,36,0.07); }
+#fr .f-post-card:hover { border-color: var(--rose-light); box-shadow: 0 3px 14px rgba(18,48,71,0.07); }
 #fr .f-post-card-top {
   display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;
 }
 #fr .f-cat-pill {
   padding: 2px 9px; border-radius: 10px; font-size: 10px;
-  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff;
+  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #FAF7F2;
 }
 #fr .f-post-byline { font-size: 11px; color: var(--muted); }
 #fr .f-post-byline strong { color: var(--text); font-weight: 700; }
@@ -191,7 +191,7 @@ title: Community Forum
 #fr .f-empty-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
 #fr .f-alert { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; }
 #fr .f-alert.error   { background: var(--rose-pale); color: var(--terra); border: 1px solid var(--rose-light); }
-#fr .f-alert.success { background: var(--sage-pale); color: #3d6b3f; border: 1px solid rgba(138,170,140,.4); }
+#fr .f-alert.success { background: var(--sage-pale); color: #2F5D73; border: 1px solid rgba(111,156,175,.4); }
 
 /* RIGHT PANEL */
 #fr .f-right { position: sticky; top: 66px; }
@@ -200,8 +200,8 @@ title: Community Forum
 }
 #fr .f-rules-head {
   padding: 13px 18px;
-  background: linear-gradient(135deg, var(--brown) 0%, #4a2e22 100%);
-  font-family: var(--serif); font-size: 15px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--brown) 0%, #123047 100%);
+  font-family: var(--serif); font-size: 15px; font-weight: 700; color: #FAF7F2;
 }
 #fr .f-rules-body { padding: 14px 18px; }
 #fr .f-rule-row { display: flex; gap: 9px; margin-bottom: 11px; align-items: flex-start; }
@@ -230,7 +230,7 @@ title: Community Forum
   letter-spacing: 0.04em; text-transform: uppercase; padding: 0; transition: color 0.15s;
 }
 #fr .f-back:hover { color: var(--terra); }
-#fr .f-bc-sep { color: rgba(196,168,130,0.5); }
+#fr .f-bc-sep { color: rgba(168,197,190,0.5); }
 #fr .f-bc-cur { color: var(--muted); }
 
 #fr .f-detail-card {
@@ -283,7 +283,7 @@ title: Community Forum
   outline: none; appearance: none; transition: border-color 0.2s;
 }
 #fr .f-field input:focus, #fr .f-field select:focus {
-  border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.1);
+  border-color: var(--rose); box-shadow: 0 0 0 3px rgba(168,197,190,.1);
 }
 #fr textarea {
   width: 100%; padding: 10px 12px; background: var(--cream);
@@ -292,14 +292,14 @@ title: Community Forum
   outline: none; resize: vertical; display: block; line-height: 1.6;
   transition: border-color 0.2s; min-height: 80px;
 }
-#fr textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.1); }
+#fr textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(168,197,190,.1); }
 #fr textarea::placeholder { color: var(--muted); }
 #fr .f-char { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
 #fr .f-char.warn { color: var(--terra); }
 #fr .f-form-row { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
 
 #fr .f-btn-primary {
-  padding: 9px 20px; background: var(--rose); color: #fff; border: none;
+  padding: 9px 20px; background: var(--rose); color: #FAF7F2; border: none;
   border-radius: 8px; font-family: var(--sans); font-size: 12px; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
   transition: background 0.2s; white-space: nowrap;
@@ -315,7 +315,7 @@ title: Community Forum
 #fr .f-btn-outline:hover { border-color: var(--rose); color: var(--rose); }
 #fr .f-btn-danger {
   padding: 9px 18px; background: transparent; color: var(--terra);
-  border: 1px solid rgba(196,94,74,.3); border-radius: 8px;
+  border: 1px solid rgba(100,121,133,.3); border-radius: 8px;
   font-family: var(--sans); font-size: 12px; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
 }
@@ -328,21 +328,21 @@ title: Community Forum
 
 /* MODAL — unscoped so it works regardless of position in DOM */
 .f-modal-overlay {
-  position: fixed; inset: 0; background: rgba(61,44,36,.55);
+  position: fixed; inset: 0; background: rgba(18,48,71,.55);
   z-index: 2000; display: flex; align-items: center; justify-content: center;
   padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
   /* CSS custom properties won't inherit outside #fr, so we redefine the ones used */
-  --warm-white: #fff9f3;
-  --brown:      #6b4c3b;
-  --rose:       #e07a6a;
-  --rose-light: #f2b5ab;
-  --rose-pale:  #fce9e6;
-  --terra:      #c45e4a;
-  --sage-pale:  #eaf1ea;
-  --muted:      #937468;
-  --border:     rgba(196,168,130,0.28);
-  --cream:      #fdf6ee;
-  --text:       #3d2c24;
+  --warm-white: #E8F0ED;
+  --brown:      #123047;
+  --rose:       #6bbfd9;
+  --rose-light: #C7DDE5;
+  --rose-pale:  #E8F0ED;
+  --terra:      #4d6db8;
+  --sage-pale:  #E8F0ED;
+  --muted:      #647985;
+  --border:     rgba(18,48,71,0.18);
+  --cream:      #FAF7F2;
+  --text:       #123047;
   --serif:      'Cormorant Garamond', Georgia, serif;
   --sans:       'Nunito', system-ui, sans-serif;
 }
@@ -350,25 +350,25 @@ title: Community Forum
 .f-modal {
   background: var(--warm-white); border-radius: 14px;
   width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 16px 56px rgba(61,44,36,.22);
+  box-shadow: 0 16px 56px rgba(18,48,71,.22);
   transform: translateY(14px); transition: transform 0.2s;
   font-family: var(--sans); color: var(--text);
 }
 .f-modal-overlay.open .f-modal { transform: translateY(0); }
 .f-modal-head {
   padding: 18px 24px 14px;
-  background: linear-gradient(135deg, var(--brown) 0%, #4a2e22 100%);
+  background: linear-gradient(135deg, var(--brown) 0%, #123047 100%);
   border-radius: 14px 14px 0 0;
   display: flex; align-items: center; justify-content: space-between;
 }
-.f-modal-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #fff; }
+.f-modal-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #FAF7F2; }
 .f-modal-close {
-  background: rgba(255,255,255,.12); border: none; color: rgba(255,255,255,.7);
+  background: rgba(250,247,242,.12); border: none; color: rgba(250,247,242,.7);
   width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center; font-size: 14px;
   transition: background 0.15s;
 }
-.f-modal-close:hover { background: rgba(255,255,255,.22); color: #fff; }
+.f-modal-close:hover { background: rgba(250,247,242,.22); color: #FAF7F2; }
 .f-modal-body { padding: 20px 24px 24px; }
 /* Field styles inside modal */
 .f-modal-body .f-field { margin-bottom: 14px; }
@@ -386,7 +386,7 @@ title: Community Forum
 }
 .f-modal-body .f-field input:focus,
 .f-modal-body .f-field select:focus {
-  border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.1);
+  border-color: var(--rose); box-shadow: 0 0 0 3px rgba(107,191,217,.1);
 }
 .f-modal-body textarea {
   width: 100%; padding: 10px 12px; background: var(--cream);
@@ -395,16 +395,16 @@ title: Community Forum
   outline: none; resize: vertical; display: block; line-height: 1.6;
   transition: border-color 0.2s; min-height: 110px; box-sizing: border-box;
 }
-.f-modal-body textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.1); }
+.f-modal-body textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(107,191,217,.1); }
 .f-modal-body textarea::placeholder { color: var(--muted); }
 .f-modal-body .f-char { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
 .f-modal-body .f-char.warn { color: var(--terra); }
 .f-modal-body .f-form-row { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
 .f-modal-body .f-alert { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; }
 .f-modal-body .f-alert.error   { background: var(--rose-pale); color: var(--terra); border: 1px solid var(--rose-light); }
-.f-modal-body .f-alert.success { background: var(--sage-pale); color: #3d6b3f; border: 1px solid rgba(138,170,140,.4); }
+.f-modal-body .f-alert.success { background: var(--sage-pale); color: #2F5D73; border: 1px solid rgba(168,197,190,.4); }
 .f-modal-body .f-btn-primary {
-  padding: 9px 20px; background: var(--rose); color: #fff; border: none;
+  padding: 9px 20px; background: var(--rose); color: #FAF7F2; border: none;
   border-radius: 8px; font-family: var(--sans); font-size: 12px; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
   transition: background 0.2s; white-space: nowrap;
@@ -523,13 +523,13 @@ title: Community Forum
 <script>
 /* ── CATEGORIES ─────────────────────────────────────────────────────────── */
 const CATS = [
-  { id:'all',            path: null,                   name:'All Posts',             color:'#937468' },
-  { id:'introductions',  path:'/forum/introductions',  name:'Introductions',         color:'#d97fb8' },
-  { id:'general',        path:'/forum/general',        name:'General Discussion',    color:'#6a9fd8' },
-  { id:'seeking-advice', path:'/forum/seeking-advice', name:'Seeking Advice',        color:'#e07a6a' },
-  { id:'treatment',      path:'/forum/treatment',      name:'Treatment Experiences', color:'#8aaa8c' },
-  { id:'research',       path:'/forum/research',       name:'Research and News',     color:'#c4a882' },
-  { id:'support',        path:'/forum/support',        name:'Support and Resources', color:'#9b7ec8' },
+  { id:'all',            path: null,                   name:'All Posts',             color:'#2F5D73' },
+  { id:'introductions',  path:'/forum/introductions',  name:'Introductions',         color:'#6bbfd9' },
+  { id:'general',        path:'/forum/general',        name:'General Discussion',    color:'#6F9CAF' },
+  { id:'seeking-advice', path:'/forum/seeking-advice', name:'Seeking Advice',        color:'#4d6db8' },
+  { id:'treatment',      path:'/forum/treatment',      name:'Treatment Experiences', color:'#A8C5BE' },
+  { id:'research',       path:'/forum/research',       name:'Research and News',     color:'#8aa3d8' },
+  { id:'support',        path:'/forum/support',        name:'Support and Resources', color:'#c4c4e6' },
 ];
 const catById   = id   => CATS.find(c => c.id === id)     || null;
 const catByPath = path => CATS.find(c => c.path === path) || null;

@@ -12,22 +12,22 @@ title: Risk Calculator
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #fdf6ee;
-    --warm-white: #fff9f3;
-    --rose: #e07a6a;
-    --rose-light: #f2b5ab;
-    --rose-pale: #fce9e6;
-    --terracotta: #c45e4a;
-    --sage: #8aaa8c;
-    --sage-light: #b8ceb9;
-    --sage-pale: #eaf1ea;
-    --tan: #c4a882;
-    --tan-light: #e8d9c4;
-    --brown: #6b4c3b;
-    --text-main: #3d2c24;
-    --text-muted: #937468;
-    --border: rgba(196,168,130,0.25);
-    --border-bright: rgba(196,168,130,0.5);
+    --cream: #FAF7F2;
+    --warm-white: #E8F0ED;
+    --rose: #6bbfd9;
+    --rose-light: #C7DDE5;
+    --rose-pale: #E8F0ED;
+    --terracotta: #4d6db8;
+    --sage: #A8C5BE;
+    --sage-light: #C7DDE5;
+    --sage-pale: #E8F0ED;
+    --tan: #c4c4e6;
+    --tan-light: #C7DDE5;
+    --brown: #123047;
+    --text-main: #123047;
+    --text-muted: #647985;
+    --border: rgba(18,48,71,0.25);
+    --border-bright: rgba(18,48,71,0.5);
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'Nunito', system-ui, sans-serif;
   }
@@ -51,8 +51,8 @@ title: Risk Calculator
   .progress-dot-wrap { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 4px 0; }
   .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--tan-light); border: 2px solid var(--warm-white); transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease; z-index: 1; }
   .progress-dot.done  { background: var(--rose); }
-  .progress-dot.active { background: var(--terracotta); transform: scale(1.35); box-shadow: 0 0 0 4px rgba(224,122,106,0.2); }
-  .progress-dot-wrap .tip { position: absolute; left: 20px; background: var(--text-main); color: white; font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+  .progress-dot.active { background: var(--terracotta); transform: scale(1.35); box-shadow: 0 0 0 4px rgba(107,191,217,0.2); }
+  .progress-dot-wrap .tip { position: absolute; left: 20px; background: var(--text-main); color: #FAF7F2; font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
   .progress-dot-wrap:hover .tip { opacity: 1; }
   .progress-label { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); margin-top: 12px; opacity: 0.6; }
   @media(max-width: 880px) { .progress-sidebar { display: none; } }
@@ -63,14 +63,14 @@ title: Risk Calculator
   .lang-switch { display: inline-flex; background: var(--warm-white); border: 1px solid var(--border); border-radius: 999px; padding: 4px; gap: 4px; }
   .lang-btn { border: none; background: transparent; color: var(--text-muted); font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .05em; padding: 6px 12px; border-radius: 999px; cursor: pointer; transition: all .18s; }
   .lang-btn:hover { color: var(--text-main); background: var(--cream); }
-  .lang-btn.active { background: var(--rose); color: #fff; }
+  .lang-btn.active { background: var(--rose); color: #FAF7F2; }
   .page-header { text-align: center; margin-bottom: 40px; }
   .page-header h1 { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); font-weight: 600; color: var(--text-main); line-height: 1.1; margin: 0 0 14px; }
   .page-header h1 em { font-style: italic; color: var(--rose); }
   .page-header p { color: var(--text-muted); max-width: 640px; margin: 0 auto; font-size: 14px; line-height: 1.75; }
 
   /* ── CARD ── */
-  .card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 18px; padding: 36px 40px; margin-bottom: 20px; box-shadow: 0 4px 24px rgba(61,44,36,.05); }
+  .card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 18px; padding: 36px 40px; margin-bottom: 20px; box-shadow: 0 4px 24px rgba(18,48,71,.05); }
   @media(max-width:520px){ .card { padding: 24px 20px; } }
   .card-title { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
   .card-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
@@ -85,13 +85,13 @@ title: Risk Calculator
   .field:last-child { margin-bottom: 0; }
   .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
   .field select, .field input[type=number] { width: 100%; background: var(--cream); border: 1px solid var(--tan-light); border-radius: 10px; padding: 11px 14px; font-family: var(--sans); font-size: 14px; color: var(--text-main); outline: none; appearance: none; transition: border-color .2s; cursor: pointer; }
-  .field select:focus, .field input[type=number]:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.12); }
+  .field select:focus, .field input[type=number]:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(107,191,217,.12); }
   .select-wrap { position: relative; }
   .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--tan); pointer-events: none; font-size: 13px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border-bright); background: var(--cream); font-family: var(--sans); font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all .18s; user-select: none; }
   .chip:hover { border-color: var(--rose-light); color: var(--text-main); }
-  .chip.selected { background: var(--rose); border-color: var(--rose); color: white; font-weight: 600; }
+  .chip.selected { background: var(--rose); border-color: var(--rose); color: #FAF7F2; font-weight: 600; }
   .cancer-chips .chip.selected { background: var(--terracotta); border-color: var(--terracotta); }
   .cancer-chips .chip.na { opacity: .35; pointer-events: none; cursor: default; }
   .toggles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
@@ -102,14 +102,14 @@ title: Risk Calculator
   .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; margin-left: 16px; }
   .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
   .toggle-track { position: absolute; inset: 0; background: var(--tan-light); border-radius: 12px; cursor: pointer; transition: background .2s; }
-  .toggle-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+  .toggle-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #FAF7F2; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 4px rgba(18,48,71,.15); }
   .toggle input:checked + .toggle-track { background: var(--rose); }
   .toggle input:checked + .toggle-track::after { transform: translateX(20px); }
   .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media(max-width:520px){ .field-grid { grid-template-columns: 1fr; } }
   .btn-row { display: flex; gap: 12px; margin-top: 28px; justify-content: flex-end; }
   .btn { font-family: var(--sans); font-size: 14px; font-weight: 600; border-radius: 10px; padding: 11px 24px; cursor: pointer; border: none; transition: all .2s; }
-  .btn-primary { background: var(--rose); color: white; }
+  .btn-primary { background: var(--rose); color: #FAF7F2; }
   .btn-primary:hover { background: var(--terracotta); transform: translateY(-1px); }
   .btn-primary:disabled { background: var(--tan-light); color: var(--text-muted); transform: none; cursor: not-allowed; }
   .optional-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
@@ -170,8 +170,8 @@ title: Risk Calculator
     margin-bottom: 20px;
   }
   .rr-badge.above   { background: var(--rose-pale);  color: var(--terracotta); }
-  .rr-badge.at      { background: #fff3e0;            color: #9b6a00; }
-  .rr-badge.below   { background: var(--sage-pale);   color: #4a7a4c; }
+  .rr-badge.at      { background: #E8F0ED;            color: #4d6db8; }
+  .rr-badge.below   { background: var(--sage-pale);   color: #2F5D73; }
 
   /* gauge */
   .gauge-wrap { margin: 0 auto 8px; max-width: 480px; }
@@ -221,12 +221,12 @@ title: Risk Calculator
   .risk-factors-list { margin-bottom: 28px; }
   .risk-factor-item { padding: 14px 16px; background: var(--cream); border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--tan-light); }
   .risk-factor-item.high { border-left-color: var(--terracotta); }
-  .risk-factor-item.moderate { border-left-color: #d9a566; }
+  .risk-factor-item.moderate { border-left-color: #8aa3d8; }
   .rf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
   .rf-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
   .rf-impact { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 12px; }
   .rf-impact.high { background: var(--rose-pale); color: var(--terracotta); }
-  .rf-impact.moderate { background: #fff3e0; color: #9b6a00; }
+  .rf-impact.moderate { background: #E8F0ED; color: #4d6db8; }
   .rf-detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
 
   /* ── FEATURE IMPORTANCE ── */
@@ -240,7 +240,7 @@ title: Risk Calculator
   /* ── CANCER TYPE CARDS ── */
   .ct-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 28px; }
   .ct-card { background: var(--cream); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; transition: box-shadow .2s; }
-  .ct-card:hover { box-shadow: 0 4px 16px rgba(61,44,36,.08); }
+  .ct-card:hover { box-shadow: 0 4px 16px rgba(18,48,71,.08); }
   .ct-card-label { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
 
   /* Lifetime risk % — the main number per card */
@@ -260,11 +260,11 @@ title: Risk Calculator
   .ct-level-bar { height: 4px; border-radius: 2px; background: var(--tan-light); overflow: hidden; margin-bottom: 10px; }
   .ct-level-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(.22,1,.36,1); }
   .ct-level-fill.low      { background: var(--sage); }
-  .ct-level-fill.moderate { background: #d9a566; }
+  .ct-level-fill.moderate { background: #8aa3d8; }
   .ct-level-fill.high     { background: var(--terracotta); }
   .ct-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
-  .ct-badge.low      { background: var(--sage-pale); color: #4a7a4c; }
-  .ct-badge.moderate { background: #fff3e0; color: #9b6a00; }
+  .ct-badge.low      { background: var(--sage-pale); color: #2F5D73; }
+  .ct-badge.moderate { background: #E8F0ED; color: #4d6db8; }
   .ct-badge.high     { background: var(--rose-pale); color: var(--terracotta); }
   .ct-factors { font-size: 11px; color: var(--text-muted); line-height: 1.55; margin-top: 6px; }
   .ct-note { font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 6px; line-height: 1.5; border-top: 1px solid var(--border); padding-top: 6px; }
@@ -349,8 +349,8 @@ title: Risk Calculator
     <div class="field">
       <label id="label-race">Race / Ethnicity</label>
       <div class="chips" id="race-chips">
-        <div class="chip" data-val="white">White</div>
-        <div class="chip" data-val="black">Black / African American</div>
+        <div class="chip" data-val="#FAF7F2">#FAF7F2</div>
+        <div class="chip" data-val="#123047">#123047 / African American</div>
         <div class="chip" data-val="hispanic">Hispanic / Latino</div>
         <div class="chip" data-val="aian">American Indian / Alaskan Native</div>
         <div class="chip" data-val="aapi">Asian American / Pacific Islander</div>
@@ -560,8 +560,8 @@ const I18N = {
     cancerTypesSubtext: 'Select specific cancers to get individual lifetime risk estimates',
     cancerTypesNote: 'Optional: leave unselected for overall relative risk only',
     predictBtn: 'Predict My Risk →',
-    raceWhite: 'White',
-    raceBlack: 'Black / African American',
+    raceWhite: '#FAF7F2',
+    raceBlack: '#123047 / African American',
     raceHispanic: 'Hispanic / Latino',
     raceAian: 'American Indian / Alaskan Native',
     raceAapi: 'Asian American / Pacific Islander',
@@ -822,8 +822,8 @@ function applyLanguageToStaticUI() {
   setText('toggle-occupational', t('toggleOccupational'));
   setText('toggle-uv', t('toggleUv'));
 
-  setChipText('race-chips', 'white', t('raceWhite'));
-  setChipText('race-chips', 'black', t('raceBlack'));
+  setChipText('race-chips', '#FAF7F2', t('raceWhite'));
+  setChipText('race-chips', '#123047', t('raceBlack'));
   setChipText('race-chips', 'hispanic', t('raceHispanic'));
   setChipText('race-chips', 'aian', t('raceAian'));
   setChipText('race-chips', 'aapi', t('raceAapi'));
@@ -1208,7 +1208,7 @@ function displayResults(data) {
       }
       const barPct = Math.min(100, (res.lifetime_risk_pct / 80) * 100);
       const levelColor = res.risk_level === 'high' ? 'var(--terracotta)'
-                       : res.risk_level === 'moderate' ? '#d9a566' : 'var(--sage)';
+                       : res.risk_level === 'moderate' ? '#8aa3d8' : 'var(--sage)';
       const levelLabel = res.risk_level === 'high' ? t('impactHigh')
                        : res.risk_level === 'moderate' ? t('impactModerate') : t('impactLow');
       return `
@@ -1353,16 +1353,16 @@ document.addEventListener('DOMContentLoaded', () => {
   position: fixed; bottom: 28px; right: 28px;
   width: 54px; height: 54px; border-radius: 50%;
   background: var(--rose); border: none; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(224,122,106,0.45);
+  box-shadow: 0 4px 20px rgba(107,191,217,0.45);
   display: flex; align-items: center; justify-content: center;
   z-index: 1000;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
-.rcc-fab:hover { background: var(--terracotta); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(224,122,106,0.5); }
-.rcc-fab svg { width: 22px; height: 22px; fill: white; }
+.rcc-fab:hover { background: var(--terracotta); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(107,191,217,0.5); }
+.rcc-fab svg { width: 22px; height: 22px; fill: #FAF7F2; }
 .rcc-fab-badge {
   position: absolute; top: -4px; right: -4px;
-  background: var(--terracotta); color: white;
+  background: var(--terracotta); color: #FAF7F2;
   font-size: 9px; font-weight: 700; letter-spacing: 0.04em;
   padding: 2px 5px; border-radius: 8px;
   border: 2px solid var(--cream);
@@ -1378,7 +1378,7 @@ document.addEventListener('DOMContentLoaded', () => {
   background: var(--warm-white);
   border: 1.5px solid var(--border-bright);
   border-radius: 18px;
-  box-shadow: 0 8px 48px rgba(61,44,36,0.15);
+  box-shadow: 0 8px 48px rgba(18,48,71,0.15);
   display: flex; flex-direction: column;
   z-index: 999; overflow: hidden;
   opacity: 0; transform: translateY(14px);
@@ -1390,36 +1390,36 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ── Header ── */
 .rcc-header {
   padding: 14px 18px;
-  background: linear-gradient(135deg, var(--brown) 0%, #4a2e22 100%);
+  background: linear-gradient(135deg, var(--brown) 0%, #2F5D73 100%);
   display: flex; align-items: center; justify-content: space-between;
   flex-shrink: 0;
 }
 .rcc-header-left { display: flex; align-items: center; gap: 9px; }
 .rcc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
-.rcc-header-title { font-family: var(--serif); font-size: 16px; font-weight: 600; color: white; line-height: 1.2; }
-.rcc-header-sub { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+.rcc-header-title { font-family: var(--serif); font-size: 16px; font-weight: 600; color: #FAF7F2; line-height: 1.2; }
+.rcc-header-sub { font-size: 10px; color: rgba(199,221,229,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
 .rcc-header-actions { display: flex; align-items: center; gap: 7px; }
 .rcc-notes-btn {
-  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.9); border-radius: 999px; cursor: pointer;
+  background: rgba(199,221,229,0.12); border: 1px solid rgba(199,221,229,0.2);
+  color: rgba(199,221,229,0.9); border-radius: 999px; cursor: pointer;
   font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
   text-transform: uppercase; padding: 5px 9px;
 }
-.rcc-notes-btn:hover { background: rgba(255,255,255,0.22); }
+.rcc-notes-btn:hover { background: rgba(199,221,229,0.22); }
 .rcc-close-btn {
-  background: rgba(255,255,255,0.12); border: none; color: rgba(255,255,255,0.7);
+  background: rgba(199,221,229,0.12); border: none; color: rgba(199,221,229,0.7);
   width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center; font-size: 14px;
   transition: background 0.15s;
 }
-.rcc-close-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+.rcc-close-btn:hover { background: rgba(199,221,229,0.22); color: #FAF7F2; }
 
 /* ── Context bar ── */
 .rcc-context-bar {
   padding: 7px 14px;
   background: var(--sage-pale);
-  border-bottom: 1px solid rgba(138,170,140,0.3);
-  font-size: 11px; color: #3d6b3f; line-height: 1.5;
+  border-bottom: 1px solid rgba(168,197,190,0.3);
+  font-size: 11px; color: #2F5D73; line-height: 1.5;
   flex-shrink: 0; font-family: var(--sans);
 }
 .rcc-context-bar b { font-weight: 700; }
@@ -1461,9 +1461,9 @@ document.addEventListener('DOMContentLoaded', () => {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1px solid rgba(138,170,140,0.55);
-  background: rgba(138,170,140,0.15);
-  color: #456846;
+  border: 1px solid rgba(168,197,190,0.55);
+  background: rgba(168,197,190,0.15);
+  color: #2F5D73;
   font-size: 14px;
   line-height: 1;
   font-weight: 700;
@@ -1474,12 +1474,12 @@ document.addEventListener('DOMContentLoaded', () => {
   flex-shrink: 0;
 }
 .rcc-note-add-btn:hover {
-  background: rgba(138,170,140,0.28);
-  border-color: rgba(138,170,140,0.8);
+  background: rgba(168,197,190,0.28);
+  border-color: rgba(168,197,190,0.8);
 }
 .rcc-note-add-btn.saved {
-  background: rgba(138,170,140,0.35);
-  color: #2f5431;
+  background: rgba(168,197,190,0.35);
+  color: #2F5D73;
 }
 
 /* ── Suggestion chips ── */
@@ -1489,7 +1489,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 .rcc-chip {
   padding: 5px 11px; background: var(--sage-pale);
-  border: 1px solid rgba(138,170,140,0.4); border-radius: 14px;
+  border: 1px solid rgba(168,197,190,0.4); border-radius: 14px;
   cursor: pointer; font-size: 11px; font-weight: 500;
   color: var(--text-main); font-family: var(--sans);
   transition: background 0.15s, border-color 0.15s;
@@ -1502,7 +1502,7 @@ document.addEventListener('DOMContentLoaded', () => {
   flex: 1;
   min-height: 0;
   padding: 12px 13px;
-  background: #fff;
+  background: #FAF7F2;
   overflow-y: auto;
 }
 .rcc-notes-panel.open { display: block; }
@@ -1531,7 +1531,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 .rcc-note-delete {
   border: 1px solid var(--rose-light);
-  background: #fff;
+  background: #FAF7F2;
   color: var(--rose);
   font-size: 10px;
   font-weight: 700;
@@ -1580,7 +1580,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 .rcc-send-btn:hover:not(:disabled) { background: var(--terracotta); transform: scale(1.06); }
 .rcc-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.rcc-send-btn svg { width: 15px; height: 15px; fill: white; }
+.rcc-send-btn svg { width: 15px; height: 15px; fill: #FAF7F2; }
 
 @media (max-width: 520px) {
   .rcc-panel { width: calc(100vw - 24px); right: 12px; bottom: 88px; }
