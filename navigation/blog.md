@@ -63,9 +63,40 @@ permalink: /blog/
     </main>
 
     <aside class="fr-side fr-card">
-      <h3>About this forum</h3>
-      <p>Ask questions, share what you are working on, and help others in the OCS community.</p>
-    </aside>
+  <h3>Community Rules</h3>
+  <p>Ask questions, share what you are working on, and help others in the OCS community.</p>
+
+  <ol class="fr-rules">
+    <li>
+      <strong>Be Supportive</strong>
+      <span>Lead with empathy — everyone here is going through something difficult.</span>
+    </li>
+    <li>
+      <strong>No Hate Speech</strong>
+      <span>Zero tolerance for discrimination of any kind.</span>
+    </li>
+    <li>
+      <strong>No Profanity</strong>
+      <span>Keep language clean and respectful.</span>
+    </li>
+    <li>
+      <strong>No Medical Claims</strong>
+      <span>Share personal experiences, not prescriptions. Always recommend a doctor.</span>
+    </li>
+    <li>
+      <strong>Protect Privacy</strong>
+      <span>Do not share others' personal health information.</span>
+    </li>
+    <li>
+      <strong>No Spam</strong>
+      <span>No commercial promotions or fundraising links.</span>
+    </li>
+    <li>
+      <strong>Admin Decisions Are Final</strong>
+      <span>Moderators may remove posts to keep this space safe.</span>
+    </li>
+  </ol>
+</aside>
   </div>
 </div>
 
