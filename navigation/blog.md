@@ -43,7 +43,7 @@ permalink: /blog/
             <span class="chat-badge" aria-hidden="true"><i class="fas fa-comments"></i></span>
             <div>
               <h2 class="chat-title">Community chat</h2>
-              <p class="chat-subtitle">Talk with other members of the OCS community.</p>
+              <p class="chat-subtitle">Talk with other members of the OAK community.</p>
             </div>
           </div>
         </div>
@@ -64,7 +64,6 @@ permalink: /blog/
 
     <aside class="fr-side fr-card">
   <h3>Community Rules</h3>
-  <p>Ask questions, share what you are working on, and help others in the OCS community.</p>
 
   <ol class="fr-rules">
     <li>
