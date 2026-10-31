@@ -18,7 +18,7 @@ export var javaURI;
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
         javaURI = "http://localhost:8585";
 } else {
-    javaURI = "https://spring.opencodingsociety.com";
+    javaURI = "https://oak404.github.io/oak_backend/";
 }
 
 export const fetchOptions = {
