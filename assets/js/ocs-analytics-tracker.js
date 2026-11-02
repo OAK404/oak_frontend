@@ -348,38 +348,49 @@
      * Submit analytics to backend
      */
     async function submitAnalytics() {
-        try {
-            const javaURI = window.javaURI || '/api';
-            const payload = preparePayload();
-            
-            // Only submit if there's meaningful data
-            if (!analyticsState.questName && 
-                analyticsState.codeExecutions === 0 && 
-                analyticsState.keyboardInputEvents === 0 &&
-                analyticsState.mouseClicksCount === 0) {
-                debug('Skipping analytics submission - no meaningful activity');
+    try {
+        const javaURI = window.javaURI || '/api';
+        const payload = preparePayload();
+
+        if (!analyticsState.questName &&
+            analyticsState.codeExecutions === 0 &&
+            analyticsState.keyboardInputEvents === 0 &&
+            analyticsState.mouseClicksCount === 0) {
+            debug('Skipping analytics submission - no meaningful activity');
+            return;
+        }
+
+        const url = javaURI + '/api/ocs-analytics/save';
+        const body = JSON.stringify(payload);
+
+        // Preferred for unload/exit tracking: queued by the browser,
+        // does not need to read the response.
+        if (navigator.sendBeacon) {
+            const sent = navigator.sendBeacon(url, new Blob([body], {
+                type: 'text/plain;charset=UTF-8'
+            }));
+
+            if (sent) {
+                debug('Analytics beacon queued');
                 return;
             }
-            
-            const response = await fetch(javaURI + '/api/ocs-analytics/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify(payload)
-            });
-            
-            if (response.ok) {
-                debug('Analytics submitted successfully');
-            } else {
-                console.warn('Failed to submit analytics:', response.status);
-            }
-        } catch (error) {
-            console.warn('Error submitting analytics:', error);
-            // Silently fail - don't interrupt user experience
         }
+
+        // Fallback for periodic submissions.
+        await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'text/plain;charset=UTF-8'
+            },
+            body: body
+        });
+
+        debug('Analytics submitted with no-cors fallback');
+    } catch (error) {
+        console.warn('Error submitting analytics:', error);
     }
+}
 
     /**
      * Initialize analytics tracking
@@ -403,10 +414,10 @@
         // Periodic submission
         setInterval(submitAnalytics, CONFIG.batchInterval);
         
-        // Submit on page unload
-        window.addEventListener('beforeunload', function() {
-            // Use a short delay to allow submission before page closes
-            submitAnalytics();
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                submitAnalytics();
+            }
         });
     }
 
