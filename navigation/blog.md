@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: opencs
 title: Community Forum
 permalink: /blog/
 ---
@@ -124,7 +124,7 @@ permalink: /blog/
    the pasted conversation.
 ------------------------------------------------------------------ */
 const API = {
-  base: "https://YOUR-BACKEND-URL/api",
+  base: "http://localhost:5000/api",
   categories: "/forum/categories",
   posts: "/forum/posts",
   replies: id => `/forum/posts/${id}/replies`,
