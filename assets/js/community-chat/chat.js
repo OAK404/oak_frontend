@@ -1,6 +1,6 @@
 // Community chat for the OCS forum page. Uses the shared message log
 // (message-log.js) and polls the backend for new, edited and deleted messages.
-import { createMessageLog } from './message-log.js';
+import { createMessageLog } from '../message-log.js';
 
 const API = window.FORUM_API;
 const POLL_MS = 5000;
